@@ -27,6 +27,9 @@
 		"vite": "^5.0.3"
 	},
 	"dependencies": {
-		"@sveltejs/adapter-vercel": "^5.4.6"
+		"@fortawesome/free-brands-svg-icons": "^6.6.0",
+		"@fortawesome/free-solid-svg-icons": "^6.6.0",
+		"@sveltejs/adapter-vercel": "^5.4.6",
+		"svelte-fa": "^4.0.3"
 	}
 }
