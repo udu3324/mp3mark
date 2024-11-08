@@ -1,9 +1,20 @@
 <script>
+	import Import from "./Import.svelte";
+
+    let importVisible = "hidden"
+    let inputFileName = ""
+
     let files
     let fileInput
 
     $: {
-        console.log("files", files)
+        if (files !== undefined) {
+            console.log("files", files)
+            console.log("file", files[0])
+            
+            inputFileName = files[0].name
+            importVisible = ""
+        }
     }
 
     function select() {
@@ -11,13 +22,15 @@
     }
 </script>
 
-<div>
+<Import bind:visible={importVisible} bind:fileName={inputFileName}/>
+
+<div class="m-3">
     <b>mp3mark</b>
     <p>A website that lets you easily annotate/mark up audio.</p>
 
     <input id="fileInput" bind:this={fileInput} bind:files class="hidden"  type="file" name="file" accept="audio/mp3, audio/flac, audio/wav">
     <br>
-    <button onclick={select}>Import</button>
+    <button class="p-3 bg-green-300" onclick={select}>Import</button>
 </div>
 
 <style lang="postcss">
