@@ -22,7 +22,7 @@
     }
 </script>
 
-<Import bind:visible={importVisible} bind:fileName={inputFileName}/>
+<Import bind:files={files} bind:visible={importVisible} bind:fileName={inputFileName}/>
 
 <div class="m-3">
     <b>mp3mark</b>
