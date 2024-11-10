@@ -1,20 +1,27 @@
 <script>
     import { db } from "../lib/db.js"
     import Fa from 'svelte-fa'
-	import { faCog } from "@fortawesome/free-solid-svg-icons";
+	import { faCog, faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
     
     export let files
     export let visible = "hidden"
     export let fileName = ''
 
     $: projectName = fileName.substring(0, fileName.lastIndexOf("."))
-    let bpm
+
+    let bpm = ""
     let beat = 4
     let note = 4
 
     let status = ''
     let disableSubmit = ""
 
+    //check bpm input if its good
+    $: {
+        bpm = bpm.replace(/[^0-9]/g, "")
+    }
+
+    //cool little cooldown thing for the button
     function disableBtn() {
         disableSubmit = true
 
@@ -34,8 +41,10 @@
 
             return
         }
-
-        if (bpm < 0 || bpm === undefined || bpm === null) {
+        
+        const bpmCheck = Number.parseInt(bpm)
+        
+        if (bpmCheck === 0 || bpmCheck === undefined || bpmCheck === null) {
             status = "Please set a bpm!"
             disableBtn()
             
@@ -71,6 +80,30 @@
             alert(error)
         }
     }
+
+    function beatUp() {
+        if (beat < 24) {
+            beat++
+        }
+    }
+
+    function beatDown() {
+        if (beat > 1) {
+            beat--
+        }
+    }
+
+    function noteUp() {
+        if (note < 24) {
+            note++
+        }
+    }
+
+    function noteDown() {
+        if (note > 1) {
+            note--
+        }
+    }
 </script>
 
 <div class="{visible} bg-orange-300 p-3">
@@ -80,17 +113,24 @@
     </p>
 
     <h>Project Name -</h>
-    <input bind:value={projectName} type="text" placeholder="name">
+    <input bind:value={projectName} type="text" maxlength="22" placeholder="name">
 
     <br>
 
     <h>BPM -</h>
-    <input bind:value={bpm} type="number" placeholder="180">
+    <input bind:value={bpm} type="text" maxlength="3" placeholder="180">
 
     <br>
 
-    <h>Time Signature - <span class="bg-white">{beat}/{note}</span></h>
+    <h>Time Signature</h>
 
+    <button on:click={beatUp} class="signature-button"><Fa icon={faArrowUp}/></button>
+    <button on:click={beatDown} class="signature-button"><Fa icon={faArrowDown}/></button>
+
+    <span class="bg-white py-2">{beat}/{note}</span>
+
+    <button on:click={noteUp} class="signature-button"><Fa icon={faArrowUp}/></button>
+    <button on:click={noteDown} class="signature-button"><Fa icon={faArrowDown}/></button>
     <br>
 
     <button on:click={openEditor} disabled={disableSubmit} class="mt-3 p-3 bg-orange-400">Open in Editor</button>
@@ -99,5 +139,9 @@
 </div>
 
 <style lang="postcss">
-
+    .signature-button {
+        @apply bg-white p-2;
+    }
+        
+    
 </style>
