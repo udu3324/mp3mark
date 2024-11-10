@@ -1,4 +1,5 @@
 <script>
+    import { goto } from '$app/navigation'
     import { db } from "../lib/db.js"
     import Fa from 'svelte-fa'
 	import { faCog, faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
@@ -7,7 +8,7 @@
     export let visible = "hidden"
     export let fileName = ''
 
-    $: projectName = fileName.substring(0, fileName.lastIndexOf("."))
+    $: projectName = fileName.substring(0, fileName.lastIndexOf(".")).substring(0, 22)
 
     let bpm = ""
     let beat = 4
@@ -44,7 +45,7 @@
         
         const bpmCheck = Number.parseInt(bpm)
         
-        if (bpmCheck === 0 || bpmCheck === undefined || bpmCheck === null) {
+        if (bpmCheck === 0 || bpmCheck === undefined || bpmCheck === null || Number.isNaN(bpmCheck)) {
             status = "Please set a bpm!"
             disableBtn()
             
@@ -67,13 +68,15 @@
                     projectName: projectName, 
                     timeSignatureBeat: beat, 
                     timeSignatureNote: note,
-                    bpm: bpm, 
+                    bpm: Number.parseInt(bpm), 
                     length, 
                     tracks: 0, 
                     timelineData: []
                 })
 
                 status = `Saved new project data to index ${id} sucessfully.`
+            
+                goto("/editor")
             }
 
         } catch (error) {
