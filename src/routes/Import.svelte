@@ -3,6 +3,7 @@
     import { db } from "../lib/db.js"
     import Fa from 'svelte-fa'
 	import { faCog, faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
+	import WaveSurfer from 'wavesurfer.js';
     
     export let files
     export let visible = "hidden"
@@ -61,22 +62,30 @@
                 const arrayBuffer = reader.result
                 const blob = new Blob([arrayBuffer])
 
-                //save the blob + other data into indexeddb
-                const id = db.editor.add({
-                    audio: blob,
-                    fileName: fileName, 
-                    projectName: projectName, 
-                    timeSignatureBeat: beat, 
-                    timeSignatureNote: note,
-                    bpm: Number.parseInt(bpm), 
-                    length, 
-                    tracks: 0, 
-                    timelineData: []
+                //create wavesurfer object to pull audio length
+                const wavesurfer = WaveSurfer.create({
+                    container: '#waveform'
                 })
 
-                status = `Saved new project data to index ${id} sucessfully.`
-            
-                goto("/editor")
+                wavesurfer.loadBlob(blob).then(() => {
+
+                    //save the blob + other data into indexeddb
+                    const id = db.editor.add({
+                        audio: blob,
+                        fileName: fileName, 
+                        projectName: projectName, 
+                        timeSignatureBeat: beat, 
+                        timeSignatureNote: note,
+                        bpm: Number.parseInt(bpm), 
+                        length: wavesurfer.getDuration(), 
+                        tracks: 0, 
+                        timelineData: []
+                    })
+
+                    status = `Saved new project data to index ${id} sucessfully. ${wavesurfer.getDuration()}`
+                
+                    //goto("/editor")
+                })
             }
 
         } catch (error) {
@@ -108,6 +117,10 @@
         }
     }
 </script>
+
+<div id="waveform" class="hidden">
+    
+</div>
 
 <div class="{visible} bg-orange-300 p-3">
     <p>

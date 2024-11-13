@@ -31,6 +31,7 @@
 		"@fortawesome/free-solid-svg-icons": "^6.6.0",
 		"@sveltejs/adapter-vercel": "^5.4.7",
 		"dexie": "^4.0.9",
-		"svelte-fa": "^4.0.3"
+		"svelte-fa": "^4.0.3",
+		"wavesurfer.js": "^7.8.8"
 	}
 }

@@ -23,6 +23,9 @@ importers:
       svelte-fa:
         specifier: ^4.0.3
         version: 4.0.3(svelte@5.1.12)
+      wavesurfer.js:
+        specifier: ^7.8.8
+        version: 7.8.8
     devDependencies:
       '@sveltejs/adapter-auto':
         specifier: ^3.3.1
@@ -1539,6 +1542,9 @@ packages:
       vite:
         optional: true
 
+  wavesurfer.js@7.8.8:
+    resolution: {integrity: sha512-FNiJ6RCAu4TijRcwdaqlN19+Y+Hhqb7Nfo2P4LudzhNnQRMKvF3QmXd9+KHlQZrSjexeK3WbY4COsxgGJkxMag==}
+
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
 
@@ -2912,6 +2918,8 @@ snapshots:
   vitefu@1.0.3(vite@5.4.10):
     optionalDependencies:
       vite: 5.4.10
+
+  wavesurfer.js@7.8.8: {}
 
   webidl-conversions@3.0.1: {}
 
