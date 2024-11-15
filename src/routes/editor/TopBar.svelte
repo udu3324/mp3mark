@@ -1,4 +1,5 @@
 <script>
+	import { faPlayCircle } from "@fortawesome/free-solid-svg-icons";
 	import Fa from "svelte-fa";
 
    export let time = "0:00.00"

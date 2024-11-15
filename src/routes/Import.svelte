@@ -84,7 +84,7 @@
 
                     status = `Saved new project data to index ${id} sucessfully. ${wavesurfer.getDuration()}`
                 
-                    //goto("/editor")
+                    goto("/editor")
                 })
             }
 
