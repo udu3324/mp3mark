@@ -24,7 +24,7 @@
 
 <Import bind:files={files} bind:visible={importVisible} bind:fileName={inputFileName}/>
 
-<div class="m-3">
+<div class="p-3 bg-white">
     <b>mp3mark</b>
     <p>A website that lets you easily annotate/mark up audio.</p>
 

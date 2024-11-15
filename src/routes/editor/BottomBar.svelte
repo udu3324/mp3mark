@@ -37,7 +37,7 @@
 
 <svelte:window on:keydown|preventDefault={onKeyDown} />
 
-<div class="absolute bottom-0 w-screen h-16 bg-yellow-500">
+<div class="fixed bottom-0 w-screen h-16 z-10 bg-yellow-500">
     <button on:click={play} class="controls dynamic-play mx-2 {buttonColor}">
         <Fa icon={faPlay}/>
     </button>

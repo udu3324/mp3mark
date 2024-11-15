@@ -5,7 +5,7 @@
    export let time = "0:00.00"
 </script>
 
-<div class="w-screen h-12 bg-[#7d818d] grid grid-cols-3">
+<div class="fixed w-screen h-12 z-10 bg-[#7d818d] grid grid-cols-3">
     <div class="pr-auto place-items-start">
        <h1>mp3mark</h1> 
     </div>
@@ -13,6 +13,6 @@
        <p>{time}</p> 
     </div>
     <div class="place-items-end">
-      <h1>seeeeeeeeeeeeeee</h1> 
+      <h1>udu3324</h1> 
     </div>
 </div>
