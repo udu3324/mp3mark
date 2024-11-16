@@ -1,4 +1,4 @@
-import WaveSurfer from "wavesurfer.js";
+import WaveSurfer from "wavesurfer.js"
 
 let wavesurfer
 

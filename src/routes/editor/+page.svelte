@@ -8,6 +8,7 @@
 
     let time = "devtime"
     let playing = false
+    
 
     onMount(() => {
         //load data from database to use for wavesurfer
