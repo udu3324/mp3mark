@@ -1,5 +1,6 @@
 <script>
    import { currentTime } from "$lib/editor"
+   import { goto } from '$app/navigation'
 
    let time = "0:00.00"
 
@@ -31,11 +32,14 @@
       }
    })
 
+   function back() {
+      goto("/")
+   }
 </script>
 
 <div class="fixed w-screen h-12 z-10 bg-[#7d818d] grid grid-cols-3">
     <div class="pr-auto place-items-start">
-       <h1>mp3mark</h1> 
+       <button on:click={back}><h1>mp3mark</h1></button>
     </div>
     <div class="place-self-center bg-gray-300 w-32 text-3xl h-full p-1 place-items-center">
        <p>{time}</p> 
