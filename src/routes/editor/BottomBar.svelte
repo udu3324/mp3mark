@@ -30,6 +30,7 @@
 
     function pauseReturn() {
         wavesurfer.setTime(0)
+        wavesurfer.play()
     }
     
     function onKeyDown(e) {
@@ -65,7 +66,7 @@
 
 <style lang="postcss">
     .controls {
-        @apply w-12 h-12 my-2 place-content-center place-items-center text-center text-3xl select-none;
+        @apply w-12 h-12 my-2 place-content-center place-items-center text-center text-3xl;
     }
 
     .dynamic-play:active {

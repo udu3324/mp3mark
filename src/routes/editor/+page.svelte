@@ -6,7 +6,6 @@
 	import Tracks from "./Tracks.svelte";
 	import { onMount } from "svelte";
 
-    let time = "devtime"
     let playing = false
     
 
@@ -33,7 +32,7 @@
 </script>
 
 <div class="w-screen bg-[#a1a5ae]">
-    <TopBar bind:time={time}/>
+    <TopBar/>
     <Tracks/>
 
     this is the editor page
