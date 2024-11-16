@@ -1,5 +1,6 @@
 <script>
 	import { faPlay, faSquare } from "@fortawesome/free-solid-svg-icons";
+    import { wavesurfer } from "$lib/editor.js"
 	import Fa from "svelte-fa";
 
     export let playing = false
@@ -16,11 +17,15 @@
     function play() {
         console.log("play")
         playing = true
+
+        wavesurfer.play()
     }
 
     function pause() {
         console.log("pause")
         playing = false
+        
+        wavesurfer.pause()
     }
     
     function onKeyDown(e) {
