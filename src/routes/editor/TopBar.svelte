@@ -37,7 +37,7 @@
    }
 </script>
 
-<div class="fixed w-screen h-12 z-10 bg-[#7d818d] grid grid-cols-3">
+<div class="fixed z-20 w-screen h-12 z-10 bg-[#7d818d] grid grid-cols-3">
     <div class="pr-auto place-items-start">
        <button on:click={back}><h1>mp3mark</h1></button>
     </div>

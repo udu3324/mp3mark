@@ -7,7 +7,7 @@
 	import { onMount } from "svelte";
 
     let playing = false
-    
+    let tracks = []
 
     onMount(() => {
         //load data from database to use for wavesurfer
@@ -20,9 +20,10 @@
             }
 
             console.log(editor)
+
+            tracks = editor.tracks
             
             initialize()
-            
 
             wavesurfer.loadBlob(editor.audio).then(() => {
                 console.log("sucessfully loaded!")
@@ -33,9 +34,43 @@
 
 <div class="w-screen bg-[#a1a5ae]">
     <TopBar/>
-    <Tracks/>
+    <Tracks bind:tracks={tracks}/>
 
-    this is the editor page
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
     <BottomBar bind:playing={playing}/>
 </div>
 

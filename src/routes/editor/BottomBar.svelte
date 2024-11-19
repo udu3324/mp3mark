@@ -1,4 +1,5 @@
 <script>
+    import { currentTime } from "$lib/editor"
 	import { faPlay, faSquare } from "@fortawesome/free-solid-svg-icons";
     import { wavesurfer } from "$lib/editor.js"
 	import Fa from "svelte-fa";
@@ -29,8 +30,11 @@
     }  
 
     function pauseReturn() {
+        currentTime.set(0)
         wavesurfer.setTime(0)
-        wavesurfer.play()
+        if (wavesurfer.isPlaying()) {
+            wavesurfer.play()
+        }
     }
     
     function onKeyDown(e) {
@@ -55,7 +59,7 @@
 
 <svelte:window on:keydown|preventDefault={onKeyDown} />
 
-<div class="fixed bottom-0 w-screen h-16 z-10 bg-yellow-500">
+<div class="fixed bottom-0 w-screen h-16 z-20 bg-yellow-500">
     <button on:click={play} class="controls dynamic-play mx-2 {playColor}">
         <Fa icon={faPlay}/>
     </button>
