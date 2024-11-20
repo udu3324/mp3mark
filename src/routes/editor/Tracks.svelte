@@ -18,10 +18,10 @@
 
 <div class="pt-12 pb-16">
     <div class="flex flex-row h-28">
-        <div class="fixed z-10 h-28 w-28 basis-28 bg-slate-500 text-6xl place-items-center place-content-center">
+        <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 bg-slate-500 text-6xl place-items-center place-content-center">
             <Fa icon={faFileWaveform}/>
         </div>
-        <div class="pl-28 grow h-full bg-slate-300">
+        <div class="grow h-full bg-slate-300">
             <div id="editor-viewer">
                 
             </div>
@@ -32,13 +32,14 @@
         
     {/each}
 
-    <div class="absolute flex flex-row h-28 drop-shadow-lg">
-        <button on:click={trackCreationMenu}>
-            <div class="top-0 absolute h-28 w-28 bg-[#323A45] text-6xl place-items-center place-content-center">
+    <div class="flex flex-row h-28 drop-shadow-lg">
+        <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 bg-[#323A45] text-6xl place-items-center place-content-center">
+            <button class="ml-6" on:click={trackCreationMenu}>
                 <Fa icon={faPlusCircle}/>
-            </div>
-        </button>
-        <div class="grow h-full w-screen bg-[#656a70] place-content-center text-center">
+            </button>
+        </div>
+
+        <div class="grow bg-[#656a70]">
             <span>Click the (+) to add a new analysis track.</span>
         </div>
 
