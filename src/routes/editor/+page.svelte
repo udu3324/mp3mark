@@ -37,40 +37,7 @@
     <Tracks bind:tracks={tracks}/>
 
     this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
+    
     <BottomBar bind:playing={playing}/>
 </div>
 
