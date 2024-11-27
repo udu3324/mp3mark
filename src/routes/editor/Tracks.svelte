@@ -1,8 +1,10 @@
 <script>
-	import { faFileWaveform, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+	import { faDownload, faDrum, faGuitar, faMicrophone, faObjectUngroup, faPlusCircle, faWaveSquare } from "@fortawesome/free-solid-svg-icons";
 	import { onMount } from "svelte";
 	import Fa from "svelte-fa";
     
+    export let tracks = []
+
     let pollingTrack
     let trackLength = 0
 
@@ -19,7 +21,35 @@
 
     function updateLength() {
         trackLength = pollingTrack.offsetWidth
-        console.log("please work", trackLength)
+        //console.log("please work", trackLength)
+    }
+
+    function createTrack(track) {
+        switch (track) {
+            case "vocal":
+                tracks.push(["vocal", "bg-indigo-500", []])
+
+                break
+            case "percussion":
+                tracks.push(["percussion", "bg-rose-500", []])
+
+                break
+            case "synth":
+                tracks.push(["synth", "bg-emerald-500", []])
+
+                break
+            case "guitar":
+                tracks.push(["guitar", "bg-cyan-600", []])
+
+                break
+            case "section":
+                tracks.push(["section", "bg-amber-500", []])
+
+                break
+        }
+
+        tracks = tracks
+        trackCreationMenu()
     }
 
     onMount(() => {
@@ -32,14 +62,12 @@
             window.removeEventListener('resize', updateLength);
         }
     })
-
-    export let tracks
 </script>
 
 <div class="pt-12 pb-16" style="min-width: {trackLength}px">
     <div class="flex flex-row h-28">
-        <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 bg-slate-500 text-6xl place-items-center place-content-center">
-            <Fa icon={faFileWaveform}/>
+        <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 text-white bg-slate-500 text-6xl place-items-center place-content-center">
+            <Fa icon={faDownload}/>
         </div>
         <div bind:this={pollingTrack} class="grow h-full bg-slate-300">
             <div id="editor-viewer">
@@ -50,18 +78,40 @@
 
     {#each tracks as track}
         <div class="flex flex-row h-28">
-            <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 bg-slate-500 text-6xl place-items-center place-content-center">
-                <Fa icon={faFileWaveform}/>
+            <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 text-white {track[1]} text-5xl leading-3 place-items-center place-content-center">
+                {#if track[0] === "vocal"}
+                    <Fa icon={faMicrophone}/>
+                {:else if track[0] === "percussion"}
+                    <Fa icon={faDrum}/>
+                {:else if track[0] === "synth"}
+                    <Fa icon={faWaveSquare}/>
+                {:else if track[0] === "guitar"}
+                    <Fa icon={faGuitar}/>
+                {:else if track[0] === "section"}
+                    <Fa icon={faObjectUngroup}/>
+                {/if}
+                <span class="text-xl">{track[0]}</span>
             </div>
-            <div class="h-full bg-slate-300" style="min-width: {trackLength}px">
-                
+
+            <div class="h-full bg-white" style="min-width: {trackLength}px">
+
             </div>
         </div>
     {/each}
 
     <div class="flex flex-row h-28 drop-shadow-lg">
+        <div class="sticky left-0 z-20 pointer-events-none {dropdown}">
+            <div class="ml-[7.50rem] m-2 mr-[-300px]">
+                <button on:click={() => createTrack("vocal")} class="dropdown-btn bg-indigo-500"><Fa class="w-5 mr-2 text-xl" icon={faMicrophone}/> Vocals</button>
+                <button on:click={() => createTrack("percussion")} class="dropdown-btn bg-rose-500"><Fa class="w-5 mr-2 text-xl" icon={faDrum}/> Percussion</button>
+                <button on:click={() => createTrack("synth")} class="dropdown-btn bg-emerald-500"><Fa class="w-5 mr-2 text-xl" icon={faWaveSquare}/> Synth</button>
+                <button on:click={() => createTrack("guitar")} class="dropdown-btn bg-cyan-600"><Fa class="w-5 mr-2 text-xl" icon={faGuitar}/> Guitar</button>
+                <button on:click={() => createTrack("section")} class="dropdown-btn bg-amber-500"><Fa class="w-5 mr-2 text-xl" icon={faObjectUngroup}/> Section</button>
+            </div>
+        </div>
+        
         <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 bg-[#323A45] text-6xl place-items-center place-content-center">
-            <button class="ml-6" on:click={trackCreationMenu}>
+            <button class="ml-6 text-white" on:click={trackCreationMenu}>
                 <Fa icon={faPlusCircle}/>
             </button>
         </div>
@@ -69,11 +119,15 @@
         <div class="bg-[#656a70] place-items-center place-content-center" style="min-width: {trackLength}px">
             <span class="pl-4">Click the (+) to add a new analysis track.</span>
         </div>
-
-        <div class="absolute left-28 {dropdown}">
-            <div class="m-2 p-2 bg-slate-300 ">
-                this is dropdown
-            </div>
-        </div>
     </div>
 </div>
+
+<style lang="postcss">
+    .dropdown-btn {
+        @apply p-2 text-xl text-white flex place-items-center pointer-events-auto;
+    }
+
+    .drop-icon {
+        @apply w-10 mr-5 text-xl;
+    }
+</style>

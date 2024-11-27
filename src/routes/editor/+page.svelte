@@ -20,8 +20,9 @@
             }
 
             console.log(editor)
-
-            tracks = editor.tracks
+            console.log("tracks", editor.tracks)
+            console.log("timelineData", editor.timelineData)
+            tracks = editor.timelineData
             
             initialize()
 
@@ -36,6 +37,31 @@
     <TopBar/>
     <Tracks bind:tracks={tracks}/>
 
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
+    this is the editor page <br/>
     this is the editor page <br/>
     
     <BottomBar bind:playing={playing}/>
