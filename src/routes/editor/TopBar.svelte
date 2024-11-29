@@ -2,6 +2,8 @@
    import { currentTime } from "$lib/editor"
    import { goto } from '$app/navigation'
 
+   export let title
+
    let time = "0:00.00"
 
    currentTime.subscribe((value) => {
@@ -39,7 +41,8 @@
 
 <div class="fixed z-20 w-screen h-12 z-10 bg-[#7d818d] grid grid-cols-3">
     <div class="pr-auto place-items-start">
-       <button on:click={back}><h1>mp3mark</h1></button>
+       <button on:click={back}><h1>mp3mark</h1></button> 
+       <h1>project - {title}</h1>
     </div>
     <div class="place-self-center bg-gray-300 w-32 text-3xl h-full p-1 place-items-center">
        <p>{time}</p> 

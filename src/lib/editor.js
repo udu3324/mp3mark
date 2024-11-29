@@ -5,6 +5,8 @@ let wavesurfer
 
 const currentTime = writable(0)
 
+const resolution = 20
+
 function initialize() {
     wavesurfer = WaveSurfer.create({
         container: '#editor-viewer',
@@ -12,7 +14,7 @@ function initialize() {
         progressColor: '#957206',
         height: '112',
         normalize: 'true',
-        minPxPerSec: '10',
+        minPxPerSec: resolution,
         fillParent: false
     })
 
@@ -24,4 +26,4 @@ function initialize() {
     })
 }
 
-export { initialize, wavesurfer, currentTime }
+export { initialize, wavesurfer, currentTime, resolution }

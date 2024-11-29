@@ -1,14 +1,21 @@
 <script>
 	import { faDownload, faDrum, faGuitar, faMicrophone, faObjectUngroup, faPlusCircle, faWaveSquare } from "@fortawesome/free-solid-svg-icons";
 	import { onMount } from "svelte";
+    import { resolution } from "$lib/editor.js"
 	import Fa from "svelte-fa";
     
     export let tracks = []
+    export let bpm
+    export let length
+    export let timeSigBeat
 
     let pollingTrack
     let trackLength = 0
 
     let dropdown = "hidden"
+    let ticks = 0
+    let tickOffset = 0
+    let marginRightValue = 0
 
     function trackCreationMenu() {
         console.log("toggling new track menu")
@@ -22,6 +29,13 @@
     function updateLength() {
         trackLength = pollingTrack.offsetWidth
         //console.log("please work", trackLength)
+        const secondsPerBeat = 60 / bpm
+
+        ticks = length / secondsPerBeat
+        tickOffset = Math.floor(secondsPerBeat * resolution)
+        marginRightValue = tickOffset
+
+        console.log("secondsPerBeat", secondsPerBeat, "total ticks", ticks, "tickOffset", tickOffset)
     }
 
     function createTrack(track) {
@@ -69,7 +83,7 @@
         <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 text-white bg-slate-500 text-6xl place-items-center place-content-center">
             <Fa icon={faDownload}/>
         </div>
-        <div bind:this={pollingTrack} class="grow h-full bg-slate-300">
+        <div bind:this={pollingTrack} class="grow h-full bg-slate-300 border-b">
             <div id="editor-viewer">
                 
             </div>
@@ -93,8 +107,16 @@
                 <span class="text-xl">{track[0]}</span>
             </div>
 
-            <div class="h-full bg-white" style="min-width: {trackLength}px">
-
+            <div class="h-full bg-slate-300 border-t border-b" style="min-width: {trackLength}px">
+                <div class="time-divider h-full flex">
+                    {#each {length: ticks} as _, i}
+                        {#if i % timeSigBeat === 0}
+                            <div style="--margin-right: {marginRightValue}px" class="top-tick bg-gray-500 tick-offset"></div>
+                        {:else}
+                            <div style="--margin-right: {marginRightValue}px" class="top-tick bg-gray-400 tick-offset"></div>
+                        {/if}
+                    {/each}
+                </div>
             </div>
         </div>
     {/each}
@@ -116,7 +138,7 @@
             </button>
         </div>
 
-        <div class="bg-[#656a70] place-items-center place-content-center" style="min-width: {trackLength}px">
+        <div class="bg-[#656a70] border-t place-items-center place-content-center" style="min-width: {trackLength}px">
             <span class="pl-4">Click the (+) to add a new analysis track.</span>
         </div>
     </div>
@@ -129,5 +151,14 @@
 
     .drop-icon {
         @apply w-10 mr-5 text-xl;
+    }
+
+    .top-tick {
+        @apply h-full;
+        width: 1px;
+    }
+
+    .tick-offset {
+        margin-right: var(--margin-right);
     }
 </style>

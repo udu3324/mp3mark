@@ -9,6 +9,12 @@
     let playing = false
     let tracks = []
 
+    let bpm
+    let durration
+    let timeSignatureBeat
+
+    let title
+
     onMount(() => {
         //load data from database to use for wavesurfer
         db.editor.get(1).then(editor => {
@@ -23,6 +29,11 @@
             console.log("tracks", editor.tracks)
             console.log("timelineData", editor.timelineData)
             tracks = editor.timelineData
+
+            durration = editor.length
+            bpm = editor.bpm
+            timeSignatureBeat = editor.timeSignatureBeat
+            title = editor.projectName
             
             initialize()
 
@@ -34,34 +45,9 @@
 </script>
 
 <div class="w-screen bg-[#a1a5ae]">
-    <TopBar/>
-    <Tracks bind:tracks={tracks}/>
+    <TopBar bind:title={title}/>
+    <Tracks bind:tracks={tracks} bind:bpm={bpm} bind:length={durration} bind:timeSigBeat={timeSignatureBeat}/>
 
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
-    this is the editor page <br/>
     this is the editor page <br/>
     
     <BottomBar bind:playing={playing}/>
