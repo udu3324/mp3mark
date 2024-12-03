@@ -5,7 +5,7 @@ let wavesurfer
 
 const currentTime = writable(0)
 
-const resolution = 20
+const resolution = 30
 
 function initialize() {
     wavesurfer = WaveSurfer.create({

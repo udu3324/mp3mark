@@ -9,6 +9,8 @@
     export let length
     export let timeSigBeat
 
+    let hiddenLoad = ""
+
     let pollingTrack
     let trackLength = 0
 
@@ -27,12 +29,13 @@
     }
 
     function updateLength() {
-        trackLength = pollingTrack.offsetWidth
-        //console.log("please work", trackLength)
+        trackLength = document.getElementById("polling_track").offsetWidth
+        //trackLength = pollingTrack.offsetWidth
+        console.log("track px length set to", trackLength)
         const secondsPerBeat = 60 / bpm
 
         ticks = length / secondsPerBeat
-        tickOffset = Math.floor(secondsPerBeat * resolution)
+        tickOffset = secondsPerBeat * resolution
         marginRightValue = tickOffset
 
         console.log("secondsPerBeat", secondsPerBeat, "total ticks", ticks, "tickOffset", tickOffset)
@@ -69,7 +72,9 @@
     onMount(() => {
         setTimeout(() => {
             updateLength()
-        }, 500)
+            hiddenLoad = "hidden"
+        }, 1000)
+        
         window.addEventListener('resize', updateLength)
 
         return () => {
@@ -78,12 +83,16 @@
     })
 </script>
 
+<div class="fixed grid h-screen w-screen place-content-center z-50 backdrop-blur-sm {hiddenLoad}">
+    <span class="text-9xl select-none">loading...</span>
+</div>
+
 <div class="pt-12 pb-16" style="min-width: {trackLength}px">
     <div class="flex flex-row h-28">
         <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 text-white bg-slate-500 text-6xl place-items-center place-content-center">
             <Fa icon={faDownload}/>
         </div>
-        <div bind:this={pollingTrack} class="grow h-full bg-slate-300 border-b">
+        <div bind:this={pollingTrack} id="polling_track" class="grow h-full bg-slate-300 border-gray-600 border-b">
             <div id="editor-viewer">
                 
             </div>
@@ -107,13 +116,17 @@
                 <span class="text-xl">{track[0]}</span>
             </div>
 
-            <div class="h-full bg-slate-300 border-t border-b" style="min-width: {trackLength}px">
+            <div class="h-full bg-slate-300 border-t border-b border-gray-600" style="min-width: {trackLength}px">
                 <div class="time-divider h-full flex">
                     {#each {length: ticks} as _, i}
                         {#if i % timeSigBeat === 0}
-                            <div style="--margin-right: {marginRightValue}px" class="top-tick bg-gray-500 tick-offset"></div>
+                            <div style="--padding-right: {marginRightValue}px;" class="tick bg-gray-500"></div>
                         {:else}
-                            <div style="--margin-right: {marginRightValue}px" class="top-tick bg-gray-400 tick-offset"></div>
+                            {#if i % 2 === 0}
+                                <div style="--padding-right: {marginRightValue}px;" class="tick bg-gray-400"></div>
+                            {:else}
+                                <div style="--padding-right: {marginRightValue}px;" class="tick bg-gray-300"></div>
+                            {/if}
                         {/if}
                     {/each}
                 </div>
@@ -138,7 +151,7 @@
             </button>
         </div>
 
-        <div class="bg-[#656a70] border-t place-items-center place-content-center" style="min-width: {trackLength}px">
+        <div class="bg-[#656a70] border-t border-gray-600 place-items-center place-content-center" style="min-width: {trackLength}px">
             <span class="pl-4">Click the (+) to add a new analysis track.</span>
         </div>
     </div>
@@ -153,12 +166,9 @@
         @apply w-10 mr-5 text-xl;
     }
 
-    .top-tick {
-        @apply h-full;
+    .tick {
+        padding-right: var(--padding-right);
+        height: 100%;
         width: 1px;
-    }
-
-    .tick-offset {
-        margin-right: var(--margin-right);
     }
 </style>
