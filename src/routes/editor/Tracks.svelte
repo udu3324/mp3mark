@@ -9,6 +9,7 @@
     export let length
     export let timeSigBeat
 
+    let trackMenuHidden = "hidden"
     let hiddenLoad = ""
 
     let pollingTrack
@@ -65,8 +66,43 @@
                 break
         }
 
+        // biome-ignore lint/correctness/noSelfAssign: make it svelte reactive
         tracks = tracks
         trackCreationMenu()
+    }
+    
+    let mouseX
+    let mouseY
+	function handleMousemove(event) {
+		mouseX = event.clientX;
+		mouseY = event.clientY;
+        //console.log("m", mouseX, mouseY)
+	}
+
+    let selectedTrack
+    let markerName = ""
+    let menuLeftPX = 0
+    let menuTopPX = 0
+    function showContext(track) {
+        console.log("showing menu for track", track)
+        
+        trackMenuHidden = ""
+        menuLeftPX = mouseX
+        menuTopPX = mouseY
+
+        selectedTrack = track
+    }
+
+    function closeContext() {
+        trackMenuHidden = "hidden"
+        menuLeftPX = 0
+        menuTopPX = 0
+        selectedTrack = ""
+        console.log("scrollX", document.getElementById("track-div").scrollLeft)
+    }
+
+    function createMark() {
+        console.log("creating mark for track", selectedTrack, ",", markerName)
     }
 
     onMount(() => {
@@ -87,7 +123,14 @@
     <span class="text-9xl select-none">loading...</span>
 </div>
 
-<div class="pt-12 pb-16" style="min-width: {trackLength}px">
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div on:mousemove={handleMousemove} id="track-div" class="pt-12 pb-16" style="min-width: {trackLength}px">
+    <div style="--menu-left: {menuLeftPX}px; --menu-top: {menuTopPX}px;" class="p-1 bg-black bg-opacity-30 fixed z-20 track-menu {trackMenuHidden}">
+        <input bind:value={markerName} type="text" maxlength="20" placeholder="marker name here" class="bg-white p-3">
+        <button on:click={createMark} class="bg-white w-12 h-12">add</button>
+        <button on:click={closeContext} class="bg-white w-12 h-12">close</button>
+    </div>
+
     <div class="flex flex-row h-28">
         <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 text-white bg-slate-500 text-6xl place-items-center place-content-center">
             <Fa icon={faDownload}/>
@@ -116,7 +159,9 @@
                 <span class="text-xl">{track[0]}</span>
             </div>
 
-            <div class="h-full bg-slate-300 border-t border-b border-gray-600" style="min-width: {trackLength}px">
+            <!-- svelte-ignore a11y_click_events_have_key_events -->
+            <!-- svelte-ignore a11y_no_static_element_interactions -->
+            <div on:click={() => showContext(tracks.indexOf(track))} id="track-{tracks.indexOf(track)}" class="h-full bg-slate-300 border-t border-b border-gray-600" style="min-width: {trackLength}px">
                 <div class="time-divider h-full flex">
                     {#each {length: ticks} as _, i}
                         {#if i % timeSigBeat === 0}
@@ -129,6 +174,9 @@
                             {/if}
                         {/if}
                     {/each}
+                </div>
+                <div class="bg-[#656a70] border-t border-gray-600 place-items-center place-content-center" style="min-width: {trackLength}px">
+                    <span class="pl-4">Click the (+) to add a new analysis track.</span>
                 </div>
             </div>
         </div>
@@ -170,5 +218,10 @@
         padding-right: var(--padding-right);
         height: 100%;
         width: 1px;
+    }
+
+    .track-menu {
+        left: var(--menu-left);
+        top: var(--menu-top);
     }
 </style>

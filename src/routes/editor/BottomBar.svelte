@@ -39,6 +39,8 @@
     
     function onKeyDown(e) {
         if (e.key === " ") {
+            e.preventDefault()
+
             if (playing) {
                 pause()
 
@@ -57,7 +59,7 @@
 
 </script>
 
-<svelte:window on:keydown|preventDefault={onKeyDown} />
+<svelte:window on:keydown={onKeyDown} />
 
 <div class="fixed bottom-0 w-screen h-16 z-20 bg-yellow-500">
     <button on:click={play} class="controls dynamic-play mx-2 {playColor}">
