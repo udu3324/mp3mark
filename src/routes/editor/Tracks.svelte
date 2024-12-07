@@ -79,30 +79,47 @@
         //console.log("m", mouseX, mouseY)
 	}
 
-    let selectedTrack
     let markerName = ""
+
+    let selectedTrackIndex
+    let selectedBeatIndex
+
     let menuLeftPX = 0
     let menuTopPX = 0
-    function showContext(track) {
-        console.log("showing menu for track", track)
+
+    function showContext(trackIndex, i) {
+        console.log("showing mark menu for track", trackIndex, i)
         
         trackMenuHidden = ""
         menuLeftPX = mouseX
         menuTopPX = mouseY
 
-        selectedTrack = track
+        selectedTrackIndex = trackIndex
+        selectedBeatIndex = i
     }
 
     function closeContext() {
         trackMenuHidden = "hidden"
         menuLeftPX = 0
         menuTopPX = 0
-        selectedTrack = ""
-        console.log("scrollX", document.getElementById("track-div").scrollLeft)
-    }
+
+        selectedTrackIndex = ""
+        selectedBeatIndex = -1
+
+        markerName = ""
+    } 
 
     function createMark() {
-        console.log("creating mark for track", selectedTrack, ",", markerName)
+        console.log("creating mark for track", selectedTrackIndex, selectedBeatIndex, `"${markerName}"`)
+
+        //index, size, note
+        const mark = [selectedBeatIndex, 50, markerName]
+        tracks[selectedTrackIndex][2].push(mark)
+
+        // biome-ignore lint/correctness/noSelfAssign: make it svelte reactive
+        tracks = tracks
+
+        closeContext()
     }
 
     onMount(() => {
@@ -124,7 +141,7 @@
 </div>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div on:mousemove={handleMousemove} id="track-div" class="pt-12 pb-16" style="min-width: {trackLength}px">
+<div on:mousemove={handleMousemove} id="track-d" class="pt-12 pb-16" style="min-width: {trackLength}px">
     <div style="--menu-left: {menuLeftPX}px; --menu-top: {menuTopPX}px;" class="p-1 bg-black bg-opacity-30 fixed z-20 track-menu {trackMenuHidden}">
         <input bind:value={markerName} type="text" maxlength="20" placeholder="marker name here" class="bg-white p-3">
         <button on:click={createMark} class="bg-white w-12 h-12">add</button>
@@ -161,23 +178,27 @@
 
             <!-- svelte-ignore a11y_click_events_have_key_events -->
             <!-- svelte-ignore a11y_no_static_element_interactions -->
-            <div on:click={() => showContext(tracks.indexOf(track))} id="track-{tracks.indexOf(track)}" class="h-full bg-slate-300 border-t border-b border-gray-600" style="min-width: {trackLength}px">
+            <div id="track-{tracks.indexOf(track)}" class="h-full bg-slate-300 border-t border-b border-gray-600" style="min-width: {trackLength}px">
                 <div class="time-divider h-full flex">
                     {#each {length: ticks} as _, i}
                         {#if i % timeSigBeat === 0}
-                            <div style="--padding-right: {marginRightValue}px;" class="tick bg-gray-500"></div>
+                            <div on:click={() => showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick bg-gray-500"></div>
                         {:else}
                             {#if i % 2 === 0}
-                                <div style="--padding-right: {marginRightValue}px;" class="tick bg-gray-400"></div>
+                                <div on:click={() => showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick bg-gray-400"></div>
                             {:else}
-                                <div style="--padding-right: {marginRightValue}px;" class="tick bg-gray-300"></div>
+                                <div on:click={() => showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick bg-gray-300"></div>
                             {/if}
                         {/if}
                     {/each}
                 </div>
-                <div class="bg-[#656a70] border-t border-gray-600 place-items-center place-content-center" style="min-width: {trackLength}px">
-                    <span class="pl-4">Click the (+) to add a new analysis track.</span>
-                </div>
+                {#each track[2] as mark}
+                    <div style="min-width: {trackLength}px; transform: translateY(-6.875rem); margin-bottom: -6.875rem" class="h-full flex pointer-events-none">
+                        <div style="transform: translateX({mark[0] * marginRightValue}px); width: {mark[1]}px" class="{track[1]} pointer-events-all">
+                            <span>{mark[2]}</span>
+                        </div>
+                    </div>
+                {/each}
             </div>
         </div>
     {/each}
