@@ -184,7 +184,7 @@
         if (size < 3) {
             return
         }
-        
+
         tracks[trackIndex][2][markIndex][1] = size
     }
 
@@ -209,9 +209,9 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div on:mousemove={handleMousemove} id="track-d" class="pt-12 pb-16" style="min-width: {trackLength}px">
     <div style="--menu-left: {menuLeftPX}px; --menu-top: {menuTopPX}px;" class="p-1 bg-black bg-opacity-30 fixed z-20 track-menu {trackMenuHidden}">
-        <input bind:value={markerName} type="text" maxlength="20" placeholder="marker name here" class="bg-white p-3">
-        <button on:click={createMark} class="bg-white w-12 h-12">add</button>
         <button on:click={closeContext} class="bg-white w-12 h-12">close</button>
+        <button on:click={createMark} class="bg-white w-12 h-12">add</button>
+        <input bind:value={markerName} type="text" maxlength="20" placeholder="set marker name" class="bg-white p-3">
     </div>
 
     <div class="flex flex-row h-28">
