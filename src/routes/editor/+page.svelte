@@ -67,9 +67,6 @@
 <div class="w-screen bg-[#a1a5ae]">
     <TopBar bind:title={title}/>
     <Tracks id="track-div" bind:tracks={tracks} bind:bpm={bpm} bind:length={durration} bind:timeSigBeat={timeSignatureBeat}/>
-
-    this is the editor page <br/>
-    
     <BottomBar bind:playing={playing}/>
 </div>
 
