@@ -4,7 +4,7 @@
     import { resolution } from "$lib/editor.js"
 	import Fa from "svelte-fa";
     
-    export let tracks = []
+    export let tracks
     export let bpm
     export let length
     export let timeSigBeat
@@ -112,8 +112,8 @@
     function createMark() {
         console.log("creating mark for track", selectedTrackIndex, selectedBeatIndex, `"${markerName}"`)
 
-        //index, size, note
-        const mark = [selectedBeatIndex, 50, markerName]
+        //index, endIndex, note
+        const mark = [selectedBeatIndex, 4, markerName]
         tracks[selectedTrackIndex][2].push(mark)
 
         // biome-ignore lint/correctness/noSelfAssign: make it svelte reactive
@@ -149,7 +149,7 @@
     </div>
 
     <div class="flex flex-row h-28">
-        <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 text-white bg-slate-500 text-6xl place-items-center place-content-center">
+        <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 shadow-2xl text-white bg-slate-500 text-6xl place-items-center place-content-center">
             <Fa icon={faDownload}/>
         </div>
         <div bind:this={pollingTrack} id="polling_track" class="grow h-full bg-slate-300 border-gray-600 border-b">
@@ -161,7 +161,7 @@
 
     {#each tracks as track}
         <div class="flex flex-row h-28">
-            <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 text-white {track[1]} text-5xl leading-3 place-items-center place-content-center">
+            <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 shadow-2xl text-white {track[1]} text-5xl leading-3 place-items-center place-content-center">
                 {#if track[0] === "vocal"}
                     <Fa icon={faMicrophone}/>
                 {:else if track[0] === "percussion"}
@@ -194,7 +194,7 @@
                 </div>
                 {#each track[2] as mark}
                     <div style="min-width: {trackLength}px; transform: translateY(-6.875rem); margin-bottom: -6.875rem" class="h-full flex pointer-events-none">
-                        <div style="transform: translateX({mark[0] * marginRightValue}px); width: {mark[1]}px" class="{track[1]} pointer-events-all">
+                        <div style="transform: translateX({mark[0] * marginRightValue}px); width: {mark[1] * marginRightValue}px" class="{track[1]} pointer-events-all">
                             <span>{mark[2]}</span>
                         </div>
                     </div>
@@ -214,7 +214,7 @@
             </div>
         </div>
         
-        <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 bg-[#323A45] text-6xl place-items-center place-content-center">
+        <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 shadow-2xl bg-[#323A45] text-6xl place-items-center place-content-center">
             <button class="ml-6 text-white" on:click={trackCreationMenu}>
                 <Fa icon={faPlusCircle}/>
             </button>

@@ -6,6 +6,8 @@
 	import Tracks from "./Tracks.svelte";
 	import { onMount } from "svelte";
 
+    let projectID = 1
+
     let playing = false
     let tracks = []
 
@@ -15,30 +17,48 @@
 
     let title
 
-    onMount(() => {
-        //load data from database to use for wavesurfer
-        db.editor.get(1).then(editor => {
-            console.log("loading editor data from db....")
+    $: {
+        try {
+            //prevent saving empty data for some reason
+            if (tracks.length !== 0) {
+                console.log("found timeline data changes", tracks)
+                db.editor.update(projectID, { timelineData: tracks });
 
-            if (editor === undefined) {
-                alert("no save found!")
-                return
+                console.log("updated db sucessfully with new timeline data") 
             }
+        } catch (error) {
+            console.log("couldn't save timeline data to db automatically!!!")
+        }
+    }
 
-            console.log(editor)
-            console.log("tracks", editor.tracks)
-            console.log("timelineData", editor.timelineData)
-            tracks = editor.timelineData
+    onMount(() => {
+        //get the current loaded project id
+        db.load.orderBy("projectID").first(project => {
+            console.log("loading project", project.projectID)
 
-            durration = editor.length
-            bpm = editor.bpm
-            timeSignatureBeat = editor.timeSignatureBeat
-            title = editor.projectName
-            
-            initialize()
+            //use id to load data to use for wavesurfer
+            db.editor.get(project.projectID).then(editor => {
+                console.log("loading editor data from db....")
 
-            wavesurfer.loadBlob(editor.audio).then(() => {
-                console.log("sucessfully loaded!")
+                if (editor === undefined) {
+                    alert("no save found!")
+                    return
+                }
+
+                console.log(editor)
+                console.log("timelineData", editor.timelineData)
+                tracks = editor.timelineData
+
+                durration = editor.length
+                bpm = editor.bpm
+                timeSignatureBeat = editor.timeSignatureBeat
+                title = editor.projectName
+
+                initialize()
+
+                wavesurfer.loadBlob(editor.audio).then(() => {
+                    console.log("sucessfully loaded!")
+                })
             })
         })
     })

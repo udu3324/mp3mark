@@ -70,21 +70,19 @@
                 wavesurfer.loadBlob(blob).then(() => {
 
                     //save the blob + other data into indexeddb
-                    const id = db.editor.add({
+                    db.editor.add({
                         audio: blob,
                         fileName: fileName, 
                         projectName: projectName, 
                         timeSignatureBeat: beat, 
                         timeSignatureNote: note,
                         bpm: Number.parseInt(bpm), 
-                        length: wavesurfer.getDuration(), 
-                        tracks: 0, 
+                        length: wavesurfer.getDuration(),
                         timelineData: []
+                    }).then(() => {
+                        //set the loading id
+                        updateLoadProjectID()
                     })
-
-                    status = `Saved new project data to index ${id} sucessfully. ${wavesurfer.getDuration()}`
-                
-                    goto("/editor")
                 })
             }
 
@@ -92,6 +90,21 @@
             alert(error)
         }
     }
+
+    const updateLoadProjectID = async () => {
+        try {
+            await db.load.clear();
+
+            const index = await db.editor.count();
+            await db.load.add({ projectID: index });
+
+            status = `Saved new project data to index ${index} sucessfully.`
+
+            goto("/editor")
+        } catch (error) {
+            console.error('Error updating project ID:', error);
+        }
+    };
 
     function beatUp() {
         if (beat < 24) {
