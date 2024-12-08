@@ -1,5 +1,5 @@
 <script>
-	import { faDownload, faDrum, faGuitar, faMicrophone, faObjectUngroup, faPlusCircle, faWaveSquare } from "@fortawesome/free-solid-svg-icons";
+	import { faCaretLeft, faCaretRight, faDownload, faDrum, faGuitar, faMicrophone, faObjectUngroup, faPlusCircle, faTrash, faWaveSquare } from "@fortawesome/free-solid-svg-icons";
 	import { onMount } from "svelte";
     import { resolution } from "$lib/editor.js"
 	import Fa from "svelte-fa";
@@ -113,7 +113,7 @@
         console.log("creating mark for track", selectedTrackIndex, selectedBeatIndex, `"${markerName}"`)
 
         //index, endIndex, note
-        const mark = [selectedBeatIndex, 4, markerName]
+        const mark = [selectedBeatIndex, 5, markerName]
         tracks[selectedTrackIndex][2].push(mark)
 
         // biome-ignore lint/correctness/noSelfAssign: make it svelte reactive
@@ -194,8 +194,28 @@
                 </div>
                 {#each track[2] as mark}
                     <div style="min-width: {trackLength}px; transform: translateY(-6.875rem); margin-bottom: -6.875rem" class="h-full flex pointer-events-none">
-                        <div style="transform: translateX({mark[0] * marginRightValue}px); width: {mark[1] * marginRightValue}px" class="{track[1]} pointer-events-all">
-                            <span>{mark[2]}</span>
+                        <div style="transform: translateX({mark[0] * marginRightValue}px); width: {mark[1] * marginRightValue}px" class="{track[1]} bg-opacity-45 text-white pointer-events-auto">
+                            <div class="grid grid-cols-3 h-full">
+                                <div class="h-full flex flex-col">
+                                    <button class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretLeft}/></button>
+                                    <button class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretRight}/></button>
+                                </div>
+
+                                <button class="text-sm w-5 h-5 {track[1]} bg-opacity-75 justify-self-center self-end place-items-center"><Fa icon={faTrash}/></button>
+                                
+                                <div class="ml-auto h-full flex flex-col">
+                                    <button class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretRight}/></button>
+                                    <button class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretLeft}/></button>
+                                </div>
+                            </div>
+
+                            <div style="transform: translateY(-6.938rem)" class="pointer-events-none">
+                                {#if mark[2].length > 0}
+                                    <span class="{track[1]} bg-opacity-95 border-black border-r-2 border-b-2">{mark[2]}</span>
+                                {:else}
+                                    <span class="{track[1]} bg-opacity-95">{mark[2]}</span>
+                                {/if}
+                            </div>
                         </div>
                     </div>
                 {/each}

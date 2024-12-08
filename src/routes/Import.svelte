@@ -54,6 +54,7 @@
         }
 
         try {
+            status = "importing file..."
             //read the file into a blob
             const reader = new FileReader()
             reader.readAsArrayBuffer(files[0])
