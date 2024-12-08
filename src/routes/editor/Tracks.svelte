@@ -112,7 +112,7 @@
     function createMark() {
         console.log("creating mark for track", selectedTrackIndex, selectedBeatIndex, `"${markerName}"`)
 
-        //index, endIndex, note
+        //start, size, note
         const mark = [selectedBeatIndex, 5, markerName]
         tracks[selectedTrackIndex][2].push(mark)
 
@@ -120,6 +120,72 @@
         tracks = tracks
 
         closeContext()
+    }
+
+    function deleteMark(track, mark) {
+        console.log("removing mark", mark)
+        const trackIndex = tracks.indexOf(track)
+        const markIndex = tracks[trackIndex][2].indexOf(mark)
+
+        tracks[trackIndex][2].splice(markIndex, 1)
+        
+        // biome-ignore lint/correctness/noSelfAssign: make it svelte reactive
+        tracks = tracks
+    }
+
+    function positiveSizeLeft(track, mark) {
+        const trackIndex = tracks.indexOf(track)
+        const markIndex = tracks[trackIndex][2].indexOf(mark)
+
+        const start = tracks[trackIndex][2][markIndex][0] - 1
+        if (start < 0) {
+            return
+        }
+
+        const size = tracks[trackIndex][2][markIndex][1] + 1
+        
+        tracks[trackIndex][2][markIndex][0] = start
+        tracks[trackIndex][2][markIndex][1] = size
+    }
+
+    function negativeSizeLeft(track, mark) {
+        const trackIndex = tracks.indexOf(track)
+        const markIndex = tracks[trackIndex][2].indexOf(mark)
+
+        const start = tracks[trackIndex][2][markIndex][0] + 1
+        const size = tracks[trackIndex][2][markIndex][1] - 1
+        if (size < 3) {
+            return
+        }
+        
+        tracks[trackIndex][2][markIndex][0] = start
+        tracks[trackIndex][2][markIndex][1] = size
+    }
+
+    function positiveSizeRight(track, mark) {
+        const trackIndex = tracks.indexOf(track)
+        const markIndex = tracks[trackIndex][2].indexOf(mark)
+
+        const start = tracks[trackIndex][2][markIndex][0]
+        const size = tracks[trackIndex][2][markIndex][1] + 1
+        //some math to convert ticks to measure real px
+        if ((start * tickOffset) + (size * tickOffset) > (ticks * tickOffset)) {
+            return
+        }
+
+        tracks[trackIndex][2][markIndex][1] = size
+    }
+
+    function negativeSizeRight(track, mark) {
+        const trackIndex = tracks.indexOf(track)
+        const markIndex = tracks[trackIndex][2].indexOf(mark)
+
+        const size = tracks[trackIndex][2][markIndex][1] - 1
+        if (size < 3) {
+            return
+        }
+        
+        tracks[trackIndex][2][markIndex][1] = size
     }
 
     onMount(() => {
@@ -197,15 +263,15 @@
                         <div style="transform: translateX({mark[0] * marginRightValue}px); width: {mark[1] * marginRightValue}px" class="{track[1]} bg-opacity-45 text-white pointer-events-auto">
                             <div class="grid grid-cols-3 h-full">
                                 <div class="h-full flex flex-col">
-                                    <button class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretLeft}/></button>
-                                    <button class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretRight}/></button>
+                                    <button on:click={() => positiveSizeLeft(track, mark)} class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretLeft}/></button>
+                                    <button on:click={() => negativeSizeLeft(track, mark)} class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretRight}/></button>
                                 </div>
 
-                                <button class="text-sm w-5 h-5 {track[1]} bg-opacity-75 justify-self-center self-end place-items-center"><Fa icon={faTrash}/></button>
+                                <button on:click={() => deleteMark(track, mark)} class="text-sm w-5 h-5 {track[1]} bg-opacity-55 justify-self-center self-end place-items-center"><Fa icon={faTrash}/></button>
                                 
                                 <div class="ml-auto h-full flex flex-col">
-                                    <button class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretRight}/></button>
-                                    <button class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretLeft}/></button>
+                                    <button on:click={() => positiveSizeRight(track, mark)} class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretRight}/></button>
+                                    <button on:click={() => negativeSizeRight(track, mark)} class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretLeft}/></button>
                                 </div>
                             </div>
 
