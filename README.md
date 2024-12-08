@@ -1,14 +1,6 @@
 # mp3mark
 A web app that allows you to analyze and annotate music easily for mp3 files. Use it [here](https://mp3mark.vercel.app/)!
 
-## Todo List
- - [ ] Volume Control
- - [ ] Metronome
- - [ ] Better Marking (set size)
- - [ ] Project Manager
- - [ ] Track Deletion
- - [ ] Top Toolbar Menu
-
 ## Developing
 To run a development server:
 ```bash
@@ -32,3 +24,15 @@ npm run build
 
 npm run preview
 ```
+
+## Todo List
+ - [ ] Volume Control
+ - [ ] Metronome
+ - [ ] Better Marking (set size)
+ - [ ] Projects Manager/Loader
+ - [ ] Community Marks (copyright issues)
+ - [ ] Track Deletion
+ - [ ] Top Toolbar Menu
+ - [ ] Flags (small marks)
+ - [ ] Logo
+ - [ ] Front Page
