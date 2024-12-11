@@ -1,6 +1,6 @@
 <script>
     import { goto } from '$app/navigation'
-    import { db } from "../lib/db.js"
+    import { db } from "$lib/db.js"
     import Fa from 'svelte-fa'
 	import { faCog, faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 	import WaveSurfer from 'wavesurfer.js';

@@ -38,3 +38,7 @@ npm run preview
  - [ ] Flags (small marks)
  - [ ] Logo
  - [ ] Front Page
+ - [ ] demo project
+ - [ ] tutorial
+ - [ ] big line that marks the time
+ - [ ] favicon and seo
