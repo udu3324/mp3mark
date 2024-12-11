@@ -6,7 +6,7 @@
     export let loadingID = -1
 
     let id = -1
-    let dataTable
+    export let dataTable
 
     function setLoad(id) {
         loadingID = id
@@ -41,7 +41,7 @@
         </thead>
         <tbody>
             {#each dataTable as data}
-                <tr on:click={() => setLoad(data.id)} class="bg-slate-600 border-b border-slate-700 hover:border-4 hover:border-slate-500 hover:border-dashed">
+                <tr on:click={() => setLoad(data.id)} class="bg-slate-600 border-b cursor-pointer border-slate-700 hover:border-4 hover:border-slate-500 hover:border-dashed">
                     {#if id === data.id}
                         <td class="i"><b>{data.id}</b></td>
                         <td class="name"><b>{data.projectName}</b></td>

@@ -9,6 +9,8 @@
     export let length
     export let timeSigBeat
 
+    export let loading = true
+
     let trackMenuHidden = "hidden"
     let hiddenLoad = ""
 
@@ -191,7 +193,7 @@
     onMount(() => {
         setTimeout(() => {
             updateLength()
-            hiddenLoad = "hidden"
+            loading = false
         }, 1000)
         
         window.addEventListener('resize', updateLength)
@@ -201,10 +203,6 @@
         }
     })
 </script>
-
-<div class="fixed grid h-screen w-screen place-content-center z-50 backdrop-blur-sm {hiddenLoad}">
-    <span class="text-9xl select-none">loading...</span>
-</div>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div on:mousemove={handleMousemove} id="track-d" class="pt-12 pb-16" style="min-width: {trackLength}px">

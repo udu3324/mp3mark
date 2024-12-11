@@ -53,21 +53,22 @@
             updateLoadProjectID()
         }
     }
-
 </script>
 
 <Import bind:files={files} bind:visible={importVisible} bind:fileName={inputFileName}/>
 
-<div class="p-3 bg-white">
-    <b>mp3mark</b>
-    <p>A website that lets you easily annotate/mark up audio.</p>
-
-    <input id="fileInput" bind:this={fileInput} bind:files class="hidden"  type="file" name="file" accept="audio/mp3, audio/flac, audio/wav">
-    <br>
-    <button class="p-3 bg-green-300" onclick={select}>Import</button>
-</div>
-<div class="p-3 bg-white {hiddenClass}">
-    <Loader bind:empty={hideLoader} bind:loadingID={projectID}/>
+<div class="w-screen h-screen bg-white">
+    <div class="p-3">
+        <b>mp3mark</b>
+        <p>A website that lets you easily annotate/mark up audio.</p>
+    
+        <input id="fileInput" bind:this={fileInput} bind:files class="hidden"  type="file" name="file" accept="audio/mp3, audio/flac, audio/wav">
+        <br>
+        <button class="p-3 bg-green-300" onclick={select}>Import</button>
+    </div>
+    <div class="pl-3 {hiddenClass}">
+        <Loader bind:empty={hideLoader} bind:loadingID={projectID}/>
+    </div>
 </div>
 
 <style lang="postcss">
