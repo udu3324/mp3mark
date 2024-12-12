@@ -25,7 +25,6 @@
     let hiddenLoad = ""
 
     $: {
-        console.log("canload", canLoad)
         if (!loading && canLoad) {
             hiddenLoad = "hidden"
         }
