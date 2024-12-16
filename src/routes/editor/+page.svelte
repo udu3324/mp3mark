@@ -50,6 +50,8 @@
         //get the current loaded project id
         db.load.orderBy("projectID").first(project => {
             console.log("loading project", project.projectID)
+            
+            projectID = project.projectID
 
             //use id to load data to use for wavesurfer
             db.editor.get(project.projectID).then(editor => {
