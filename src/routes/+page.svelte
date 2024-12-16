@@ -57,6 +57,10 @@
 
 <Import bind:files={files} bind:visible={importVisible} bind:fileName={inputFileName}/>
 
+<svelte:head>
+    <title>mp3mark</title> 
+</svelte:head>
+
 <div class="w-screen h-screen bg-white">
     <div class="p-3">
         <b>mp3mark</b>

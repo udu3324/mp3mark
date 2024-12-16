@@ -31,14 +31,14 @@ npm run preview
  - [ ] Volume Control
  - [ ] Metronome
  - [ ] Better Marking (set size)
- - [ ] Projects Manager/Loader
+ - [x] Projects Manager/Loader
  - [ ] Community Marks (copyright issues)
  - [ ] Track Deletion
  - [ ] Top Toolbar Menu
  - [ ] Flags (small marks)
- - [ ] Logo
+ - [X] Logo
  - [ ] Front Page
  - [ ] demo project
  - [ ] tutorial
  - [ ] big line that marks the time
- - [ ] favicon and seo
+ - [X] favicon and seo

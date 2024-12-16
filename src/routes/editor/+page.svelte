@@ -80,6 +80,10 @@
     })
 </script>
 
+<svelte:head>
+    <title>mp3mark_editor</title> 
+</svelte:head>
+
 <div class="w-screen bg-[#a1a5ae]">
     <div class="fixed grid h-screen w-screen place-content-center z-50 backdrop-blur-sm {hiddenLoad}">
         <span class="text-9xl select-none">loading...</span>
