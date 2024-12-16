@@ -37,7 +37,7 @@ npm run preview
  - [ ] Top Toolbar Menu
  - [ ] Flags (small marks)
  - [X] Logo
- - [ ] Front Page
+ - [X] Front Page
  - [ ] demo project
  - [ ] tutorial
  - [ ] big line that marks the time

@@ -2,9 +2,11 @@
     import { goto } from '$app/navigation'
     import { db } from "$lib/db.js"
 	import Loader from "./editor/Loader.svelte";
+	import Footer from './Footer.svelte';
     import Import from "./Import.svelte";
 
     let importVisible = "hidden"
+    let importButton = ""
     let inputFileName = ""
 
     let files
@@ -17,6 +19,7 @@
             
             inputFileName = files[0].name
             importVisible = ""
+            importButton = "hidden"
         }
     }
 
@@ -55,25 +58,30 @@
     }
 </script>
 
-<Import bind:files={files} bind:visible={importVisible} bind:fileName={inputFileName}/>
-
 <svelte:head>
     <title>mp3mark</title> 
 </svelte:head>
 
 <div class="w-screen h-screen bg-white">
     <div class="p-3">
-        <b>mp3mark</b>
-        <p>A website that lets you easily annotate/mark up audio.</p>
+        <b class="text-5xl">mp3mark</b>
+        <p class="pt-2">A website that lets you easily annotate/mark up audio.</p>
     
         <input id="fileInput" bind:this={fileInput} bind:files class="hidden"  type="file" name="file" accept="audio/mp3, audio/flac, audio/wav">
         <br>
-        <button class="p-3 bg-green-300" onclick={select}>Import</button>
+        <Import bind:files={files} bind:visible={importVisible} bind:fileName={inputFileName}/>
+        <div class="{importButton}">
+            <button class="p-3 bg-green-300 text-green-800 font-bold" onclick={select}>Import</button>
+            <br>
+            <span class="text-sm">*files are processed locally</span>
+        </div>
     </div>
-    <div class="pl-3 {hiddenClass}">
+    <div class="pl-3 pt-5 {hiddenClass}">
         <Loader bind:empty={hideLoader} bind:loadingID={projectID}/>
     </div>
 </div>
+
+<Footer/>
 
 <style lang="postcss">
     
