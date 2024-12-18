@@ -30,7 +30,7 @@ npm run preview
 ## Todo List
  - [ ] Volume Control
  - [ ] Metronome
- - [ ] Better Marking (set size)
+ - [X] Better Marking (set size)
  - [x] Projects Manager/Loader
  - [ ] Community Marks (copyright issues)
  - [ ] Track Deletion

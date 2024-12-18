@@ -34,7 +34,7 @@
         try {
             //prevent saving empty data for some reason
             if (tracks.length !== 0) {
-                console.log("found timeline data changes", tracks)
+                //console.log("found timeline data changes", tracks)
                 db.editor.update(projectID, { timelineData: tracks });
 
                 console.log("updated db sucessfully with new timeline data") 

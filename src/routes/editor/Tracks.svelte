@@ -12,7 +12,6 @@
     export let loading = true
 
     let trackMenuHidden = "hidden"
-    let hiddenLoad = ""
 
     let pollingTrack
     let trackLength = 0
@@ -135,59 +134,59 @@
         tracks = tracks
     }
 
-    function positiveSizeLeft(track, mark) {
-        const trackIndex = tracks.indexOf(track)
-        const markIndex = tracks[trackIndex][2].indexOf(mark)
+    //stored temporarily to allow resizing marks
+    let dragDirection = ""
+    let dragTrack = ""
+    let dragMark = ""
+    let dragElement = ""
 
-        const start = tracks[trackIndex][2][markIndex][0] - 1
-        if (start < 0) {
-            return
-        }
-
-        const size = tracks[trackIndex][2][markIndex][1] + 1
-        
-        tracks[trackIndex][2][markIndex][0] = start
-        tracks[trackIndex][2][markIndex][1] = size
+    function drag(direction, track, mark, e) {
+        dragDirection = direction
+        dragTrack = tracks.indexOf(track)
+        dragMark = tracks[dragTrack][2].indexOf(mark)
+        dragElement = e.currentTarget
     }
 
-    function negativeSizeLeft(track, mark) {
-        const trackIndex = tracks.indexOf(track)
-        const markIndex = tracks[trackIndex][2].indexOf(mark)
-
-        const start = tracks[trackIndex][2][markIndex][0] + 1
-        const size = tracks[trackIndex][2][markIndex][1] - 1
-        if (size < 3) {
+    function holding(e) {
+        if (dragElement.length === 0) {
             return
         }
-        
-        tracks[trackIndex][2][markIndex][0] = start
-        tracks[trackIndex][2][markIndex][1] = size
+
+        const rect = dragElement.getBoundingClientRect();
+        const posInBar = e.clientX - rect.left
+
+        let start = tracks[dragTrack][2][dragMark][0]
+        let size = tracks[dragTrack][2][dragMark][1]
+
+        //either left or right sizing
+        if (dragDirection === "left") {
+            //sizing it up or down if cursor is close to edge of element
+            if (posInBar < 1) {
+                if (--start >= 0) {
+                    updateMark(start, ++size)
+                }
+            } else if (posInBar > 13) {
+                if (--size >= 3) {
+                    updateMark(++start, size)
+                }
+            }
+        } else {
+            if (posInBar < 1) {
+                if (--size >= 3) {
+                    updateMark(start, size)
+                }
+            } else if (posInBar > 13) {
+                //some math to convert ticks to measure real px
+                if ((start * tickOffset) + (++size * tickOffset) <= (ticks * tickOffset)) {
+                    updateMark(start, size)
+                }
+            }
+        }
     }
 
-    function positiveSizeRight(track, mark) {
-        const trackIndex = tracks.indexOf(track)
-        const markIndex = tracks[trackIndex][2].indexOf(mark)
-
-        const start = tracks[trackIndex][2][markIndex][0]
-        const size = tracks[trackIndex][2][markIndex][1] + 1
-        //some math to convert ticks to measure real px
-        if ((start * tickOffset) + (size * tickOffset) > (ticks * tickOffset)) {
-            return
-        }
-
-        tracks[trackIndex][2][markIndex][1] = size
-    }
-
-    function negativeSizeRight(track, mark) {
-        const trackIndex = tracks.indexOf(track)
-        const markIndex = tracks[trackIndex][2].indexOf(mark)
-
-        const size = tracks[trackIndex][2][markIndex][1] - 1
-        if (size < 3) {
-            return
-        }
-
-        tracks[trackIndex][2][markIndex][1] = size
+    function updateMark(start, size) {
+        tracks[dragTrack][2][dragMark][0] = start
+        tracks[dragTrack][2][dragMark][1] = size
     }
 
     onMount(() => {
@@ -196,7 +195,21 @@
             loading = false
         }, 1000)
         
+        //event to fix track size limit
         window.addEventListener('resize', updateLength)
+
+        //event for holding down marks
+        window.addEventListener('mousemove', (e) => {
+            holding(e)
+        });
+
+        //stop holding marks when dragging mouse ends
+        window.addEventListener('mouseup', () => {
+            dragDirection = ""
+            dragTrack = ""
+            dragMark = ""
+            dragElement = ""
+        })
 
         return () => {
             window.removeEventListener('resize', updateLength);
@@ -258,26 +271,22 @@
                 </div>
                 {#each track[2] as mark}
                     <div style="min-width: {trackLength}px; transform: translateY(-6.875rem); margin-bottom: -6.875rem" class="h-full flex pointer-events-none">
-                        <div style="transform: translateX({mark[0] * marginRightValue}px); width: {mark[1] * marginRightValue}px" class="{track[1]} bg-opacity-45 text-white pointer-events-auto">
+                        <div style="transform: translateX({mark[0] * marginRightValue}px); width: {mark[1] * marginRightValue}px" class="{track[1]} rounded-lg bg-opacity-45 text-white pointer-events-auto">
                             <div class="grid grid-cols-3 h-full">
-                                <div class="h-full flex flex-col">
-                                    <button on:click={() => positiveSizeLeft(track, mark)} class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretLeft}/></button>
-                                    <button on:click={() => negativeSizeLeft(track, mark)} class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretRight}/></button>
+                                <div on:mousedown={(e) => drag("left", track, mark, e)} class="rounded-l-lg text-2xl h-full w-4 {track[1]} bg-opacity-85 flex place-items-center justify-center">
+                                    <Fa icon={faCaretLeft}/>
                                 </div>
 
                                 <button on:click={() => deleteMark(track, mark)} class="text-sm w-5 h-5 {track[1]} bg-opacity-55 justify-self-center self-end place-items-center"><Fa icon={faTrash}/></button>
                                 
-                                <div class="ml-auto h-full flex flex-col">
-                                    <button on:click={() => positiveSizeRight(track, mark)} class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretRight}/></button>
-                                    <button on:click={() => negativeSizeRight(track, mark)} class="text-xl w-4 h-1/2 {track[1]} bg-opacity-75 place-items-center"><Fa icon={faCaretLeft}/></button>
+                                <div on:mousedown={(e) => drag("right", track, mark, e)} class="rounded-r-lg text-2xl h-full w-4 {track[1]} bg-opacity-85 flex place-items-center justify-center ml-auto">
+                                    <Fa icon={faCaretRight}/>
                                 </div>
                             </div>
 
                             <div style="transform: translateY(-6.938rem)" class="pointer-events-none">
                                 {#if mark[2].length > 0}
-                                    <span class="{track[1]} bg-opacity-95 border-black border-r-2 border-b-2">{mark[2]}</span>
-                                {:else}
-                                    <span class="{track[1]} bg-opacity-95">{mark[2]}</span>
+                                    <span class="{track[1]} rounded-tl-lg bg-opacity-95 border-black border-r-2 border-b-2 border-opacity-30">{mark[2]}</span>
                                 {/if}
                             </div>
                         </div>
