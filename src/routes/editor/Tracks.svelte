@@ -211,6 +211,7 @@
             dragElement = ""
         })
 
+        //make sure it runs in the end
         return () => {
             window.removeEventListener('resize', updateLength);
         }
@@ -292,13 +293,18 @@
                         </div>
                     </div>
                 {/each}
+                {#if track[2].length < 1}
+                    <div style="transform: translateY(-6.875rem); margin-bottom: -6.875rem" class="h-full flex pointer-events-none place-items-center">
+                        <span class="ml-4 bg-white">Click anywhere in this {track[0]} track to create a mark.</span>
+                    </div>
+                {/if}
             </div>
         </div>
     {/each}
 
     <div class="flex flex-row h-28 drop-shadow-lg">
         <div class="sticky left-0 z-20 pointer-events-none {dropdown}">
-            <div class="ml-[7.50rem] m-2 mr-[-300px]">
+            <div class="ml-[7.50rem] pt-6 m-2 mr-[-999px] flex">
                 <button on:click={() => createTrack("vocal")} class="dropdown-btn bg-indigo-500"><Fa class="w-5 mr-2 text-xl" icon={faMicrophone}/> Vocals</button>
                 <button on:click={() => createTrack("percussion")} class="dropdown-btn bg-rose-500"><Fa class="w-5 mr-2 text-xl" icon={faDrum}/> Percussion</button>
                 <button on:click={() => createTrack("synth")} class="dropdown-btn bg-emerald-500"><Fa class="w-5 mr-2 text-xl" icon={faWaveSquare}/> Synth</button>
@@ -314,7 +320,7 @@
         </div>
 
         <div class="bg-[#656a70] border-t border-gray-600 place-items-center place-content-center" style="min-width: {trackLength}px">
-            <span class="pl-4">Click the (+) to add a new analysis track.</span>
+            <span class="ml-4 text-white">Click the (+) to add a new analysis track.</span>
         </div>
     </div>
 </div>
