@@ -38,6 +38,10 @@
     }
     
     function onKeyDown(e) {
+        if (document.activeElement.tagName === "INPUT") {
+            return
+        }
+
         if (e.key === " ") {
             e.preventDefault()
 

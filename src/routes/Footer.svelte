@@ -9,5 +9,5 @@
 
     <span>Built with ❤️ using Svelte. </span>
 
-    <button on:click={open} class="fixed right-0 bg-slate-900 px-1">Github Repository</button>
+    <button on:click={open} class="fixed bg-slate-900 px-1">Github Repository</button>
 </div>
