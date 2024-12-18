@@ -65,11 +65,11 @@
 
 <svelte:window on:keydown={onKeyDown} />
 
-<div class="fixed bottom-0 w-screen h-16 z-20 bg-yellow-500">
-    <button on:click={play} class="controls dynamic-play mx-2 {playColor}">
+<div class="fixed flex bottom-0 w-screen h-16 z-20 bg-yellow-500">
+    <button on:click={play} class="controls dynamic-play mx-2 grid place-items-center place-content-center {playColor}">
         <Fa icon={faPlay}/>
     </button>
-    <button on:dblclick={pauseReturn} on:click={pause} class="controls dynamic-pause bg-white {pauseColor}">
+    <button on:dblclick={pauseReturn} on:click={pause} class="controls dynamic-pause bg-white grid place-items-center place-content-center {pauseColor}">
         <Fa icon={faSquare}/>
     </button>
 </div>
