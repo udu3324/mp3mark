@@ -66,6 +66,13 @@
                 console.log("timelineData", editor.timelineData)
                 tracks = editor.timelineData
 
+                //add flag array to old db if needed
+                for (let i = 0; i < tracks.length; i++) {
+                    if (tracks[i][3] === undefined) {
+                        tracks[i].push([])
+                    }
+                }
+
                 durration = editor.length
                 bpm = editor.bpm
                 timeSignatureBeat = editor.timeSignatureBeat
