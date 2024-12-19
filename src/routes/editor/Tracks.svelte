@@ -106,6 +106,8 @@
 
         selectedTrackIndex = ""
         selectedBeatIndex = -1
+
+        note = ""
     }
 
     function createFlag() {
@@ -168,6 +170,7 @@
     let dragDirection = ""
     let dragTrack = ""
     let dragMark = ""
+    let dragFlag = ""
     let dragElement = ""
 
     function drag(direction, track, mark, e) {
@@ -180,6 +183,11 @@
     function holding(e) {
         if (dragElement.length === 0) {
             return
+        }
+
+        //reroute for flags
+        if (dragFlag.length !== 0) {
+            return holding2(e)
         }
 
         const rect = dragElement.getBoundingClientRect();
@@ -219,6 +227,31 @@
         tracks[dragTrack][2][dragMark][1] = size
     }
 
+    //for flags specifically
+    function drag2(track, flag, e) {
+        dragTrack = tracks.indexOf(track)
+        dragFlag = tracks[dragTrack][3].indexOf(flag)
+        dragElement = e.currentTarget
+    }
+
+    function holding2(e) {
+        const rect = dragElement.getBoundingClientRect();
+        const posInBar = e.clientX - rect.left
+
+        let start = tracks[dragTrack][3][dragFlag][0]
+
+        if (posInBar < 1) {
+            if (--start >= 0) {
+                tracks[dragTrack][3][dragFlag][0] = start
+            }
+        } else if (posInBar > 13) {
+            if (++start <= ticks - 1) {
+                tracks[dragTrack][3][dragFlag][0] = start
+            }
+            
+        }
+    }
+
     onMount(() => {
         setTimeout(() => {
             updateLength()
@@ -238,6 +271,7 @@
             dragDirection = ""
             dragTrack = ""
             dragMark = ""
+            dragFlag = ""
             dragElement = ""
         })
 
@@ -292,6 +326,7 @@
     <!-- Render Added Tracks -->
     {#each tracks as track}
         <div class="flex flex-row h-28">
+            <!-- Track Icon -->
             <div class="sticky grid left-0 z-10 h-28 min-w-28 basis-28 shadow-2xl text-white {track[1]} text-5xl leading-3 place-items-center place-content-center">
                 {#if track[0] === "vocal"}
                     <Fa icon={faMicrophone}/>
@@ -307,9 +342,11 @@
                 <span class="text-xl">{track[0]}</span>
             </div>
 
+            <!-- Track Content -->
             <!-- svelte-ignore a11y_click_events_have_key_events -->
             <!-- svelte-ignore a11y_no_static_element_interactions -->
             <div id="track-{tracks.indexOf(track)}" class="h-full bg-slate-300 border-t border-b border-gray-600" style="min-width: {trackLength}px">
+                <!-- Beat Dividers -->
                 <div class="time-divider h-full flex">
                     {#each {length: ticks} as _, i}
                         {#if i % timeSigBeat === 0}
@@ -323,6 +360,7 @@
                         {/if}
                     {/each}
                 </div>
+                <!-- Marks -->
                 {#each track[2] as mark}
                     <div style="min-width: {trackLength}px; transform: translateY(-6.875rem); margin-bottom: -6.875rem" class="h-full flex pointer-events-none">
                         <div style="transform: translateX({mark[0] * marginRightValue}px); width: {mark[1] * marginRightValue}px" class="{track[1]} rounded-lg bg-opacity-45 text-white pointer-events-auto">
@@ -346,26 +384,26 @@
                         </div>
                     </div>
                 {/each}
+                <!-- Flags -->
                 {#each track[3] as flag}
                     <div style="min-width: {trackLength}px; transform: translateY(-6.875rem); margin-bottom: -6.875rem" class="h-full flex pointer-events-none">
                         <div style="transform: translateX({flag[0] * marginRightValue}px)" class="w-4 rounded-lg text-white pointer-events-auto">
                             {#if flag[1].length > 0}
-                                <div class="flag {track[1]} w-full h-full rounded-tl-lg">
+                                <div on:mousedown={(e) => drag2(track, flag, e)} class="flag {track[1]} w-full h-full rounded-tl-lg">
                                     <button on:click={() => deleteFlag(track, flag)} class="mt-6 text-sm place-items-center w-4 h-6 border-y-2 border-black border-opacity-30"><Fa icon={faTrash}/></button>
                                 </div>
                             {:else}
-                                <div class="flag {track[1]} w-full h-full">
+                                <div on:mousedown={(e) => drag2(track, flag, e)} class="flag {track[1]} w-full h-full rounded-t-sm">
                                     <button on:click={() => deleteFlag(track, flag)} class="mt-6 text-sm place-items-center w-4 h-6 border-y-2 border-black border-opacity-30"><Fa icon={faTrash}/></button>
                                 </div>
                             {/if}
-                            <div class="rounded-tl-lg">
-                                {#if flag[1].length > 0}
-                                    <span style="transform: translateY(-6.875rem)" class="{track[1]} rounded-tl-lg absolute bg-opacity-95 border-black border-r-2 border-b-2 border-opacity-30 pointer-events-none">{flag[1]}</span>
-                                {/if}
-                            </div>
+                            {#if flag[1].length > 0}
+                                <span style="transform: translateY(-6.875rem)" class="{track[1]} rounded-tl-lg absolute bg-opacity-95 border-black border-r-2 border-b-2 border-opacity-30 pointer-events-none">{flag[1]}</span>
+                            {/if}
                         </div>
                     </div>
                 {/each}
+                <!-- Intro Text -->
                 {#if track[2].length < 1 && track[3].length < 1}
                     <div style="transform: translateY(-6.875rem); margin-bottom: -6.875rem" class="h-full flex pointer-events-none place-items-center">
                         <span class="ml-4 bg-white">Click anywhere in this {track[0]} track to create a mark.</span>

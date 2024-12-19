@@ -35,7 +35,7 @@ npm run preview
  - [ ] Community Marks (copyright issues)
  - [ ] Track Deletion
  - [ ] Top Toolbar Menu
- - [ ] Flags (small marks)
+ - [X] Flags (small marks)
  - [X] Logo
  - [X] Front Page
  - [ ] demo project
