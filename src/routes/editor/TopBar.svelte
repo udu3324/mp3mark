@@ -37,12 +37,53 @@
    function back() {
       goto("/")
    }
+
+   let fileMenu = "hidden"
+   let helpMenu = "hidden"
+   let githubMenu = "hidden"
+
+   function toggleFileMenu() {
+      fileMenu = fileMenu === "hidden" ? "" : "hidden";
+      helpMenu = "hidden"
+      githubMenu = "hidden"
+   }
+
+   function toggleHelpMenu() {
+      fileMenu = "hidden"
+      helpMenu = helpMenu === "" ? "hidden" : "";
+      githubMenu = "hidden"
+   }
+
+   function toggleGithubMenu() {
+      fileMenu = "hidden"
+      helpMenu = "hidden"
+      githubMenu = githubMenu === "" ? "hidden" : "";
+   }
+
+   function closeAll() {
+      fileMenu = "hidden"
+      helpMenu = "hidden"
+      githubMenu = "hidden"
+   }
 </script>
 
-<div class="fixed z-20 w-screen h-12 z-10 bg-[#7d818d] grid grid-cols-3">
+<div class="fixed z-20 w-screen h-12 bg-[#7d818d] grid grid-cols-3">
     <div class="pr-auto place-items-start">
-       <button on:click={back}><h1>mp3mark</h1></button> 
-       <h1>project - {title}</h1>
+       <button on:click={back}><h1>mp3mark proj - {title}</h1></button> 
+       <div class="flex">
+         <div>
+            <button on:click={toggleFileMenu} class="button-menu">File</button>
+            <div class="{fileMenu} fixed">this is the file menu</div>
+         </div>
+         <div>
+            <button on:click={toggleHelpMenu} class="button-menu">Help</button>
+            <div class="{helpMenu} fixed">this is the help menu</div>
+         </div>
+         <div>
+            <button on:click={toggleGithubMenu} class="button-menu">Github</button>
+            <div class="{githubMenu} fixed">this is the github menu</div>
+         </div>
+       </div>
     </div>
     <div class="place-self-center bg-gray-300 w-32 text-3xl h-full p-1 place-items-center">
        <p>{time}</p> 
@@ -51,3 +92,9 @@
       <h1>udu3324</h1> 
     </div>
 </div>
+
+<style lang="postcss">
+   .button-menu {
+      @apply px-1 hover:bg-[#61646d];
+   }
+</style>
