@@ -1,4 +1,7 @@
 <script>
+	import { faFlag, faMarker, faXmark } from "@fortawesome/free-solid-svg-icons";
+	import Fa from "svelte-fa";
+
     export let tracks
     
     export let note = ""
@@ -80,19 +83,23 @@
     }
 </script>
 
-<div style="--menu-left: {menuLeftPX}px; --menu-top: {menuTopPX}px;" class="p-1 bg-black bg-opacity-30 fixed z-20 track-menu {trackMenuHidden}">
-    <button on:click={closeContext} class="bg-white w-12 h-12">close</button>
+<div style="--menu-left: {menuLeftPX}px; --menu-top: {menuTopPX}px;" class="track-menu {trackMenuHidden}">
+    <div class="flex flex-row mb-1">
+        <button on:click={closeContext} class="button-icon text-3xl mr-1"><Fa icon={faXmark}/></button>
+        <button on:click={createFlag} class="button-icon text-2xl mr-1"><Fa icon={faFlag}/></button>
+        <button on:click={createMark} class="button-icon text-2xl mr-1"><Fa icon={faMarker}/></button>
+    </div>
 
-    <button on:click={createFlag} class="bg-white w-12 h-12">flag</button>
-    <button on:click={createMark} class="bg-white w-12 h-12 mb-1">mark</button>
-    
-    <br>
-
-    <input bind:this={noteInput} bind:value={note} type="text" maxlength="20" placeholder="set note" class="bg-white p-3">
+    <input bind:this={noteInput} bind:value={note} type="text" maxlength="20" placeholder="set note" class="bg-white bg-opacity-90 outline-none p-3 rounded-b-lg rounded-tr-lg">
 </div>
 
 <style lang="postcss">
+    .button-icon {
+        @apply grid place-items-center place-content-center w-12 h-12 text-white bg-black bg-opacity-50 rounded-b-lg rounded-tr-lg;
+    }
+
     .track-menu {
+        @apply p-1 bg-black bg-opacity-30 backdrop-blur-sm fixed z-20 rounded-b-lg rounded-tr-lg;
         left: var(--menu-left);
         top: var(--menu-top);
     }
