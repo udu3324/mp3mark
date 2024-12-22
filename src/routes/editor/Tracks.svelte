@@ -1,9 +1,14 @@
 <script>
-	import { faCaretLeft, faCaretRight, faDownload, faDrum, faGuitar, faMicrophone, faObjectUngroup, faPlusCircle, faTrash, faWaveSquare } from "@fortawesome/free-solid-svg-icons";
-	import { onMount } from "svelte";
+    import Fa from "svelte-fa"
+	import { faCaretLeft, faCaretRight, faDownload, faDrum, faGuitar, faMicrophone, faObjectUngroup, faPlusCircle, faTrash, faWaveSquare } from "@fortawesome/free-solid-svg-icons"
+	
+    import { onMount } from "svelte"
     import { resolution } from "$lib/editor.js"
-	import Fa from "svelte-fa";
-    
+	
+	import TrackContextMenu from "./TrackContextMenu.svelte"
+	import TrackVisualizer from "./TrackVisualizer.svelte"
+    import TrackCreationTool from "./TrackCreationTool.svelte"
+
     export let tracks
     export let bpm
     export let length
@@ -11,28 +16,20 @@
 
     export let loading = true
 
-    let trackMenuHidden = "hidden"
+    // biome-ignore lint/style/useConst: it isnt actually constant
+    let note = ""
+    let trackContextMenu
 
     let pollingTrack
     let trackLength = 0
 
-    let dropdown = "hidden"
     let ticks = 0
     let tickOffset = 0
     let marginRightValue = 0
 
-    function trackCreationMenu() {
-        console.log("toggling new track menu")
-        if (dropdown.includes("hidden")) {
-            dropdown = ""
-        } else {
-            dropdown = "hidden"
-        }
-    }
-
+    //this gets the visualizer's length to calculate a bunch of stuff
     function updateLength() {
-        trackLength = document.getElementById("polling_track").offsetWidth
-        //trackLength = pollingTrack.offsetWidth
+        trackLength = pollingTrack.offsetWidth
         console.log("track px length set to", trackLength)
         const secondsPerBeat = 60 / bpm
 
@@ -42,36 +39,8 @@
 
         console.log("secondsPerBeat", secondsPerBeat, "total ticks", ticks, "tickOffset", tickOffset)
     }
-
-    function createTrack(track) {
-        switch (track) {
-            case "vocal":
-                tracks.push(["vocal", "bg-indigo-500", [], []])
-
-                break
-            case "percussion":
-                tracks.push(["percussion", "bg-rose-500", [], []])
-
-                break
-            case "synth":
-                tracks.push(["synth", "bg-emerald-500", [], []])
-
-                break
-            case "guitar":
-                tracks.push(["guitar", "bg-cyan-600", [], []])
-
-                break
-            case "section":
-                tracks.push(["section", "bg-amber-500", [], []])
-
-                break
-        }
-
-        // biome-ignore lint/correctness/noSelfAssign: make it svelte reactive
-        tracks = tracks
-        trackCreationMenu()
-    }
     
+    //track mouse position for track context menu
     let mouseX
     let mouseY
 	function handleMousemove(event) {
@@ -79,57 +48,6 @@
 		mouseY = event.clientY;
         //console.log("m", mouseX, mouseY)
 	}
-
-    let note = ""
-
-    let selectedTrackIndex
-    let selectedBeatIndex
-
-    let menuLeftPX = 0
-    let menuTopPX = 0
-
-    function showContext(trackIndex, i) {
-        console.log("showing mark menu for track", trackIndex, i)
-        
-        trackMenuHidden = ""
-        menuLeftPX = mouseX
-        menuTopPX = mouseY
-
-        selectedTrackIndex = trackIndex
-        selectedBeatIndex = i
-    }
-
-    function closeContext() {
-        trackMenuHidden = "hidden"
-        menuLeftPX = 0
-        menuTopPX = 0
-
-        selectedTrackIndex = ""
-        selectedBeatIndex = -1
-
-        note = ""
-    }
-
-    function createFlag() {
-        console.log("creating flag for track", selectedTrackIndex, selectedBeatIndex, `"${note}"`)
-
-        //add new flag array if track data was old
-        if (tracks[selectedTrackIndex][3] === undefined) {
-            tracks[selectedTrackIndex].push([])
-        }
-
-        note = note.trim()
-        note = note.replaceAll(" ", "_")
-
-        //start, note
-        const flag = [selectedBeatIndex, note]
-        tracks[selectedTrackIndex][3].push(flag)
-
-        // biome-ignore lint/correctness/noSelfAssign: make it svelte reactive
-        tracks = tracks
-
-        closeContext()
-    }
 
     function deleteFlag(track, flag) {
         console.log("removing flag", flag)
@@ -140,19 +58,6 @@
         
         // biome-ignore lint/correctness/noSelfAssign: make it svelte reactive
         tracks = tracks
-    }
-
-    function createMark() {
-        console.log("creating mark for track", selectedTrackIndex, selectedBeatIndex, `"${note}"`)
-
-        //start, size, note
-        const mark = [selectedBeatIndex, 5, note]
-        tracks[selectedTrackIndex][2].push(mark)
-
-        // biome-ignore lint/correctness/noSelfAssign: make it svelte reactive
-        tracks = tracks
-
-        closeContext()
     }
 
     function deleteMark(track, mark) {
@@ -166,7 +71,7 @@
         tracks = tracks
     }
 
-    //stored temporarily to allow resizing marks
+    //stored temporarily for resizing marks/flags
     let dragDirection = ""
     let dragTrack = ""
     let dragMark = ""
@@ -184,6 +89,8 @@
         if (dragElement.length === 0) {
             return
         }
+
+        trackContextMenu.closeContext()
 
         //reroute for flags
         if (dragFlag.length !== 0) {
@@ -284,44 +191,9 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div on:mousemove={handleMousemove} id="track-d" class="pt-12 pb-16" style="min-width: {trackLength}px">
-    <div style="--menu-left: {menuLeftPX}px; --menu-top: {menuTopPX}px;" class="p-1 bg-black bg-opacity-30 fixed z-20 track-menu {trackMenuHidden}">
-        <button on:click={closeContext} class="bg-white w-12 h-12">close</button>
-
-        <button on:click={createFlag} class="bg-white w-12 h-12">flag</button>
-        <button on:click={createMark} class="bg-white w-12 h-12 mb-1">mark</button>
-        
-        <br>
-
-        <input bind:value={note} type="text" maxlength="20" placeholder="set note" class="bg-white p-3">
-    </div>
-
-    <!-- Visualizer Track -->
-    <!-- svelte-ignore a11y_click_events_have_key_events -->
-    <div class="flex flex-row h-28">
-        <div class="sticky grid left-0 z-10 h-28 min-w-28 basis-28 shadow-2xl text-white bg-slate-500 text-6xl place-items-center place-content-center">
-            <Fa icon={faDownload}/>
-        </div>
-        <div bind:this={pollingTrack} id="polling_track" class="grow h-full bg-slate-300 border-gray-600 border-b">
-            <div id="editor-viewer">
-                
-            </div>
-            <div style="min-width: {trackLength}px; transform: translateY(-7rem)" class="h-full flex pointer-events-none">
-                <div class="time-divider h-full flex">
-                    {#each {length: ticks} as _, i}
-                        {#if i % timeSigBeat === 0}
-                            <div style="--padding-right: {marginRightValue}px;" class="tick bg-gray-500"></div>
-                        {:else}
-                            {#if i % 2 === 0}
-                                <div style="--padding-right: {marginRightValue}px;" class="tick bg-gray-400"></div>
-                            {:else}
-                                <div style="--padding-right: {marginRightValue}px;" class="tick bg-gray-300"></div>
-                            {/if}
-                        {/if}
-                    {/each}
-                </div>
-            </div>
-        </div>
-    </div>
+    <TrackContextMenu bind:this={trackContextMenu} bind:note={note} mouseX={mouseX} mouseY={mouseY} bind:tracks={tracks}/>
+    
+    <TrackVisualizer bind:pollingTrack={pollingTrack} trackLength={trackLength} ticks={ticks} timeSigBeat={timeSigBeat} marginRightValue={marginRightValue}/>
 
     <!-- Render Added Tracks -->
     {#each tracks as track}
@@ -350,12 +222,12 @@
                 <div class="time-divider h-full flex">
                     {#each {length: ticks} as _, i}
                         {#if i % timeSigBeat === 0}
-                            <div on:click={(e) => showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick bg-gray-400"></div>
+                            <div on:click={(e) => trackContextMenu.showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick bg-gray-400"></div>
                         {:else}
                             {#if i % 2 === 0}
-                                <div on:click={(e) => showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick bg-gray-300"></div>
+                                <div on:click={(e) => trackContextMenu.showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick bg-gray-300"></div>
                             {:else}
-                                <div on:click={(e) => showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick bg-gray-200"></div>
+                                <div on:click={(e) => trackContextMenu.showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick bg-gray-200"></div>
                             {/if}
                         {/if}
                     {/each}
@@ -387,7 +259,7 @@
                 <!-- Flags -->
                 {#each track[3] as flag}
                     <div style="min-width: {trackLength}px; transform: translateY(-6.875rem); margin-bottom: -6.875rem" class="h-full flex pointer-events-none">
-                        <div style="transform: translateX({flag[0] * marginRightValue}px)" class="w-4 rounded-lg text-white pointer-events-auto">
+                        <div style="transform: translateX({flag[0] * marginRightValue}px)" class="w-4 rounded-lg text-white pointer-events-auto select-none">
                             {#if flag[1].length > 0}
                                 <div on:mousedown={(e) => drag2(track, flag, e)} class="flag {track[1]} w-full h-full rounded-tl-lg">
                                     <button on:click={() => deleteFlag(track, flag)} class="mt-6 text-sm place-items-center w-4 h-6 border-y-2 border-black border-opacity-30"><Fa icon={faTrash}/></button>
@@ -413,51 +285,17 @@
         </div>
     {/each}
     
-    <!-- Add Track Tool -->
-    <div class="flex flex-row h-28 drop-shadow-lg">
-        <div class="sticky left-0 z-20 pointer-events-none {dropdown}">
-            <div class="ml-[7.50rem] pt-6 m-2 mr-[-999px] flex">
-                <button on:click={() => createTrack("vocal")} class="dropdown-btn bg-indigo-500"><Fa class="w-5 mr-2 text-xl" icon={faMicrophone}/> Vocals</button>
-                <button on:click={() => createTrack("percussion")} class="dropdown-btn bg-rose-500"><Fa class="w-5 mr-2 text-xl" icon={faDrum}/> Percussion</button>
-                <button on:click={() => createTrack("synth")} class="dropdown-btn bg-emerald-500"><Fa class="w-5 mr-2 text-xl" icon={faWaveSquare}/> Synth</button>
-                <button on:click={() => createTrack("guitar")} class="dropdown-btn bg-cyan-600"><Fa class="w-5 mr-2 text-xl" icon={faGuitar}/> Guitar</button>
-                <button on:click={() => createTrack("section")} class="dropdown-btn bg-amber-500"><Fa class="w-5 mr-2 text-xl" icon={faObjectUngroup}/> Section</button>
-            </div>
-        </div>
-        
-        <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 shadow-2xl bg-[#323A45] text-6xl place-items-center place-content-center">
-            <button class="ml-6 text-white" on:click={trackCreationMenu}>
-                <Fa icon={faPlusCircle}/>
-            </button>
-        </div>
-
-        <div class="bg-[#656a70] border-t border-gray-600 place-items-center place-content-center" style="min-width: {trackLength}px">
-            <span class="ml-4 text-white">Click the (+) to add a new analysis track.</span>
-        </div>
-    </div>
+    <TrackCreationTool bind:tracks={tracks} trackLength={trackLength}/>
 </div>
 
 <style lang="postcss">
-    .dropdown-btn {
-        @apply p-2 text-xl text-white flex place-items-center pointer-events-auto;
-    }
-
-    .drop-icon {
-        @apply w-10 mr-5 text-xl;
-    }
-
     .tick {
         padding-right: var(--padding-right);
         height: 100%;
         width: 1px;
     }
 
-    .track-menu {
-        left: var(--menu-left);
-        top: var(--menu-top);
-    }
-
     .flag {
-        clip-path: polygon(0 0, 100% 0, 98% 90%, 50% 100%, 0 90%);
+        clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 100%, 0 90%);
     }
 </style>

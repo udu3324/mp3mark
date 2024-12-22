@@ -10,6 +10,7 @@
 
     let projectID = 1
 
+    // biome-ignore lint/style/useConst: <explanation>
     let playing = false
     let tracks = []
 
@@ -19,6 +20,7 @@
 
     let title
 
+    // biome-ignore lint/style/useConst: <explanation>
     let loading = true
     let canLoad = false
 
