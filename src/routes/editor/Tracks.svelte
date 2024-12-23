@@ -1,6 +1,6 @@
 <script>
     import Fa from "svelte-fa"
-	import { faCaretLeft, faCaretRight, faDownload, faDrum, faGuitar, faMicrophone, faObjectUngroup, faPlusCircle, faTrash, faWaveSquare } from "@fortawesome/free-solid-svg-icons"
+	import { faCaretLeft, faCaretRight, faDrum, faGuitar, faMicrophone, faObjectUngroup, faTrash, faWaveSquare } from "@fortawesome/free-solid-svg-icons"
 	
     import { onMount } from "svelte"
     import { resolution } from "$lib/editor.js"
@@ -103,27 +103,37 @@
         let start = tracks[dragTrack][2][dragMark][0]
         let size = tracks[dragTrack][2][dragMark][1]
 
+        const behindLeft = Math.round(posInBar / marginRightValue)
+        let behindRight = Math.round(posInBar / marginRightValue)
+        if (behindRight >= 2) {
+            behindRight = behindRight - 2
+        }
+        
         //either left or right sizing
         if (dragDirection === "left") {
             //sizing it up or down if cursor is close to edge of element
             if (posInBar < 1) {
                 if (--start >= 0) {
-                    updateMark(start, ++size)
+                    //console.log("FIRING!!!", (size - (size + Math.abs(behind))) + Math.abs((size - (size + Math.abs(behind)))))
+                    //console.log("start diff:", (start - (start + Math.abs(behind))))
+                    //console.log("size diff:", (size - (size + Math.abs(behind))))
+                    updateMark(start + behindLeft, ++size + Math.abs(behindLeft))
+                    //todo mouse slamming past window which causes out of bounds and i cant think of the right calculations to fix this
                 }
             } else if (posInBar > 13) {
                 if (--size >= 4) {
-                    updateMark(++start, size)
+                    updateMark(++start + behindRight, size - behindRight)
                 }
             }
         } else {
             if (posInBar < 1) {
                 if (--size >= 4) {
-                    updateMark(start, size)
+                    updateMark(start, size - Math.abs(behindLeft))
                 }
             } else if (posInBar > 13) {
                 //some math to convert ticks to measure real px
                 if ((start * tickOffset) + (++size * tickOffset) <= (ticks * tickOffset)) {
-                    updateMark(start, size)
+                    updateMark(start, size + behindRight)
                 }
             }
         }
@@ -147,13 +157,19 @@
 
         let start = tracks[dragTrack][3][dragFlag][0]
 
+        const behindLeft = Math.round(posInBar / marginRightValue)
+        let behindRight = Math.round(posInBar / marginRightValue)
+        if (behindRight >= 2) {
+            behindRight = behindRight - 2
+        }
+
         if (posInBar < 1) {
             if (--start >= 0) {
-                tracks[dragTrack][3][dragFlag][0] = start
+                tracks[dragTrack][3][dragFlag][0] = start + behindLeft
             }
         } else if (posInBar > 13) {
             if (++start <= ticks - 1) {
-                tracks[dragTrack][3][dragFlag][0] = start
+                tracks[dragTrack][3][dragFlag][0] = start + behindRight
             }
             
         }

@@ -8,6 +8,7 @@
 	import Tracks from "./Tracks.svelte";
 	import { onMount } from "svelte";
 
+    let editorData
     let projectID = 1
 
     // biome-ignore lint/style/useConst: <explanation>
@@ -67,6 +68,7 @@
                 console.log(editor)
                 console.log("timelineData", editor.timelineData)
                 tracks = editor.timelineData
+                editorData = editor
 
                 //add flag array to old db if needed
                 for (let i = 0; i < tracks.length; i++) {
@@ -112,7 +114,7 @@
         </div>
     </div>
 
-    <TopBar bind:title={title}/>
+    <TopBar bind:title={title} editorData={editorData}/>
     <Tracks id="track-div" bind:loading={loading} bind:tracks={tracks} bind:bpm={bpm} bind:length={durration} bind:timeSigBeat={timeSignatureBeat}/>
     <BottomBar bind:playing={playing}/>
 </div>
