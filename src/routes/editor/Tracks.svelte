@@ -104,10 +104,7 @@
         let size = tracks[dragTrack][2][dragMark][1]
 
         const behindLeft = Math.round(posInBar / marginRightValue)
-        let behindRight = Math.round(posInBar / marginRightValue)
-        if (behindRight >= 2) {
-            behindRight = behindRight - 2
-        }
+        const behindRight = Math.round((posInBar - 16) / marginRightValue)
         
         //either left or right sizing
         if (dragDirection === "left") {
@@ -158,10 +155,7 @@
         let start = tracks[dragTrack][3][dragFlag][0]
 
         const behindLeft = Math.round(posInBar / marginRightValue)
-        let behindRight = Math.round(posInBar / marginRightValue)
-        if (behindRight >= 2) {
-            behindRight = behindRight - 2
-        }
+        const behindRight = Math.round((posInBar - 16) / marginRightValue)
 
         if (posInBar < 1) {
             if (--start >= 0) {
