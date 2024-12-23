@@ -41,6 +41,7 @@
     
     let projectID = -1
     let hideLoader = true
+    let loading = false
     let hiddenClass = "hidden"
 
     $: {
@@ -76,8 +77,15 @@
             <span class="text-sm">*files are processed locally</span>
         </div>
     </div>
-    <div class="pl-3 pt-5 {hiddenClass}">
-        <Loader bind:empty={hideLoader} bind:loadingID={projectID}/>
+    <div class="pl-3 pt-5">
+        <div class="{hiddenClass}">
+            <Loader bind:loading={loading} bind:empty={hideLoader} bind:loadingID={projectID}/>
+        </div>
+        {#if loading}
+            Currently loading project manager...
+        {:else}
+            <!-- Demo Project //todo -->
+        {/if}
     </div>
 </div>
 

@@ -2,6 +2,7 @@
     import { db } from "$lib/db.js"
     import { onMount } from "svelte";
 
+    export let loading = false
     export let empty = true
     export let loadingID = -1
 
@@ -13,6 +14,7 @@
     }
 
     onMount(() => {
+        loading = true
         console.log("loading")
         db.load.orderBy("projectID").first(project => {
             id = project.projectID
@@ -21,7 +23,10 @@
                 console.log("loaded data for loader")
                 dataTable = data
                 empty = false
+                loading = false
             })
+        }).catch((error) => {
+            loading = false
         })
     })
 </script>
@@ -39,9 +44,9 @@
                 <th class="tracks text-left">Tracks</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-slate-700">
             {#each dataTable as data}
-                <tr on:click={() => setLoad(data.id)} class="bg-slate-600 border-b cursor-pointer border-slate-700 hover:border-4 hover:border-slate-500 hover:border-dashed">
+                <tr on:click={() => setLoad(data.id)} class="bg-slate-600 cursor-pointer hover:bg-slate-500">
                     {#if id === data.id}
                         <td class="i"><b>{data.id}</b></td>
                         <td class="name"><b>{data.projectName}</b></td>
