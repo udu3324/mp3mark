@@ -34,7 +34,7 @@ npm run preview
  - [x] Projects Manager/Loader
  - [ ] Community Marks (copyright issues)
  - [ ] Track Deletion
- - [ ] Top Toolbar Menu
+ - [X] Top Toolbar Menu
  - [X] Flags (small marks)
  - [X] Logo
  - [X] Front Page
@@ -42,3 +42,4 @@ npm run preview
  - [ ] tutorial
  - [ ] big line that marks the time
  - [X] favicon and seo
+ - [ ] documentation

@@ -2,8 +2,9 @@
    import { currentTime } from "$lib/editor"
    import { goto } from '$app/navigation'
 	import Fa from "svelte-fa";
-	import { faDoorOpen, faDownload, faFilePen } from "@fortawesome/free-solid-svg-icons";
+	import { faBook, faBug, faCodePullRequest, faDoorOpen, faDownload, faFilePen } from "@fortawesome/free-solid-svg-icons";
 	import { faGithub } from "@fortawesome/free-brands-svg-icons";
+	import ProjectInfo from "./ProjectInfo.svelte";
 
    export let title
    export let editorData
@@ -40,26 +41,9 @@
 
    let dataDiv = "hidden"
 
-   let projectID = ""
-   let projectName = ""
-   let fileName = ""
-   let length = 0
-   let timeSignatureBeat = ""
-   let timeSignatureNote = ""
-   let bpm = ""
-   
-
    function info() {
       closeAll()
       dataDiv = ""
-
-      projectID = editorData.id
-      projectName = editorData.projectName
-      fileName = editorData.fileName
-      length = editorData.length
-      timeSignatureBeat = editorData.timeSignatureBeat
-      timeSignatureNote = editorData.timeSignatureNote
-      bpm = editorData.bpm
    }
 
    function back() {
@@ -67,9 +51,24 @@
       goto("/")
    }
 
+   function docs() {
+      closeAll()
+      goto("/docs")
+   }
+
    function github() {
       closeAll()
       window.open("https://github.com/udu3324/mp3mark", "_blank")
+   }
+
+   function issues() {
+      closeAll()
+      window.open("https://github.com/udu3324/mp3mark/issues", "_blank")
+   }
+
+   function pull() {
+      closeAll()
+      window.open("https://github.com/udu3324/mp3mark/compare", "_blank")
    }
 
    let fileMenu = "hidden"
@@ -99,59 +98,90 @@
       helpMenu = "hidden"
       githubMenu = "hidden"
    }
+
+   //keybind menus
+   function onKeyDown(e) {
+      if (document.activeElement.tagName === "INPUT") {
+         return
+      }
+
+      if (e.key === "f") {
+         toggleFileMenu()
+      }
+
+      if (e.key === "h") {
+         toggleHelpMenu()
+      }
+
+      if (e.key === "g") {
+         toggleGithubMenu()
+      }
+   }
+
+   //close menus if user clicked out of them
+   function onMouseDown(e) {
+      //ty https://stackoverflow.com/a/8729274
+      //get list of parent elements
+      let element = e.target
+      const list = []
+      while (element) {
+         list.unshift(element)
+         element = element.parentNode
+      }
+      
+      //check if any parents had a whitelisted div
+      let insideMenu = false
+      for (let i = 0; i < list.length; i++) {
+         if (list[i].id === "whitelisted") {
+            insideMenu = true
+         }
+      }
+
+      //close if it didnt
+      if (!insideMenu) {
+         closeAll()
+      }
+   }
 </script>
 
-<div class="{dataDiv} w-screen bg-[#a1a5ae]">
-   <div class="fixed grid h-screen w-screen place-content-center z-50 backdrop-blur-sm">
-      <div class="bg-white p-4 shadow-lg w-96">
-         <div class="border-x border-t w-full bg-gray-200">Project Info.txt</div>
+<svelte:window on:keydown={onKeyDown} on:mousedown={onMouseDown}/>
 
-         <div class="flex flex-col w-full h-56 overflow-y-auto border">
-            <span>id: {projectID}</span>
-            <br>
-            <span>project name: {projectName}</span>
-            <span>file name: {fileName}</span>
-            <br>
-            <span>length: {length} seconds</span>
-            <br>
-            <span>beat: {timeSignatureBeat}</span>
-            <span>note: {timeSignatureNote}</span>
-            <span>bpm: {bpm}</span>
-         </div>
-         
-         <button class="w-full bg-white hover:bg-gray-400 border-x border-b">copy to clipboard</button>
-         <button on:click={dataDiv = "hidden"} class="w-full bg-white hover:bg-gray-400 border-x border-b">close</button>
-      </div>
-   </div>
-</div>
+<ProjectInfo bind:data={editorData} bind:hidden={dataDiv}/>
 
 <div class="fixed z-20 w-screen h-12 bg-slate-400 grid grid-cols-3">
     <div class="pr-auto place-items-start">
-      <h1>mp3mark proj - {title}</h1>
-      <div class="flex ml-1">
+      <h1>mp3mark project - {title}</h1>
+
+      <div id="whitelisted" class="flex">
          <div>
-            <button on:click={toggleFileMenu} class="button-menu">File</button>
+            <button on:click={toggleFileMenu} class="button-menu hover:bg-slate-300"><u>F</u>ile</button>
             <div class="{fileMenu} fixed bg-white w-48 divide-y py-1 rounded-b-lg rounded-tr-lg border shadow-lg">
                <div>
                   <!-- <button class="button-in-menu"><Fa class="w-5 mr-2" icon={faFileImport}/> Import Project...</button> -->
-                  <button on:click={info} class="button-in-menu"><Fa class="w-5 mr-2" icon={faFilePen}/> Project Info</button>
-                  <button class="button-in-menu"><Fa class="w-5 mr-2" icon={faDownload}/> Export As...</button>
+                  <button on:click={info} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faFilePen}/> Project Info</button>
+                  <button class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faDownload}/> Export As...</button>
                </div>
-               <button on:click={back} class="button-in-menu"><Fa class="w-5 mr-2" icon={faDoorOpen}/> Exit</button>
+               <button on:click={back} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faDoorOpen}/> Exit</button>
             </div>
          </div>
          <div>
-            <button on:click={toggleHelpMenu} class="button-menu">Help</button>
-            <div class="{helpMenu} fixed">this is the help menu</div>
+            <button on:click={toggleHelpMenu} class="button-menu hover:bg-sky-300"><u>H</u>elp</button>
+            <div class="{helpMenu} fixed bg-sky-400 w-48 divide-y py-1 divide-sky-500 pb-1 rounded-b-lg rounded-tr-lg text-white border border-sky-500 shadow-lg">
+               <button on:click={docs} class="button-in-menu hover:bg-sky-500"><Fa class="w-5 mr-2" icon={faBook}/> Documentation</button>
+            </div>
          </div>
          <div>
-            <button on:click={toggleGithubMenu} class="button-menu">Github</button>
+            <button on:click={toggleGithubMenu} class="button-menu hover:bg-amber-300"><u>G</u>ithub</button>
             <div class="{githubMenu} fixed bg-amber-500 w-48 divide-y divide-amber-600 pb-1 rounded-b-lg rounded-tr-lg text-amber-950 border border-amber-600 shadow-lg">
                <div class="p-1">
-                  <span>mp3mark is a open source project.</span>
+                  <span>mp3mark is a open source project. please star it!</span>
                </div>
 
-               <button on:click={github} class="button-in-menu"><Fa class="w-5 mr-2" icon={faGithub}/> Source Code</button>
+               <button on:click={github} class="button-in-menu hover:bg-amber-400"><Fa class="w-5 mr-2" icon={faGithub}/> Source Code</button>
+               <div>
+                  <button on:click={issues} class="button-in-menu hover:bg-amber-400"><Fa class="w-5 mr-2" icon={faBug}/> Report Bugs</button>
+                  <button on:click={pull} class="button-in-menu hover:bg-amber-400"><Fa class="w-5 mr-2" icon={faCodePullRequest}/> Contribute</button>
+               </div>
             </div>
          </div>
       </div>
@@ -166,10 +196,10 @@
 
 <style lang="postcss">
    .button-menu {
-      @apply px-1 hover:bg-slate-600;
+      @apply px-1;
    }
 
    .button-in-menu {
-      @apply hover:bg-gray-300 text-left p-1 pl-2 w-full flex items-center;
+      @apply text-left p-1 pl-2 w-full flex items-center;
    }
 </style>

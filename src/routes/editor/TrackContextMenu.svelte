@@ -19,9 +19,9 @@
     let noteInput
 
     export function showContext(trackIndex, i) {
-        console.log("showing mark menu for track", trackIndex, i)
-        console.log("mouseX", mouseX)
-        console.log("mouseY", mouseY)
+        //console.log("showing mark menu for track", trackIndex, i)
+        //console.log("mouseX", mouseX)
+        //console.log("mouseY", mouseY)
         trackMenuHidden = ""
         menuLeftPX = mouseX
         menuTopPX = mouseY
