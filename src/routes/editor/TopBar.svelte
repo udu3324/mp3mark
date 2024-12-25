@@ -150,7 +150,7 @@
 
 <div class="fixed z-20 w-screen h-12 bg-slate-400 grid grid-cols-3">
     <div class="pr-auto place-items-start">
-      <h1>mp3mark project - {title}</h1>
+      <h1>mp3mark - {title}</h1>
 
       <div id="whitelisted" class="flex">
          <div>
@@ -190,7 +190,7 @@
        <p>{time}</p> 
     </div>
     <div class="place-items-end">
-      <h1>udu3324</h1> 
+      
     </div>
 </div>
 

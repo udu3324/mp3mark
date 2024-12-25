@@ -53,6 +53,15 @@
 
         formatted = unformatted.replaceAll("\n", "<br>")
     }
+
+    //ty https://stackoverflow.com/a/30810322
+    function copy() {
+        navigator.clipboard.writeText(unformatted).then(() => {
+            alert("sucessfully copied project info to clipboard")
+        }).catch(() => {
+            alert("couldn't copy project info to clipboard!")
+        })
+    }
 </script>
 
 <div class="{hidden} w-screen bg-[#a1a5ae]">
@@ -64,7 +73,7 @@
              <span>{@html formatted}</span>
           </div>
           
-          <button class="w-full bg-white hover:bg-gray-400 border-x border-b">copy to clipboard</button>
+          <button on:click={copy} class="w-full bg-white hover:bg-gray-400 border-x border-b">copy to clipboard</button>
           <button on:click={() => {hidden = "hidden"}} class="w-full bg-white hover:bg-gray-400 border-x border-b">close</button>
        </div>
     </div>

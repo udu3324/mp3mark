@@ -51,9 +51,14 @@
     }
 
     function highVolume() {
-        volume = 1
-
-        wavesurfer.setVolume(volume)
+        if (volume !== 1) {
+            storedVolume = volume
+            volume = 1
+            wavesurfer.setVolume(volume)
+        } else {
+            volume = storedVolume
+            wavesurfer.setVolume(storedVolume)
+        }
     }
 
     function pauseReturn() {
