@@ -63,8 +63,8 @@
     <title>mp3mark</title> 
 </svelte:head>
 
-<div class="w-screen h-screen bg-white">
-    <div class="p-3">
+<div class="w-auto min-h-screen bg-white">
+    <div class="p-3 w-fit">
         <b class="text-5xl">mp3mark</b>
         <p class="pt-2">A website that lets you easily annotate/mark up audio.</p>
     
@@ -77,7 +77,7 @@
             <span class="text-sm">*files are processed locally</span>
         </div>
     </div>
-    <div class="pl-3 pt-5">
+    <div class="pl-3 pb-10 w-fit">
         <div class="{hiddenClass}">
             <Loader bind:loading={loading} bind:empty={hideLoader} bind:loadingID={projectID}/>
         </div>
