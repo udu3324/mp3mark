@@ -1,10 +1,11 @@
 <script>
     import { currentTime } from "$lib/editor"
-	import { faPlay, faSquare } from "@fortawesome/free-solid-svg-icons";
+	import { faPlay, faSquare, faVolumeHigh, faVolumeLow, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
     import { wavesurfer } from "$lib/editor.js"
 	import Fa from "svelte-fa";
 
     export let playing = false
+    export let volume
 
     let playColor = "bg-white"
     let pauseColor = "bg-white"
@@ -17,6 +18,14 @@
         }
     }
 
+    $: {
+        if (wavesurfer && volume) {
+            //console.log("set volume to", volume)
+            wavesurfer.setVolume(volume)
+        }
+        
+    }
+
     function play() {
         playing = true
 
@@ -27,7 +36,25 @@
         playing = false
 
         wavesurfer.pause()
-    }  
+    }
+
+    let storedVolume = 0
+    function mute() {
+        if (volume !== 0) {
+            storedVolume = volume
+            volume = 0
+            wavesurfer.setVolume(volume)
+        } else {
+            volume = storedVolume
+            wavesurfer.setVolume(storedVolume)
+        }
+    }
+
+    function highVolume() {
+        volume = 1
+
+        wavesurfer.setVolume(volume)
+    }
 
     function pauseReturn() {
         currentTime.set(0)
@@ -38,7 +65,7 @@
     }
     
     function onKeyDown(e) {
-        if (document.activeElement.tagName === "INPUT") {
+        if (document.activeElement.tagName === "INPUT" && document.activeElement.id !== "dont-focus") {
             return
         }
 
@@ -66,12 +93,25 @@
 <svelte:window on:keydown={onKeyDown} />
 
 <div class="fixed flex bottom-0 w-screen h-16 z-20 bg-yellow-500">
-    <button on:click={play} class="controls dynamic-play mx-2 grid place-items-center place-content-center {playColor}">
+    <button on:click={play} class="controls dynamic-play mx-2 button-icon {playColor}">
         <Fa icon={faPlay}/>
     </button>
-    <button on:dblclick={pauseReturn} on:click={pause} class="controls dynamic-pause bg-white grid place-items-center place-content-center {pauseColor}">
+    <button on:dblclick={pauseReturn} on:click={pause} class="controls dynamic-pause bg-white button-icon {pauseColor}">
         <Fa icon={faSquare}/>
     </button>
+    <div class="flex place-items-end ml-2 pb-2">
+        <div class="flex bg-white">
+            <button on:click={mute} class="w-6 px-4 py-1 button-icon">
+                {#if volume > 0}
+                    <Fa icon={faVolumeLow}/>
+                {:else}
+                    <Fa icon={faVolumeMute}/>
+                {/if}
+            </button>
+            <input id="dont-focus" class="w-96 outline-none" type="range" min="0" max="1" step="0.01" bind:value={volume}>
+            <button on:click={highVolume} class="w-6 px-4 py-1 button-icon"><Fa icon={faVolumeHigh}/></button>
+        </div>
+    </div>
 </div>
 
 <style lang="postcss">
@@ -85,5 +125,9 @@
 
     .dynamic-pause:active {
         @apply bg-red-400;
+    }
+
+    .button-icon {
+        @apply grid place-items-center place-content-center;
     }
 </style>

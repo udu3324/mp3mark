@@ -79,7 +79,8 @@
                         timeSignatureNote: note,
                         bpm: Number.parseInt(bpm), 
                         length: wavesurfer.getDuration(),
-                        timelineData: []
+                        timelineData: [],
+                        volume: 0.5
                     }).then(() => {
                         //set the loading id
                         updateLoadProjectID()

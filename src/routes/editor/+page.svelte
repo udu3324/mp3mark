@@ -9,6 +9,7 @@
 	import { onMount } from "svelte";
 
     let editorData
+
     let projectID = 1
 
     // biome-ignore lint/style/useConst: <explanation>
@@ -18,13 +19,17 @@
     let bpm
     let durration
     let timeSignatureBeat
-
     let title
+    let volume
+    let volumeSet = false
+    
+    //for loader
+    let dataTable
 
     // biome-ignore lint/style/useConst: <explanation>
     let loading = true
     let canLoad = false
-
+    
     let hiddenLoad = ""
 
     $: {
@@ -47,7 +52,18 @@
         }
     }
 
-    let dataTable
+    $: {
+        try {
+            if (volume && volumeSet) {
+                //console.log("found timeline data changes", tracks)
+                db.editor.update(projectID, { volume: volume });
+
+                console.log("updated db sucessfully with new volume") 
+            }
+        } catch (error) {
+            console.log("couldn't save volume to db automatically!!!")
+        }
+    }
 
     onMount(() => {
         //get the current loaded project id
@@ -82,6 +98,16 @@
                 timeSignatureBeat = editor.timeSignatureBeat
                 title = editor.projectName
 
+                //add volume to db since its new
+                if (editor.volume === undefined) {
+                    console.log("added volume ")
+                    db.editor.update(project.projectID, {volume: 0.5})
+                } else {
+                    console.log("loaded volume of", editor.volume)
+                    volume = editor.volume
+                }
+                volumeSet = true
+                
                 initialize()
                 canLoad = true
 
@@ -116,7 +142,7 @@
 
     <TopBar bind:title={title} editorData={editorData}/>
     <Tracks id="track-div" bind:loading={loading} bind:tracks={tracks} bind:bpm={bpm} bind:length={durration} bind:timeSigBeat={timeSignatureBeat}/>
-    <BottomBar bind:playing={playing}/>
+    <BottomBar bind:playing={playing} bind:volume={volume}/>
 </div>
 
 <style lang="postcss">

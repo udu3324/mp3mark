@@ -28,7 +28,7 @@ npm run preview
 ```
 
 ## Todo List
- - [ ] Volume Control
+ - [X] Volume Control
  - [ ] Metronome
  - [X] Better Marking (set size)
  - [x] Projects Manager/Loader
