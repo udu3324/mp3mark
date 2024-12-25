@@ -16,7 +16,8 @@
             unformatted += `project_name: ${data.projectName}\n`
             unformatted += `file_name: ${data.fileName}\n\n`
 
-            unformatted += `length: ${data.length} seconds\n\n`
+            unformatted += `length: ${data.length} seconds\n`
+            unformatted += `volume: ${data.volume}/1.00\n\n`
 
             unformatted += `beat: ${data.timeSignatureBeat}\n`
             unformatted += `note: ${data.timeSignatureNote}\n`
