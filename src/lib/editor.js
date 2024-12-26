@@ -37,8 +37,8 @@ function initialize() {
                 ]
             });
             
-            navigator.mediaSession.setActionHandler('play', wavesurfer.play());
-            navigator.mediaSession.setActionHandler('pause', wavesurfer.pause());
+            navigator.mediaSession.setActionHandler('play', () => wavesurfer.play());
+            navigator.mediaSession.setActionHandler('pause', () => wavesurfer.pause());
             //navigator.mediaSession.setActionHandler('seekbackward', function() {});
             //navigator.mediaSession.setActionHandler('seekforward', function() {});
             //navigator.mediaSession.setActionHandler('previoustrack', function() {});
