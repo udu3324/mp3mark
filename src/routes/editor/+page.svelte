@@ -1,7 +1,7 @@
 <script>
     import { goto } from '$app/navigation'
     import { db } from "$lib/db.js"
-	import { initialize, wavesurfer } from "$lib/editor.js"
+	import { initialize, wavesurfer, setMediaSession } from "$lib/editor.js"
 	import BottomBar from "./BottomBar.svelte";
 	import Loader from "./Loader.svelte";
 	import TopBar from "./TopBar.svelte";
@@ -108,6 +108,7 @@
                 }
                 volumeSet = true
                 
+                setMediaSession(title)
                 initialize()
                 canLoad = true
 
