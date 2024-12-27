@@ -7,32 +7,53 @@
 	import Intro from "./Intro.svelte";
 	import Test from "./Test.svelte";
 	import PageButtons from "./PageButtons.svelte";
+	import Layout from "./Layout.svelte";
+	import Tracks from "./Tracks.svelte";
+	import Tools from "./Tools.svelte";
+	import Import from "./Import.svelte";
+
+    let pageDiv
 
     $: pg = $page.url.searchParams.get("pg")
 
     $: {
-        console.log("page changed to", pg)
+        //reset scroll when going to the next page
+        if (pageDiv && pg) {
+            pageDiv.scrollTop = 0
+        }
     }
 
 </script>
 
 <div class="w-screen min-h-screen bg-white">
     <PageNavBar/>
-    <div class="ml-56 px-10 pt-3 pb-10 h-screen overflow-y-auto">
+    <div bind:this={pageDiv} class="ml-56 px-10 pt-3 pb-10 h-screen overflow-y-auto">
         {#if pg === "intro"}
-        <Intro/>
-        <PageButtons back="docs"/>
+            <Intro/>
+            <PageButtons back="docs" next="import"/>
+        {:else if pg === "import"}
+            <Import/>
+            <PageButtons back="intro" next="layout"/>
+        {:else if pg === "layout"}
+            <Layout/>
+            <PageButtons back="import" next="tracks"/>
+        {:else if pg === "tracks"}
+            <Tracks/>
+            <PageButtons back="layout" next="tools"/>
+        {:else if pg === "tools"}
+            <Tools/>
+            <PageButtons back="tracks"/>
         {:else if pg === "test"}
-        <Test/>
-        <PageButtons back="docs"/>
+            <Test/>
+            <PageButtons back="docs"/>
         {:else}
-        <div class="doc-heading-1">Welcome to the Documentation</div>
-        <p>To view all the documentation for mp3mark, use the navigation bar on the right.</p>
-        <br>
-        <p>Alternatively, you can use the navigation buttons on the bottom of this page to go to the next one.</p>
-        <div class="doc-heading-2">If you haven't noticed</div>
-        <p>I took a lot if inspiration from <a class="underline text-blue-500" href="https://readthedocs.com" target="_blank" rel="noreferrer nofollow">readthedocs</a> while creating my own version of my documentation. Please use their services if you need to create any documentation for your project.</p>
-        <PageButtons next="intro"/>
+            <div class="doc-heading-1">Home / Welcome to the Documentation</div>
+            <p>To view all the documentation for mp3mark, use the navigation bar on the right.</p>
+            <br>
+            <p>Alternatively, you can use the navigation buttons on the bottom of this page to go to the next one.</p>
+            <div class="doc-heading-2">If you haven't noticed</div>
+            <p>Inspiration was taken from <a class="underline text-blue-500" href="https://readthedocs.com" target="_blank" rel="noreferrer nofollow">ReadtheDocs</a> while creating these docs. Please use their services if you need to create any documentation for your project.</p>
+            <PageButtons next="intro"/>
         {/if}
     </div>
 </div>

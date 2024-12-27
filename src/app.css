@@ -13,3 +13,7 @@
 .doc-heading-3 {
     @apply text-xl font-semibold text-gray-700 pt-2;
 }
+
+.doc-img {
+    @apply border-2 rounded-xl border-slate-300 mb-3;
+}

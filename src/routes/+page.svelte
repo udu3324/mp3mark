@@ -1,9 +1,11 @@
 <script>
     import { goto } from '$app/navigation'
     import { db } from "$lib/db.js"
+	import Fa from 'svelte-fa';
 	import Loader from "./editor/Loader.svelte";
 	import Footer from './Footer.svelte';
     import Import from "./Import.svelte";
+	import { faBook, faFileUpload } from '@fortawesome/free-solid-svg-icons';
 
     let importVisible = "hidden"
     let importButton = ""
@@ -67,13 +69,17 @@
     <div class="p-3 w-fit">
         <b class="text-5xl">mp3mark</b>
         <p class="pt-2">A website that lets you easily annotate/mark up audio.</p>
-    
-        <input id="fileInput" bind:this={fileInput} bind:files class="hidden"  type="file" name="file" accept="audio/mp3, audio/flac, audio/wav">
+        
         <br>
+
+        <input id="fileInput" bind:this={fileInput} bind:files class="hidden"  type="file" name="file" accept="audio/mp3, audio/flac, audio/wav">
         <Import bind:files={files} bind:visible={importVisible} bind:fileName={inputFileName}/>
-        <div class="{importButton}">
-            <button class="p-3 bg-green-300 text-green-800 font-bold" onclick={select}>Import</button>
-            <br>
+        
+        <div class="{importButton} flex">
+            <button class="btn bg-green-500 hover:bg-green-600 text-green-100 mr-3" onclick={select}><Fa class="pr-2" icon={faFileUpload}/> Import</button>
+            <button onclick={() => goto("/docs")} class="btn bg-sky-500 hover:bg-sky-600 text-sky-100"><Fa class="pr-2" icon={faBook}/> Documentation</button>
+        </div>
+        <div class="{importButton} flex">
             <span class="text-sm">*files are processed locally</span>
         </div>
     </div>
@@ -92,5 +98,7 @@
 <Footer/>
 
 <style lang="postcss">
-    
+    .btn {
+        @apply p-3 font-bold flex place-content-center place-items-center;
+    }
 </style>
