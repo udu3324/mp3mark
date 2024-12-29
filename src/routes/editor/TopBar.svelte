@@ -2,8 +2,8 @@
    import { currentTime } from "$lib/editor"
    import { goto } from '$app/navigation'
 	import Fa from "svelte-fa";
-	import { faBook, faBug, faCodePullRequest, faDoorOpen, faDownload, faFilePen } from "@fortawesome/free-solid-svg-icons";
-	import { faGithub } from "@fortawesome/free-brands-svg-icons";
+	import { faBook, faBug, faChartGantt, faCodePullRequest, faDoorOpen, faDownload, faFilePen, faHammer, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+	import { faGithub, faSlack } from "@fortawesome/free-brands-svg-icons";
 	import ProjectInfo from "./ProjectInfo.svelte";
 
    export let title
@@ -46,14 +46,23 @@
       dataDiv = ""
    }
 
+   function exportProject() {
+      closeAll()
+      //todo
+   }
+
    function back() {
       closeAll()
       goto("/")
    }
 
-   function docs() {
+   function docs(pg) {
       closeAll()
-      goto("/docs")
+      if (pg === "docs") {
+         window.open("/docs", "_blank")
+      } else {
+         window.open(`/docs?pg=${pg}`, "_blank")
+      }
    }
 
    function github() {
@@ -69,6 +78,11 @@
    function pull() {
       closeAll()
       window.open("https://github.com/udu3324/mp3mark/compare", "_blank")
+   }
+
+   function slack() {
+      closeAll()
+      window.open("https://hackclub.slack.com/app_redirect?channel=U07L463K2R3", "_blank")
    }
 
    let fileMenu = "hidden"
@@ -159,7 +173,7 @@
                <div>
                   <!-- <button class="button-in-menu"><Fa class="w-5 mr-2" icon={faFileImport}/> Import Project...</button> -->
                   <button on:click={info} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faFilePen}/> Project Info</button>
-                  <button class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faDownload}/> Export As...</button>
+                  <button on:click={exportProject} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faDownload}/> Export As...</button>
                </div>
                <button on:click={back} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faDoorOpen}/> Exit</button>
             </div>
@@ -167,7 +181,13 @@
          <div>
             <button on:click={toggleHelpMenu} class="button-menu hover:bg-sky-300"><u>H</u>elp</button>
             <div class="{helpMenu} fixed bg-sky-400 w-48 divide-y py-1 divide-sky-500 pb-1 rounded-b-lg rounded-tr-lg text-white border border-sky-500 shadow-lg">
-               <button on:click={docs} class="button-in-menu hover:bg-sky-500"><Fa class="w-5 mr-2" icon={faBook}/> Documentation</button>
+               <div>
+                  <button on:click={() => docs("layout")} class="button-in-menu hover:bg-sky-500"><Fa class="w-5 mr-2" icon={faPenToSquare}/> Editor</button>
+                  <button on:click={() => docs("tracks")} class="button-in-menu hover:bg-sky-500"><Fa class="w-5 mr-2" icon={faChartGantt}/> Tracks</button>
+                  <button on:click={() => docs("tools")} class="button-in-menu hover:bg-sky-500"><Fa class="w-5 mr-2" icon={faHammer}/> Tools</button>
+               </div>
+               <button on:click={() => docs("docs")} class="button-in-menu hover:bg-sky-500"><Fa class="w-5 mr-2" icon={faBook}/> Documentation</button>
+               <button on:click={slack} class="button-in-menu hover:bg-sky-500"><Fa class="w-5 mr-2" icon={faSlack}/>Slack Message</button>
             </div>
          </div>
          <div>

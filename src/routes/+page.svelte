@@ -6,6 +6,7 @@
 	import Footer from './Footer.svelte';
     import Import from "./Import.svelte";
 	import { faBook, faFileUpload } from '@fortawesome/free-solid-svg-icons';
+	import Demo from './Demo.svelte';
 
     let importVisible = "hidden"
     let importButton = ""
@@ -41,8 +42,11 @@
         }
     };
     
+    // biome-ignore lint/style/useConst: <explanation>
     let projectID = -1
+    // biome-ignore lint/style/useConst: <explanation>
     let hideLoader = true
+    // biome-ignore lint/style/useConst: <explanation>
     let loading = false
     let hiddenClass = "hidden"
 
@@ -89,8 +93,10 @@
         </div>
         {#if loading}
             Currently loading project manager...
-        {:else}
-            <!-- Demo Project //todo -->
+        {:else if !loading && hideLoader}
+             <div class="mt-4">
+                <Demo/>
+             </div>
         {/if}
     </div>
 </div>

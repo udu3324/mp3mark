@@ -38,8 +38,13 @@ npm run preview
  - [X] Flags (small marks)
  - [X] Logo
  - [X] Front Page
- - [ ] demo project
+ - [X] demo project
  - [ ] tutorial
  - [ ] big line that marks the time
  - [X] favicon and seo
- - [ ] documentation
+ - [X] documentation
+ - [ ] ffmpeg trimming
+ - [ ] exporting
+
+## Credits
+The audio used for the demo project is "Fastfall - Cider Time" by Lifeformed. Check their album out [here](https://lifeformed.bandcamp.com/album/fastfall)! It is under *CC BY-NC-SA 3.0* and to be used without profit.

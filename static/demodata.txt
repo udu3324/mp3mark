@@ -1,0 +1,10 @@
+[section, bg-amber-500, [[0, 32, intro], [224, 32, repeated]], []], [percussion, bg-rose-500, [[352, 64, no drums]], []], [synth, bg-emerald-500, [], [[64, variation_1], [96, variation_2], [160, variation_3], [128, variation_2_repeat]]], [synth, bg-emerald-500, [[163, 7, long fx], [172, 7, long fx]], [[188, ], [196, ], [204, ], [212, ], [180, continued], [288, long_fx_added_back], [220, ending_one]]]
+
+
+[0, "this_track_is_by"], [10, "lifeformed._please"], [22, "checkout_their_music"], [35, "!"]
+
+
+[96, "new_synth_sound"], [130, "echo_added_to_it"], [160, "new"]
+
+
+["section", "bg-amber-500", [], []]
