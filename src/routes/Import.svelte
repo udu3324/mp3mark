@@ -23,6 +23,30 @@
         bpm = bpm.replace(/[^0-9]/g, "")
     }
 
+    function beatUp() {
+        if (beat < 24) {
+            beat++
+        }
+    }
+
+    function beatDown() {
+        if (beat > 1) {
+            beat--
+        }
+    }
+
+    function noteUp() {
+        if (note < 24) {
+            note++
+        }
+    }
+
+    function noteDown() {
+        if (note > 1) {
+            note--
+        }
+    }
+
     //cool little cooldown thing for the button
     function disableBtn() {
         disableSubmit = true
@@ -68,67 +92,33 @@
                     container: '#waveform'
                 })
 
-                wavesurfer.loadBlob(blob).then(() => {
+                await wavesurfer.loadBlob(blob)
 
-                    //save the blob + other data into indexeddb
-                    db.editor.add({
-                        audio: blob,
-                        fileName: fileName, 
-                        projectName: projectName, 
-                        timeSignatureBeat: beat, 
-                        timeSignatureNote: note,
-                        bpm: Number.parseInt(bpm), 
-                        length: wavesurfer.getDuration(),
-                        timelineData: [],
-                        volume: 0.5
-                    }).then(() => {
-                        //set the loading id
-                        updateLoadProjectID()
-                    })
+                //save the blob + other data into indexeddb
+                await db.editor.add({
+                    audio: blob,
+                    fileName: fileName, 
+                    projectName: projectName, 
+                    timeSignatureBeat: beat, 
+                    timeSignatureNote: note,
+                    bpm: Number.parseInt(bpm), 
+                    length: wavesurfer.getDuration(),
+                    timelineData: [],
+                    volume: 0.5
                 })
-            }
 
+                //clear load db
+                await db.load.clear()
+
+                //get the last index that was added to the editor as it's the imported one
+                const index = await db.editor.count()
+                await db.load.add({ projectID: index })
+
+                status = `Saved new project data to index ${index} sucessfully.`
+                goto("/editor")
+            }
         } catch (error) {
             alert(error)
-        }
-    }
-
-    const updateLoadProjectID = async () => {
-        try {
-            await db.load.clear();
-
-            const index = await db.editor.count();
-            await db.load.add({ projectID: index });
-
-            status = `Saved new project data to index ${index} sucessfully.`
-
-            goto("/editor")
-        } catch (error) {
-            console.error('Error updating project ID:', error);
-        }
-    };
-
-    function beatUp() {
-        if (beat < 24) {
-            beat++
-        }
-    }
-
-    function beatDown() {
-        if (beat > 1) {
-            beat--
-        }
-    }
-
-    function noteUp() {
-        if (note < 24) {
-            note++
-        }
-    }
-
-    function noteDown() {
-        if (note > 1) {
-            note--
         }
     }
 </script>

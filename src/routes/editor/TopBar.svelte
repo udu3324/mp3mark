@@ -48,7 +48,23 @@
 
    function exportProject() {
       closeAll()
-      //todo
+
+      const json = JSON.stringify(editorData, null, 4)
+
+      const element = document.createElement('a')
+      element.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(json)}`)
+
+      const filteredName = editorData.projectName.replace(/ /g,'_').replace(/[^a-zA-Z0-9]/g, "")
+
+      element.setAttribute('download', `${filteredName}-project_export.mp3mark`)
+      
+      element.style.display = 'none'
+      document.body.appendChild(element)
+
+      element.click()
+
+      document.body.removeChild(element)
+      //alert(json)
    }
 
    function back() {
@@ -173,7 +189,7 @@
                <div>
                   <!-- <button class="button-in-menu"><Fa class="w-5 mr-2" icon={faFileImport}/> Import Project...</button> -->
                   <button on:click={info} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faFilePen}/> Project Info</button>
-                  <button on:click={exportProject} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faDownload}/> Export As...</button>
+                  <button on:click={exportProject} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faDownload}/> Export File</button>
                </div>
                <button on:click={back} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faDoorOpen}/> Exit</button>
             </div>

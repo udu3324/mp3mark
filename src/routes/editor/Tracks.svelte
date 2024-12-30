@@ -220,6 +220,10 @@
                     <Fa icon={faGuitar}/>
                 {:else if track[0] === "section"}
                     <Fa icon={faObjectUngroup}/>
+                {:else}
+                    <div class="w-12 h-12 grid place-items-center place-content-center font-semibold">
+                        {track[0].substring(0, 1)}
+                    </div>
                 {/if}
                 <span class="text-xl">{track[0]}</span>
             </div>
