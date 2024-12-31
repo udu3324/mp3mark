@@ -2,6 +2,10 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+html, body {
+    overscroll-behavior-x: none
+}
+
 .doc-heading-1 {
     @apply text-3xl font-semibold text-gray-700 py-5;
 }

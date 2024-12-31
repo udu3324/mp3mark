@@ -33,10 +33,6 @@
       }
 
       time = `${minute}:${sString}`
-
-      if (time.length < 7) {
-         console.log("why", time)
-      }
    })
 
    let dataDiv = "hidden"
@@ -56,7 +52,7 @@
 
       const filteredName = editorData.projectName.replace(/ /g,'_').replace(/[^a-zA-Z0-9]/g, "")
 
-      element.setAttribute('download', `${filteredName}-project_export.mp3mark`)
+      element.setAttribute('download', `${filteredName}-export.mp3mark`)
       
       element.style.display = 'none'
       document.body.appendChild(element)
@@ -64,7 +60,8 @@
       element.click()
 
       document.body.removeChild(element)
-      //alert(json)
+      
+      alert("exported project sucessfully. please keep the audio file to import with in the future.")
    }
 
    function back() {

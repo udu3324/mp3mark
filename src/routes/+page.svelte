@@ -76,7 +76,7 @@
         
         <br>
 
-        <input id="fileInput" bind:this={fileInput} bind:files class="hidden"  type="file" name="file" accept="audio/mp3, audio/flac, audio/wav">
+        <input id="fileInput" bind:this={fileInput} bind:files class="hidden"  type="file" name="file" accept="audio/mp3, audio/flac, audio/wav, .mp3mark">
         <Import bind:files={files} bind:visible={importVisible} bind:fileName={inputFileName}/>
         
         <div class="{importButton} flex">

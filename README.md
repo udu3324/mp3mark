@@ -1,7 +1,7 @@
 # mp3mark
 A web app that allows you to analyze and annotate music easily for mp3 files. Use it [here](https://mp3mark.vercel.app/)!
 
-Currently, this website is best fit for desktop users. The appearance may vary on certain browsers but works best on chromium based ones. (developed on chrome)
+Currently, this website is best fit for desktop users. The appearance may vary on certain browsers but works best on chromium based ones. (developed on chrome) Mobile support is broken, but trackpad users have great control over the timeline.
 
 ## Developing
 To run a development server:

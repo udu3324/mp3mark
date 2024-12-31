@@ -12,7 +12,7 @@
     export let fileName = ''
 
     $: projectName = fileName.substring(0, fileName.lastIndexOf(".")).substring(0, 22)
-
+    
     let bpm = ""
     let beat = 4
     let note = 4
@@ -20,9 +20,40 @@
     let status = ''
     let disableSubmit = ""
 
-    //check bpm input if its good
+    let extension = ""
+
     $: {
-        bpm = bpm.replace(/[^0-9]/g, "")
+        if (fileName) {
+            extension = fileName.substring(fileName.indexOf(".") + 1)
+
+            //do special stuff if file imported is 
+            if (extension === "mp3mark") {
+                disableSubmit = true
+                readProjectFile()
+            }
+        }
+    }
+
+    //check bpm input if its good
+    $: bpm = bpm.replace(/[^0-9]/g, "")
+
+    function readProjectFile() {
+        try {
+            status = "importing project..."
+            
+            const reader = new FileReader()
+            reader.readAsText(files[0])
+
+            reader.onload = async () => {
+                console.log(reader.result)
+            }
+        } catch (error) {
+            alert(error)
+        }
+    }
+
+    function importAudio() {
+        
     }
 
     function beatUp() {
@@ -155,7 +186,11 @@
             <button on:click={noteDown} class="signature-button"><Fa icon={faArrowDown}/></button>
         </div>
 
-        <button on:click={openEditor} disabled={disableSubmit} class="mt-3 p-3 bg-orange-400">Open in Editor</button>
+        {#if extension === "mp3mark"}
+        <button on:click={importAudio} class="mt-3 p-3 bg-orange-400">Import Audio File</button>
+        {/if}
+
+        <button on:click={openEditor} disabled={disableSubmit} class="mt-3 p-3 bg-orange-400 disabled:hidden">Open in Editor</button>
         <p>{status}</p>
     </div>
 </div>
