@@ -16,7 +16,7 @@
         <Fa icon={faDownload}/>
     </div>
     <div bind:this={pollingTrack} id="polling_track" class="grow h-full bg-slate-300 border-gray-600 border-b">
-        <div id="editor-viewer">
+        <div id="editor-viewer" class="cursor-pointer">
             
         </div>
         <div style="min-width: {trackLength}px; transform: translateY(-7rem)" class="h-full flex pointer-events-none">
@@ -38,5 +38,7 @@
 </div>
 
 <style lang="postcss">
-
+    .track-outline {
+        box-shadow: 0 1px 0 #4b5563;
+    }
 </style>

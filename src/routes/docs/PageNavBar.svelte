@@ -1,4 +1,7 @@
 <script>
+    import Fa from "svelte-fa"
+	import { faHome, faTools } from "@fortawesome/free-solid-svg-icons";
+
     import { goto } from "$app/navigation";
     import { page } from "$app/stores";
 
@@ -49,6 +52,11 @@
         <button on:click={() => goto("/docs?pg=layout")} class="nav-btn layout">How to Use</button>
         <button on:click={() => goto("/docs?pg=tracks")} class="nav-btn tracks">Tracks</button>
         <button on:click={() => goto("/docs?pg=tools")} class="nav-btn tools">Annotation Tools</button>
+
+        <div class="fixed bottom-0 left-0 ml-3 mb-10 flex">
+            <button on:click={() => goto("/")} class="p-3 mr-3 bg-slate-800 hover:bg-slate-600 flex place-items-center"><Fa class="pr-2" icon={faHome}/> Home</button>
+            <button on:click={() => goto("/editor")} class="p-3 bg-slate-800 hover:bg-slate-600 flex place-items-center"><Fa class="pr-2" icon={faTools}/> Editor</button>
+        </div>
     </div>
 </div>
 

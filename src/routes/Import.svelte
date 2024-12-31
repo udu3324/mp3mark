@@ -6,7 +6,9 @@
 	import WaveSurfer from 'wavesurfer.js';
     
     export let files
+    // biome-ignore lint/style/useConst: <explanation>
     export let visible = "hidden"
+    // biome-ignore lint/style/useConst: <explanation>
     export let fileName = ''
 
     $: projectName = fileName.substring(0, fileName.lastIndexOf(".")).substring(0, 22)
@@ -129,25 +131,25 @@
 
 <div class="{visible} bg-orange-300 w-96">
     <div class="flex p-3 bg-orange-400">
-        <Fa class="animate-spin delay-1000 text-2xl" icon={faCog}/>
-        <span class="pl-3">Importing "{fileName}"..</span>
+        <Fa class="animate-spin delay-1000 text-2xl text-orange-900" icon={faCog}/>
+        <span class="pl-3 text-orange-900 select-none">Importing "{fileName}"..</span>
     </div>
     <div class="p-3">
         <div class="flex border-b-2 border-orange-300">
-            <p class="bg-orange-300 p-1">Project Name - </p>
+            <p class="bg-orange-300 p-1 select-none">Project Name - </p>
             <input bind:value={projectName} class="p-1 h-8 w-44" type="text" maxlength="22" placeholder="name">
         </div>
         <div class="flex border-b-2 border-orange-300">
-            <p  class="bg-orange-300 p-1">BPM - </p>
+            <p  class="bg-orange-300 p-1 select-none">BPM - </p>
             <input bind:value={bpm} class="p-1 h-8 w-10" type="text" maxlength="3" placeholder="180">
         </div>
         <div class="flex">
-            <p class="bg-orange-300 p-1">Time Signature - </p>
+            <p class="bg-orange-300 p-1 select-none">Time Signature - </p>
 
             <button on:click={beatUp} class="signature-button"><Fa icon={faArrowUp}/></button>
             <button on:click={beatDown} class="signature-button"><Fa icon={faArrowDown}/></button>
 
-            <p class="bg-white h-8 p-1">{beat}/{note}</p>
+            <p class="bg-white h-8 p-1 select-none">{beat}/{note}</p>
 
             <button on:click={noteUp} class="signature-button"><Fa icon={faArrowUp}/></button>
             <button on:click={noteDown} class="signature-button"><Fa icon={faArrowDown}/></button>

@@ -33,7 +33,7 @@ npm run preview
  - [X] Better Marking (set size)
  - [x] Projects Manager/Loader
  - [ ] Community Marks (copyright issues)
- - [ ] Track Deletion
+ - [X] Track Deletion
  - [X] Top Toolbar Menu
  - [X] Flags (small marks)
  - [X] Logo
@@ -44,7 +44,7 @@ npm run preview
  - [X] favicon and seo
  - [X] documentation
  - [ ] ffmpeg trimming
- - [ ] exporting
+ - [ ] exporting/importing
 
 ## Credits
 The audio used for the demo project is "Fastfall - Cider Time" by Lifeformed. Check their album out [here](https://lifeformed.bandcamp.com/album/fastfall)! It is under *CC BY-NC-SA 3.0* and to be used without profit.

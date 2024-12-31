@@ -57,18 +57,22 @@
         </div>
     </div>
     
-    <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 shadow-2xl bg-[#323A45] text-6xl place-items-center place-content-center">
-        <button class="ml-6 text-white" on:click={trackCreationMenu}>
+    <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 shadow-2xl bg-[#323A45] text-6xl">
+        <button class="w-full h-full text-white place-items-center place-content-center" on:click={trackCreationMenu}>
             <Fa icon={faPlusCircle}/>
         </button>
     </div>
 
-    <div class="bg-[#656a70] border-t border-gray-600 place-items-center place-content-center" style="min-width: {trackLength}px">
-        <span class="ml-4 text-white">Click the (+) to add a new analysis track.</span>
+    <div class="bg-[#656a70] place-items-center place-content-center track-outline" style="min-width: {trackLength}px">
+        <span class="ml-4 text-white select-none">Click the (+) to add a new analysis track.</span>
     </div>
 </div>
 
 <style lang="postcss">
+    .track-outline {
+        box-shadow: 0 1px 0 #4b5563 inset;
+    }
+
     .dropdown-btn {
         @apply p-2 text-xl text-white flex place-items-center pointer-events-auto;
     }

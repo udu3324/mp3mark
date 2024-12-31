@@ -178,14 +178,14 @@
 
 <ProjectInfo bind:data={editorData} bind:hidden={dataDiv}/>
 
-<div class="fixed z-20 w-screen h-12 bg-slate-400 grid grid-cols-3">
-    <div class="pr-auto place-items-start">
+<div class="fixed z-40 w-screen h-12 bg-slate-400 grid grid-cols-3">
+    <div class="pr-auto place-items-start select-none text-gray-800">
       <h1>mp3mark - {title}</h1>
 
       <div id="whitelisted" class="flex">
          <div>
             <button on:click={toggleFileMenu} class="button-menu hover:bg-slate-300"><u>F</u>ile</button>
-            <div class="{fileMenu} fixed bg-white w-48 divide-y py-1 rounded-b-lg rounded-tr-lg border shadow-lg">
+            <div class="{fileMenu} fixed bg-white text-gray-800 w-48 divide-y py-1 rounded-b-lg rounded-tr-lg border shadow-lg">
                <div>
                   <!-- <button class="button-in-menu"><Fa class="w-5 mr-2" icon={faFileImport}/> Import Project...</button> -->
                   <button on:click={info} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faFilePen}/> Project Info</button>
@@ -222,7 +222,7 @@
          </div>
       </div>
     </div>
-    <div class="place-self-center bg-gray-300 w-32 text-3xl h-full p-1 place-items-center">
+    <div class="place-self-center bg-gray-100 w-32 text-3xl h-full p-1 grid place-items-center">
        <p>{time}</p> 
     </div>
     <div class="place-items-end">
