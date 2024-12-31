@@ -3,7 +3,7 @@
 	import { faCaretLeft, faCaretRight, faDrum, faGuitar, faMicrophone, faObjectUngroup, faTrash, faWaveSquare } from "@fortawesome/free-solid-svg-icons"
 	
     import { onMount } from "svelte"
-    import { resolution } from "$lib/editor.js"
+    import { resolution, fullyRendered } from "$lib/editor.js"
 	
 	import TrackContextMenu from "./TrackContextMenu.svelte"
 	import TrackVisualizer from "./TrackVisualizer.svelte"
@@ -29,7 +29,9 @@
 
     //this gets the visualizer's length to calculate a bunch of stuff
     function updateLength() {
-        trackLength = pollingTrack.offsetWidth
+        if (pollingTrack) {
+            trackLength = pollingTrack.offsetWidth
+        }
         console.log("track px length set to", trackLength)
         const secondsPerBeat = 60 / bpm
 
@@ -195,16 +197,20 @@
         }
     }
 
-    onMount(() => {
-        setTimeout(() => {
+    fullyRendered.subscribe((bool) => {
+        if (bool === true) {
+            console.log("wavesurfer.js fully loaded and rendered")
+
             updateLength()
             loading = false
-        }, 1000)
-        
-        //event to fix track size limit
-        window.addEventListener('resize', updateLength)
 
-        //event for holding down marks
+            //event to allow resizing in case if window does
+            window.addEventListener('resize', updateLength)
+        }
+    })
+
+    onMount(() => {
+        //event for holding down mark
         window.addEventListener('mousemove', (e) => {
             holding(e)
         });
@@ -217,11 +223,6 @@
             dragFlag = ""
             dragElement = ""
         })
-
-        //make sure it runs in the end
-        return () => {
-            window.removeEventListener('resize', updateLength);
-        }
     })
 </script>
 
@@ -268,7 +269,7 @@
             <!-- Track Content -->
             <!-- svelte-ignore a11y_click_events_have_key_events -->
             <!-- svelte-ignore a11y_no_static_element_interactions -->
-            <div id="track-{tracks.indexOf(track)}" class="h-28 bg-slate-300" style="min-width: {trackLength}px">
+            <div id="track-{tracks.indexOf(track)}" class="h-28 bg-gray-300 track-outline" style="min-width: {trackLength}px">
                 <!-- Beat Dividers -->
                 <div class="time-divider h-28 flex absolute">
                     {#each {length: ticks} as _, i}
@@ -340,6 +341,9 @@
 </div>
 
 <style lang="postcss">
+    .track-outline {
+        box-shadow: 0 -1px 0 #4b5563 inset, 0 1px 0 #4b5563 inset;
+    }
     .tick {
         @apply cursor-crosshair;
         padding-right: var(--padding-right);

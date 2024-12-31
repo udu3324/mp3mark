@@ -4,6 +4,7 @@ import { writable } from 'svelte/store'
 let wavesurfer
 
 const currentTime = writable(0)
+const fullyRendered = writable(false)
 
 const resolution = 30
 
@@ -28,6 +29,8 @@ function initialize() {
     })
 
     wavesurfer.on('ready', (duration) => {
+        fullyRendered.set(true)
+        
         if ('mediaSession' in navigator) {
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: projectName,
@@ -51,4 +54,4 @@ function setMediaSession(title) {
     projectName = title
 }
 
-export { initialize, wavesurfer, currentTime, resolution, setMediaSession }
+export { initialize, wavesurfer, currentTime, fullyRendered, resolution, setMediaSession }

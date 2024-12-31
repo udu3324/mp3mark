@@ -7,7 +7,7 @@
     let formatted = ""
 
     $: {
-        console.log("showing info div", hidden)
+        //console.log("showing info div", hidden)
         unformatted = ""
 
         if (data.timelineData !== undefined) {

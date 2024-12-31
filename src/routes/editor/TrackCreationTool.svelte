@@ -63,7 +63,7 @@
         </button>
     </div>
 
-    <div class="bg-[#656a70] place-items-center place-content-center track-outline" style="min-width: {trackLength}px">
+    <div class="bg-[#656a70] place-items-center place-content-center track-outline w-full" style="min-width: {trackLength}px">
         <span class="ml-4 text-white select-none">Click the (+) to add a new analysis track.</span>
     </div>
 </div>
