@@ -15,6 +15,7 @@
     // biome-ignore lint/style/useConst: <explanation>
     let playing = false
     let tracks = []
+    let tracksObj
 
     let bpm
     let durration
@@ -114,6 +115,7 @@
 
                 wavesurfer.loadBlob(editor.audio).then(() => {
                     console.log("sucessfully loaded!")
+                    tracksObj.loaded()
                 })
             })
         })
@@ -142,7 +144,7 @@
     </div>
 
     <TopBar bind:title={title} editorData={editorData}/>
-    <Tracks id="track-div" bind:loading={loading} bind:tracks={tracks} bind:bpm={bpm} bind:length={durration} bind:timeSigBeat={timeSignatureBeat}/>
+    <Tracks bind:this={tracksObj} id="track-div" bind:loading={loading} bind:tracks={tracks} bind:bpm={bpm} bind:length={durration} bind:timeSigBeat={timeSignatureBeat}/>
     <BottomBar bind:playing={playing} bind:volume={volume}/>
 </div>
 

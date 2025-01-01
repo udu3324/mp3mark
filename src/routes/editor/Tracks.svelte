@@ -3,7 +3,7 @@
 	import { faCaretLeft, faCaretRight, faDrum, faGuitar, faMicrophone, faObjectUngroup, faTrash, faWaveSquare } from "@fortawesome/free-solid-svg-icons"
 	
     import { onMount } from "svelte"
-    import { resolution, fullyRendered } from "$lib/editor.js"
+    import { resolution } from "$lib/editor.js"
 	
 	import TrackContextMenu from "./TrackContextMenu.svelte"
 	import TrackVisualizer from "./TrackVisualizer.svelte"
@@ -197,17 +197,16 @@
         }
     }
 
-    fullyRendered.subscribe((bool) => {
-        if (bool === true) {
-            console.log("wavesurfer.js fully loaded and rendered")
+    export function loaded() {
+        console.log("wavesurfer.js fully loaded and rendered")
 
-            updateLength()
-            loading = false
+        updateLength()
 
-            //event to allow resizing in case if window does
-            window.addEventListener('resize', updateLength)
-        }
-    })
+        loading = false
+
+        //event to allow resizing in case if window does
+        window.addEventListener('resize', updateLength)
+    }
 
     onMount(() => {
         //event for holding down mark
