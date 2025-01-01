@@ -46,21 +46,18 @@
       closeAll()
 
       const json = JSON.stringify(editorData, null, 4)
-
       const element = document.createElement('a')
-      element.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(json)}`)
 
       const filteredName = editorData.projectName.replace(/ /g,'_').replace(/[^a-zA-Z0-9]/g, "")
 
+      element.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(json)}`)
       element.setAttribute('download', `${filteredName}-export.mp3mark`)
-      
       element.style.display = 'none'
       document.body.appendChild(element)
 
       element.click()
 
       document.body.removeChild(element)
-      
       alert("exported project sucessfully. please keep the audio file to import with in the future.")
    }
 

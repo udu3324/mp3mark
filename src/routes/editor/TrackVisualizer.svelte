@@ -38,7 +38,5 @@
 </div>
 
 <style lang="postcss">
-    .track-outline {
-        box-shadow: 0 1px 0 #4b5563;
-    }
+    
 </style>
