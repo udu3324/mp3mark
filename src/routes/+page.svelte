@@ -70,34 +70,38 @@
 </svelte:head>
 
 <div class="w-auto min-h-screen bg-white">
-    <div class="p-3 w-fit">
-        <b class="text-5xl">mp3mark</b>
-        <p class="pt-2">A website that lets you easily annotate/mark up audio.</p>
+    <div class="grid min-h-screen place-content-center">
+        <div class="min-h-screen bg-slate-100">
+            <div class="p-3 w-fit">
+                <b class="text-5xl">mp3mark</b>
+                <p class="pt-2">A website that lets you easily annotate/mark up audio.</p>
+                
+                <br>
         
-        <br>
-
-        <input id="fileInput" bind:this={fileInput} bind:files class="hidden"  type="file" name="file" accept="audio/mp3, audio/flac, audio/wav, .mp3mark">
-        <Import bind:files={files} bind:visible={importVisible} bind:fileName={inputFileName}/>
-        
-        <div class="{importButton} flex">
-            <button class="btn bg-green-500 hover:bg-green-600 text-green-100 mr-3" onclick={select}><Fa class="pr-2" icon={faFileUpload}/> Import</button>
-            <button onclick={() => goto("/docs")} class="btn bg-sky-500 hover:bg-sky-600 text-sky-100"><Fa class="pr-2" icon={faBook}/> Documentation</button>
+                <input id="fileInput" bind:this={fileInput} bind:files class="hidden"  type="file" name="file" accept="audio/mp3, audio/flac, audio/wav, .mp3mark">
+                <Import bind:files={files} bind:visible={importVisible} bind:fileName={inputFileName}/>
+                
+                <div class="{importButton} flex">
+                    <button class="btn bg-green-500 hover:bg-green-600 text-green-100 mr-3" onclick={select}><Fa class="pr-2" icon={faFileUpload}/> Import</button>
+                    <button onclick={() => goto("/docs")} class="btn bg-sky-500 hover:bg-sky-600 text-sky-100"><Fa class="pr-2" icon={faBook}/> Documentation</button>
+                </div>
+                <div class="{importButton} flex">
+                    <span class="text-sm">*files are processed locally</span>
+                </div>
+            </div>
+            <div class="px-3 pb-10 w-fit">
+                <div class="{hiddenClass}">
+                    <Loader bind:loading={loading} bind:empty={hideLoader} bind:loadingID={projectID}/>
+                </div>
+                {#if loading}
+                    Currently loading project manager...
+                {:else if !loading && hideLoader}
+                     <div class="mt-2">
+                        <Demo/>
+                     </div>
+                {/if}
+            </div>
         </div>
-        <div class="{importButton} flex">
-            <span class="text-sm">*files are processed locally</span>
-        </div>
-    </div>
-    <div class="pl-3 pb-10 w-fit">
-        <div class="{hiddenClass}">
-            <Loader bind:loading={loading} bind:empty={hideLoader} bind:loadingID={projectID}/>
-        </div>
-        {#if loading}
-            Currently loading project manager...
-        {:else if !loading && hideLoader}
-             <div class="mt-4">
-                <Demo/>
-             </div>
-        {/if}
     </div>
 </div>
 

@@ -273,7 +273,7 @@
         <button on:click={importAudio} disabled={disableSubmitFile} class="mt-3 p-3 bg-orange-400 disabled:bg-opacity-0">Import Audio File</button>
         {:else}
         <div class="mt-3 p-2 bg-orange-200">
-            <p>Please set the name, bpm, and time signature of the audio.</p>
+            <p>Please set the name, bpm, and time signature of this project.</p>
         </div>
         {/if}
 

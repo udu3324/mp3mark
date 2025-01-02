@@ -31,11 +31,11 @@
     })
 </script>
 
-<div class="bg-slate-500 text-white w-[50rem] rounded-md">
+<div class="bg-slate-700 text-white w-[50rem] rounded-md">
     <div class="bg-slate-800 p-2 text-center text-lg rounded-t-md">
         <span>Project Manager</span>
     </div>
-    <div class="max-h-80 overflow-y-auto">
+    <div class="min-h-48 max-h-80 overflow-y-auto">
         <table class="table-auto w-full">
             <thead>
                 <tr class="bg-slate-700">
