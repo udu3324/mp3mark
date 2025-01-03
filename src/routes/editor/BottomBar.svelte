@@ -104,7 +104,7 @@
     <button on:dblclick={pauseReturn} on:click={pause} class="controls dynamic-pause bg-white button-icon outline-none {pauseColor}">
         <Fa icon={faSquare}/>
     </button>
-    <div class="flex place-items-end ml-2 pb-2 pr-6 w-full max-w-96">
+    <div class="flex place-items-end ml-2 pb-2 pr-2 w-full max-w-96">
         <div class="flex bg-white w-full">
             <button on:click={mute} class="w-6 px-4 py-1 button-icon">
                 {#if volume > 0}

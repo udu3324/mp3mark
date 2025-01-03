@@ -1,6 +1,6 @@
 <script>
     import Fa from "svelte-fa"
-	import { faHome, faTools } from "@fortawesome/free-solid-svg-icons";
+	import { faBookmark, faHome, faTools } from "@fortawesome/free-solid-svg-icons";
 
     import { goto } from "$app/navigation";
     import { page } from "$app/stores";
@@ -9,6 +9,7 @@
 
     $: pg = $page.url.searchParams.get("pg")
 
+    //highlight page button indication
     $: {
         if (navDiv) {
             const button = navDiv.querySelector(`.${pg}`)
@@ -17,6 +18,29 @@
                 removeAllHighlights()
                 button.classList.add('bg-slate-600')
             }
+        }
+    }
+
+    // biome-ignore lint/style/useConst: <explanation>
+    export let innerWidth = 0
+    let navHidden = ""
+    let btnMarginL = ""
+
+    $: {
+        if (innerWidth < 480) {
+            navHidden = "hidden"
+        } else {
+            navHidden = ""
+        }
+    }
+
+    function toggleNav() {
+        if (navHidden === "hidden") {
+            navHidden = ""
+            btnMarginL = "ml-40"
+        } else {
+            navHidden = "hidden"
+            btnMarginL = ""
         }
     }
 
@@ -33,9 +57,15 @@
     }
 </script>
 
-<div class="fixed h-screen w-56 pb-6 bg-slate-700 text-white">
+<div class="{btnMarginL} fixed z-10 top-0">
+    <button on:click={toggleNav} class="w-8 h-10 bg-sky-400 text-sky-100 rounded-r-full grid place-items-center place-content-center">
+        <Fa icon={faBookmark}/>
+    </button>
+</div>
+
+<div class="{navHidden} z-20 fixed h-screen w-40 md:w-56 pb-6 bg-slate-700 text-white">
     <button on:click={home} class="p-3 bg-sky-400 w-full hover:bg-sky-500">
-        <span class="text-3xl">mp3mark <span class="italic">docs</span></span>
+        <span class="text-xl md:text-3xl">mp3mark <span class="italic">docs</span></span>
     </button>
     <div bind:this={navDiv}>
         <div class="nav-title">
@@ -53,9 +83,9 @@
         <button on:click={() => goto("/docs?pg=tracks")} class="nav-btn tracks">Tracks</button>
         <button on:click={() => goto("/docs?pg=tools")} class="nav-btn tools">Annotation Tools</button>
 
-        <div class="fixed bottom-0 left-0 ml-3 mb-10 flex">
-            <button on:click={() => goto("/")} class="p-3 mr-3 bg-slate-800 hover:bg-slate-600 flex place-items-center"><Fa class="pr-2" icon={faHome}/> Home</button>
-            <button on:click={() => goto("/editor")} class="p-3 bg-slate-800 hover:bg-slate-600 flex place-items-center"><Fa class="pr-2" icon={faTools}/> Editor</button>
+        <div class="absolute bottom-0 left-0 px-3 pb-9 md:flex w-full">
+            <button on:click={() => goto("/")} class="nav-back mr-3 mb-3 md:mb-0"><Fa class="pr-2" icon={faHome}/> Home</button>
+            <button on:click={() => goto("/editor")} class="nav-back"><Fa class="pr-2" icon={faTools}/> Editor</button>
         </div>
     </div>
 </div>
@@ -66,5 +96,9 @@
     }
     .nav-btn {
         @apply px-3 py-1 w-full text-left hover:bg-slate-600;
+    }
+
+    .nav-back {
+        @apply p-3 bg-slate-800 hover:bg-slate-600 flex place-items-center w-full;
     }
 </style>

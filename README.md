@@ -1,7 +1,19 @@
 # mp3mark
 A web app that allows you to analyze and annotate music easily for mp3 files. Use it [here](https://mp3mark.vercel.app/)!
 
-Currently, this website is best fit for desktop users. The appearance may vary on certain browsers but works best on chromium based ones. (developed on chrome) Mobile support is broken, but trackpad users have great control over the timeline.
+Currently, this website is best fit for desktop users. The appearance may vary on certain browsers but works best on chromium based ones. (developed on chrome) Mobile support is okay, but trackpad users have great control over the timeline.
+
+## What it Looks Like
+| ![showcase](https://raw.githubusercontent.com/udu3324/mp3mark/refs/heads/main/src/lib/assets/showcase.png) | 
+|:----------------------------------------------------------------------------------------------------------:| 
+|                           A screenshot of mp3mark's editor while creating an annotation                    |
+
+| ![importing](https://raw.githubusercontent.com/udu3324/mp3mark/refs/heads/main/src/lib/assets/import_options.png) | 
+|:-----------------------------------------------------------------------------------------------------------------:| 
+|                               A screenshot of the import menu                                                     |
+
+## Documentation
+Documentation for mp3mark can be found [here](https://mp3mark.vercel.app/docs).
 
 ## Developing
 To run a development server:
@@ -45,7 +57,7 @@ npm run preview
  - [X] documentation
  - [ ] ffmpeg trimming
  - [X] exporting/importing
- - [ ] mouse/touch slamming
+ - [ ] fix mouse/touch slamming
 
 ## Credits
 The audio used for the demo project is "Fastfall - Cider Time" by Lifeformed. Check their album out [here](https://lifeformed.bandcamp.com/album/fastfall)! It is under *CC BY-NC-SA 3.0* and to be used without profit.

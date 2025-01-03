@@ -12,6 +12,7 @@
 	import Tools from "./Tools.svelte";
 	import Import from "./Import.svelte";
 
+    let innerWidth
     let pageDiv
 
     $: pg = $page.url.searchParams.get("pg")
@@ -23,11 +24,22 @@
         }
     }
 
+    let pageMarginL = "ml-40"
+
+    //responsiveness for mobile devices
+    $: {
+        if (innerWidth < 480) {
+            pageMarginL = ""
+        } else {
+            pageMarginL = "ml-40"
+        }
+    }
+
 </script>
 
-<div class="w-screen min-h-screen bg-white">
-    <PageNavBar/>
-    <div bind:this={pageDiv} class="ml-56 px-10 pt-3 pb-10 h-screen overflow-y-auto">
+<div bind:clientWidth={innerWidth} class="w-screen min-h-screen bg-white">
+    <PageNavBar bind:innerWidth={innerWidth}/>
+    <div bind:this={pageDiv} class="{pageMarginL} md:ml-56 px-10 pt-3 pb-10 h-screen overflow-y-auto">
         {#if pg === "intro"}
             <Intro/>
             <PageButtons back="docs" next="import"/>
