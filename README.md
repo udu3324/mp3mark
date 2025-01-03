@@ -1,3 +1,11 @@
+![Mod Banner](https://raw.githubusercontent.com/udu3324/mp3mark/refs/heads/main/src/lib/assets/banner_long.png)
+
+![License](https://img.shields.io/github/license/udu3324/mp3mark)  
+![Vercel](https://img.shields.io/badge/Vercel-%23000000.svg?logo=vercel&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-F69220?logo=pnpm&logoColor=fff)
+![SvelteKit](https://img.shields.io/badge/SvelteKit-%23f1413d.svg?logo=svelte&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?logo=tailwind-css&logoColor=white)
+
 # mp3mark
 A web app that allows you to analyze and annotate music easily for mp3 files. Use it [here](https://mp3mark.vercel.app/)!
 
@@ -6,11 +14,11 @@ Currently, this website is best fit for desktop users. The appearance may vary o
 ## What it Looks Like
 | ![showcase](https://raw.githubusercontent.com/udu3324/mp3mark/refs/heads/main/src/lib/assets/showcase.png) | 
 |:----------------------------------------------------------------------------------------------------------:| 
-|                           A screenshot of mp3mark's editor while creating an annotation                    |
+|                             Screenshot of mp3mark's editor while creating an annotation                    |
 
 | ![importing](https://raw.githubusercontent.com/udu3324/mp3mark/refs/heads/main/src/lib/assets/import_options.png) | 
 |:-----------------------------------------------------------------------------------------------------------------:| 
-|                               A screenshot of the import menu                                                     |
+|                                 Screenshot of the import menu                                                     |
 
 ## Documentation
 Documentation for mp3mark can be found [here](https://mp3mark.vercel.app/docs).
