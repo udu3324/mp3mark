@@ -24,7 +24,7 @@
          placeTime = "place-self-center"
       }
 
-      if (innerWidth < 400) {
+      if (innerWidth < 450) {
          branding = ""
       } else {
          branding = "mp3mark - "
