@@ -74,7 +74,7 @@
         <div class="min-h-screen bg-slate-100">
             <div class="p-3 w-fit">
                 <b class="text-5xl">mp3mark</b>
-                <p class="pt-2">A website that lets you easily annotate/mark up audio.</p>
+                <p class="pt-2">A website that lets you easily annotate/mark up audio. It works best on desktop.™</p>
                 
                 <br>
         

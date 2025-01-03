@@ -104,8 +104,8 @@
     <button on:dblclick={pauseReturn} on:click={pause} class="controls dynamic-pause bg-white button-icon outline-none {pauseColor}">
         <Fa icon={faSquare}/>
     </button>
-    <div class="flex place-items-end ml-2 pb-2">
-        <div class="flex bg-white">
+    <div class="flex place-items-end ml-2 pb-2 pr-6 w-full max-w-96">
+        <div class="flex bg-white w-full">
             <button on:click={mute} class="w-6 px-4 py-1 button-icon">
                 {#if volume > 0}
                     <Fa icon={faVolumeLow}/>
@@ -113,7 +113,7 @@
                     <Fa icon={faVolumeMute}/>
                 {/if}
             </button>
-            <input id="dont-focus" class="w-96 outline-none" type="range" min="0" max="1" step="0.01" bind:value={volume}>
+            <input id="dont-focus" class="w-full outline-none" type="range" min="0" max="1" step="0.01" bind:value={volume}>
             <button on:click={highVolume} class="w-6 px-4 py-1 button-icon"><Fa icon={faVolumeHigh}/></button>
         </div>
     </div>
@@ -121,7 +121,7 @@
 
 <style lang="postcss">
     .controls {
-        @apply w-12 h-12 my-2 place-content-center place-items-center text-center text-3xl;
+        @apply min-w-12 min-h-12 my-2 place-content-center place-items-center text-center text-3xl;
     }
 
     .dynamic-play:active {

@@ -31,7 +31,7 @@
     })
 </script>
 
-<div class="bg-slate-700 text-white w-[50rem] rounded-md">
+<div class="bg-slate-700 text-white rounded-md">
     <div class="bg-slate-800 p-2 text-center text-lg rounded-t-md">
         <span>Project Manager</span>
     </div>
