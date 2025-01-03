@@ -1,6 +1,6 @@
 ![Mod Banner](https://raw.githubusercontent.com/udu3324/mp3mark/refs/heads/main/src/lib/assets/banner_long.png)
 
-![License](https://img.shields.io/github/license/udu3324/mp3mark)  
+![License](https://img.shields.io/github/license/udu3324/mp3mark)
 ![Vercel](https://img.shields.io/badge/Vercel-%23000000.svg?logo=vercel&logoColor=white)
 ![pnpm](https://img.shields.io/badge/pnpm-F69220?logo=pnpm&logoColor=fff)
 ![SvelteKit](https://img.shields.io/badge/SvelteKit-%23f1413d.svg?logo=svelte&logoColor=white)
