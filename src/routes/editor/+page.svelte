@@ -33,12 +33,14 @@
     
     let hiddenLoad = ""
 
+    //for loading screen
     $: {
         if (!loading && canLoad) {
             hiddenLoad = "hidden"
         }
     }
 
+    //for saving track data
     $: {
         try {
             //prevent saving empty data for some reason
@@ -53,6 +55,7 @@
         }
     }
 
+    //for saving volume
     $: {
         try {
             if (volume && volumeSet) {
@@ -143,7 +146,7 @@
         </div>
     </div>
 
-    <TopBar bind:title={title} editorData={editorData}/>
+    <TopBar bind:title={title} editorData={editorData} bind:projectID={projectID} />
     <Tracks bind:this={tracksObj} id="track-div" bind:loading={loading} bind:tracks={tracks} bind:bpm={bpm} bind:length={durration} bind:timeSigBeat={timeSignatureBeat}/>
     <BottomBar bind:playing={playing} bind:volume={volume}/>
 </div>

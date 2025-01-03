@@ -1,13 +1,20 @@
 <script>
+   import { db } from "$lib/db.js"
    import { currentTime } from "$lib/editor"
    import { goto } from '$app/navigation'
 	import Fa from "svelte-fa";
-	import { faBook, faBug, faChartGantt, faCodePullRequest, faDoorOpen, faDownload, faFilePen, faHammer, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+	import { faBook, faBug, faChartGantt, faClock, faCodePullRequest, faDoorOpen, faDownload, faFilePen, faHammer, faHashtag, faHourglass, faHourglassEnd, faPenToSquare, faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
 	import { faGithub, faSlack } from "@fortawesome/free-brands-svg-icons";
 	import ProjectInfo from "./ProjectInfo.svelte";
 
    export let title
    export let editorData
+   export let projectID
+
+   let configInput
+   let configDiv = "hidden"
+   let configLabel = ""
+   let configValue = ""
 
    let time = "0:00.00"
 
@@ -95,30 +102,168 @@
       window.open("https://hackclub.slack.com/app_redirect?channel=U07L463K2R3", "_blank")
    }
 
+   function showConfig() {
+      configDiv = ""
+
+      setTimeout(() => {
+         configInput.focus()
+         configInput.select()
+      }, 15)
+   }
+
+   function configName() {
+      showConfig()
+
+      configLabel = "Project Name"
+      configValue = editorData.projectName
+   }
+
+   function configBPM() {
+      showConfig()
+
+      configLabel = "BPM (beats per minute)"
+      configValue = editorData.bpm
+   }
+
+   function configTimeSignatureBeat() {
+      showConfig()
+
+      configLabel = "Time Signature Beat"
+      configValue = editorData.timeSignatureBeat
+   }
+
+   function configTimeSignatureNote() {
+      showConfig()
+
+      configLabel = "Time Signature Note"
+      configValue = editorData.timeSignatureNote
+   }
+
+   function cancelConfig() {
+      configDiv = "hidden"
+      configValue = ""
+   }
+
+   async function saveConfig() {
+      switch (configLabel) {
+         case 'Project Name':
+            if (configValue.length < 1) {
+               alert("Set a project name!")
+               return
+            }
+            
+            await db.editor.update(projectID, { projectName: configValue })
+
+            alert("Sucessfully set project name!")
+            location.reload()
+
+            break
+         case 'BPM (beats per minute)':
+            if (configValue.length < 1) {
+               alert("Set a bpm!")
+               return
+            }
+
+            await db.editor.update(projectID, { bpm: Number.parseInt(configValue) })
+
+            alert("Sucessfully set bpm!")
+            location.reload()
+
+            break
+         case 'Time Signature Beat':
+            if (configValue.length < 1) {
+               alert("Set a time signature!")
+               return
+            }
+
+            await db.editor.update(projectID, { timeSignatureBeat: configValue })
+
+            alert("Sucessfully set time signature beat!")
+            location.reload()
+
+            break
+         case 'Time Signature Note':
+            if (configValue.length < 1) {
+               alert("Set a time signature!")
+               return
+            }
+            
+            await db.editor.update(projectID, { timeSignatureNote: configValue })
+
+            alert("Sucessfully set time signature note!")
+            location.reload()
+
+            break
+      }
+   }
+
+   $: {
+      switch (configLabel) {
+         case 'Project Name':
+            if (configValue.length > 22) {
+               configValue = configValue.substring(0, 20)
+            }
+            break
+         case 'BPM (beats per minute)':
+            configValue = configValue.replace(/[^0-9]/g, "")
+
+            if (configValue.length > 3) {
+               configValue = configValue.substring(0, 3)
+            }
+            break
+         case 'Time Signature Beat':
+            configValue = configValue.replace(/[^0-9]/g, "")
+
+            if (configValue.length > 2) {
+               configValue = configValue.substring(0, 2)
+            }
+            break
+         case 'Time Signature Note':
+            configValue = configValue.replace(/[^0-9]/g, "")
+
+            if (configValue.length > 2) {
+               configValue = configValue.substring(0, 2)
+            }
+            break
+      }
+   }
+
    let fileMenu = "hidden"
+   let configMenu = "hidden"
    let helpMenu = "hidden"
    let githubMenu = "hidden"
 
    function toggleFileMenu() {
       fileMenu = fileMenu === "hidden" ? "" : "hidden";
+      configMenu = "hidden"
+      helpMenu = "hidden"
+      githubMenu = "hidden"
+   }
+
+   function toggleConfigMenu() {
+      fileMenu = "hidden"
+      configMenu = configMenu === "hidden" ? "" : "hidden";
       helpMenu = "hidden"
       githubMenu = "hidden"
    }
 
    function toggleHelpMenu() {
       fileMenu = "hidden"
+      configMenu = "hidden"
       helpMenu = helpMenu === "" ? "hidden" : "";
       githubMenu = "hidden"
    }
 
    function toggleGithubMenu() {
       fileMenu = "hidden"
+      configMenu = "hidden"
       helpMenu = "hidden"
       githubMenu = githubMenu === "" ? "hidden" : "";
    }
 
    function closeAll() {
       fileMenu = "hidden"
+      configMenu = "hidden"
       helpMenu = "hidden"
       githubMenu = "hidden"
    }
@@ -131,6 +276,10 @@
 
       if (e.key === "f") {
          toggleFileMenu()
+      }
+
+      if (e.key === "c") {
+         toggleConfigMenu()
       }
 
       if (e.key === "h") {
@@ -172,6 +321,18 @@
 
 <ProjectInfo bind:data={editorData} bind:hidden={dataDiv}/>
 
+<div class="{configDiv} fixed grid h-screen w-screen place-content-center z-50 bg-black bg-opacity-50">
+   <div class="bg-gray-700 p-5 text-white">
+      <span>{configLabel}</span>
+      <br>
+      <input bind:this={configInput} bind:value={configValue} class="text-black p-2 my-1 outline-none" type="text">
+      <div>
+         <button on:click={saveConfig} class="p-2 bg-slate-800">save</button>
+         <button on:click={cancelConfig} class="p-2 bg-slate-800">cancel</button>
+      </div>
+   </div>
+</div>
+
 <div class="fixed z-40 w-screen h-12 bg-slate-400 grid grid-cols-3">
     <div class="pr-auto place-items-start select-none text-gray-800">
       <h1>mp3mark - {title}</h1>
@@ -186,6 +347,17 @@
                   <button on:click={exportProject} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faDownload}/> Export File</button>
                </div>
                <button on:click={back} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faDoorOpen}/> Exit</button>
+            </div>
+         </div>
+         <div>
+            <button on:click={toggleConfigMenu} class="button-menu hover:bg-slate-300"><u>C</u>onfigure</button>
+            <div class="{configMenu} fixed bg-white text-gray-800 w-48 divide-y py-1 rounded-b-lg rounded-tr-lg border shadow-lg">
+               <div>
+                  <button on:click={configName} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faQuoteLeft}/> Project Name</button>
+                  <button on:click={configBPM} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faHashtag}/> BPM</button>
+                  <button on:click={configTimeSignatureBeat} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faClock}/> Time Signature Beat</button>
+                  <button on:click={configTimeSignatureNote} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faHourglassEnd}/> Time Signature Note</button>
+               </div>
             </div>
          </div>
          <div>
