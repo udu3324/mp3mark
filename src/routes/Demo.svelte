@@ -39,7 +39,7 @@
     }
 </script>
 
-<div>
+<div class="dark:text-white">
     <span>It looks like you haven't created a project yet. <br> <b>Try out the demo project!</b></span>
     <button on:click={create} class="btn bg-amber-500 hover:bg-amber-600 text-amber-100 mt-3"><Fa icon={faPenNib} class="pr-2"/>Demo Project</button>
     <span class="text-sm">Music by Lifeformed. Available at <a class="underline text-blue-500" href="https://lifeformed.bandcamp.com/album/fastfall" target="_blank" rel="noreferrer nofollow">https://lifeformed.bandcamp.com/album/fastfall</a></span>    
