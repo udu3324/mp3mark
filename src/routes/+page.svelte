@@ -69,10 +69,10 @@
     <title>mp3mark</title> 
 </svelte:head>
 
-<div class="w-auto min-h-screen bg-white">
+<div class="w-auto min-h-screen bg-white dark:bg-slate-800">
     <div class="grid min-h-screen place-content-center">
-        <div class="min-h-screen bg-slate-100">
-            <div class="p-3 w-fit">
+        <div class="min-h-screen bg-slate-100 dark:bg-slate-700">
+            <div class="p-3 w-fit dark:text-white">
                 <b class="text-5xl">mp3mark</b>
                 <p class="pt-2">A website that lets you easily annotate/mark up audio. It works best on desktop.™</p>
                 

@@ -32,22 +32,22 @@
 </script>
 
 <div class="bg-slate-700 text-white rounded-md">
-    <div class="bg-slate-800 p-2 text-center text-lg rounded-t-md">
+    <div class="bg-slate-900 p-2 text-center text-lg rounded-t-md">
         <span>Project Manager</span>
     </div>
     <div class="min-h-48 max-h-80 overflow-y-auto">
         <table class="table-auto w-full">
             <thead>
-                <tr class="bg-slate-700">
+                <tr class="bg-slate-700 dark:bg-slate-800">
                     <th class="i text-left">#</th>
                     <th class="name text-left">Project Name</th>
                     <th class="file text-left">Imported File</th>
                     <th class="tracks text-left">Tracks</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-700">
+            <tbody class="divide-y divide-slate-700 dark:divide-slate-800">
                 {#each dataTable as data}
-                    <tr on:click={() => setLoad(data.id)} class="bg-slate-600 cursor-pointer hover:bg-slate-500">
+                    <tr on:click={() => setLoad(data.id)} class="bg-slate-600 dark:bg-slate-600 cursor-pointer hover:bg-slate-500">
                         {#if id === data.id}
                             <td class="i"><b>{data.id}</b></td>
                             <td class="name"><b>{data.projectName}</b></td>
@@ -64,7 +64,7 @@
             </tbody>
         </table>
     </div>
-    <div class="bg-slate-700 p-2 text-center text-sm rounded-b-md">
+    <div class="bg-slate-700 dark:bg-slate-800 p-2 text-center text-sm rounded-b-md">
         <p>Click on any project to load. (recent projects are marked bold)</p>
     </div>
 </div>

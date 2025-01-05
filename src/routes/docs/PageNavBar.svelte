@@ -63,7 +63,7 @@
     </button>
 </div>
 
-<div class="{navHidden} z-20 fixed h-screen w-40 md:w-56 pb-6 bg-slate-700 text-white">
+<div class="{navHidden} z-20 fixed h-screen w-40 md:w-56 pb-6 bg-slate-700 dark:bg-slate-800 text-white">
     <button on:click={home} class="p-3 bg-sky-400 w-full hover:bg-sky-500">
         <span class="text-xl md:text-3xl">mp3mark <span class="italic">docs</span></span>
     </button>
@@ -99,6 +99,6 @@
     }
 
     .nav-back {
-        @apply p-3 bg-slate-800 hover:bg-slate-600 flex place-items-center w-full;
+        @apply p-3 bg-slate-800 hover:bg-slate-600 dark:bg-slate-900 dark:hover:bg-slate-700 flex place-items-center w-full;
     }
 </style>

@@ -37,7 +37,7 @@
 
 </script>
 
-<div bind:clientWidth={innerWidth} class="w-screen min-h-screen bg-white">
+<div bind:clientWidth={innerWidth} class="w-screen min-h-screen bg-white dark:bg-slate-700 dark:text-white">
     <PageNavBar bind:innerWidth={innerWidth}/>
     <div bind:this={pageDiv} class="{pageMarginL} md:ml-56 px-10 pt-3 pb-10 h-screen overflow-y-auto">
         {#if pg === "intro"}

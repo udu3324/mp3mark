@@ -7,17 +7,17 @@ html, body {
 }
 
 .doc-heading-1 {
-    @apply text-3xl font-semibold text-gray-700 py-5;
+    @apply text-3xl font-semibold text-gray-700 py-5 dark:text-gray-300;
 }
 
 .doc-heading-2 {
-    @apply text-2xl font-semibold text-gray-700 py-3;
+    @apply text-2xl font-semibold text-gray-700 py-3 dark:text-gray-300;
 }
 
 .doc-heading-3 {
-    @apply text-xl font-semibold text-gray-700 pt-2;
+    @apply text-xl font-semibold text-gray-700 pt-2 dark:text-gray-300;
 }
 
 .doc-img {
-    @apply border-2 rounded-xl border-slate-300 mb-3;
+    @apply border-2 rounded-xl border-slate-300 dark:border-slate-600 dark:border-2 mb-3;
 }
