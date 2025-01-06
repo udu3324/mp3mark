@@ -16,6 +16,7 @@
     let playing = false
     let tracks = []
     let tracksObj
+    let bottomBar
 
     let bpm
     let durration
@@ -48,7 +49,9 @@
                 //console.log("found timeline data changes", tracks)
                 db.editor.update(projectID, { timelineData: tracks });
 
-                console.log("updated db sucessfully with new timeline data") 
+                console.log("updated db sucessfully with new timeline data")
+
+                bottomBar.updateHeight(tracks.length)
             }
         } catch (error) {
             console.log("couldn't save timeline data to db automatically!!!")
@@ -119,6 +122,7 @@
                 wavesurfer.loadBlob(editor.audio).then(() => {
                     console.log("sucessfully loaded!")
                     tracksObj.loaded()
+                    bottomBar.updateHeight(tracks.length)
                 })
             })
         })
@@ -148,7 +152,7 @@
 
     <TopBar bind:title={title} editorData={editorData} bind:projectID={projectID} />
     <Tracks bind:this={tracksObj} id="track-div" bind:loading={loading} bind:tracks={tracks} bind:bpm={bpm} bind:length={durration} bind:timeSigBeat={timeSignatureBeat}/>
-    <BottomBar bind:playing={playing} bind:volume={volume}/>
+    <BottomBar bind:this={bottomBar} bind:playing={playing} bind:volume={volume}/>
 </div>
 
 <style lang="postcss">

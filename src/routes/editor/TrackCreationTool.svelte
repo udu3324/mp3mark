@@ -46,8 +46,8 @@
     }
 </script>
 
-<div class="flex flex-row h-28 drop-shadow-lg">
-    <div class="sticky left-0 z-20 pointer-events-none {dropdown}">
+<div class="flex flex-row h-28">
+    <div class="sticky left-0 z-30 pointer-events-none {dropdown}">
         <div class="ml-[7.50rem] pt-6 m-2 mr-[-999px] flex">
             <button on:click={() => createTrack("vocal")} class="dropdown-btn bg-indigo-500"><Fa class="w-5 mr-2 text-xl" icon={faMicrophone}/> Vocals</button>
             <button on:click={() => createTrack("percussion")} class="dropdown-btn bg-rose-500"><Fa class="w-5 mr-2 text-xl" icon={faDrum}/> Percussion</button>
@@ -57,14 +57,16 @@
         </div>
     </div>
     
-    <div class="sticky left-0 z-10 h-28 min-w-28 basis-28 shadow-2xl bg-[#323A45] text-6xl">
-        <button class="w-full h-full text-white place-items-center place-content-center" on:click={trackCreationMenu}>
+    <div class="sticky left-0 z-30 h-28 min-w-28 basis-28 shadow-2xl bg-[#323A45] text-6xl">
+        <button on:click={trackCreationMenu} class="w-full h-full text-white place-items-center place-content-center outline-none">
             <Fa icon={faPlusCircle}/>
         </button>
     </div>
 
-    <div class="bg-[#656a70] place-items-center place-content-center track-outline w-full" style="min-width: {trackLength}px">
-        <span class="ml-4 text-white select-none">Click the (+) to add a new analysis track.</span>
+    <div class="bg-[#656a70] place-content-center track-outline w-full" style="min-width: {trackLength}px">
+        <div class="relative ml-4 z-20 select-none bg-[#50555a] w-fit text-white">
+            <span>Click the (+) to add a new analysis track.</span>
+        </div>
     </div>
 </div>
 

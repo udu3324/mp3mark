@@ -99,7 +99,7 @@
     }
 
     .track-menu {
-        @apply p-1 bg-black bg-opacity-30 backdrop-blur-sm fixed z-20 rounded-b-lg rounded-tr-lg;
+        @apply p-1 bg-black bg-opacity-30 backdrop-blur-sm fixed z-30 rounded-b-lg rounded-tr-lg;
         left: var(--menu-left);
         top: var(--menu-top);
     }

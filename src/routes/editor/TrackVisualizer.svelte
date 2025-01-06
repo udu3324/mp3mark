@@ -12,7 +12,7 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <div class="flex flex-row h-28">
-    <div class="sticky grid left-0 z-10 h-28 min-w-28 basis-28 shadow-2xl text-white bg-slate-500 text-6xl place-items-center place-content-center">
+    <div class="sticky grid left-0 z-30 h-28 min-w-28 basis-28 shadow-2xl text-white bg-slate-500 text-6xl place-items-center place-content-center">
         <Fa icon={faDownload}/>
     </div>
     <div bind:this={pollingTrack} id="polling_track" class="grow h-full bg-slate-300 border-gray-600 border-b">

@@ -265,7 +265,7 @@
     {#each tracks as track}
         <div class="flex flex-row h-28">
             <!-- Track Icon -->
-            <div class="sticky grid left-0 z-20 h-28 min-w-28 basis-28 shadow-2xl text-white {track[1]} text-5xl leading-3 place-items-center place-content-center">
+            <div class="sticky grid left-0 z-30 h-28 min-w-28 basis-28 shadow-2xl text-white {track[1]} text-5xl leading-3 place-items-center place-content-center">
                 {#if track[0] === "vocal"}
                     <Fa icon={faMicrophone}/>
                 {:else if track[0] === "percussion"}
@@ -306,15 +306,15 @@
                 <!-- Marks -->
                 {#each track[2] as mark}
                     <div style="min-width: {trackLength}px; height: calc(7rem - 2px); margin-top: 1px" class="flex pointer-events-none absolute">
-                        <div style="transform: translateX({mark[0] * marginRightValue}px); width: {mark[1] * marginRightValue}px" class="{track[1]} rounded-lg bg-opacity-45 text-white pointer-events-auto">
+                        <div style="transform: translateX({mark[0] * marginRightValue}px); width: {mark[1] * marginRightValue}px" class="{track[1]} rounded-lg bg-opacity-45 text-white pointer-events-auto z-20">
                             <div class="grid grid-cols-3 h-full">
-                                <div on:touchstart={(e) => drag("left", track, mark, e)} on:mousedown={(e) => drag("left", track, mark, e)} class="rounded-l-lg text-2xl h-full w-4 {track[1]} bg-opacity-85 flex place-items-center justify-center">
+                                <div on:touchstart={(e) => drag("left", track, mark, e)} on:mousedown={(e) => drag("left", track, mark, e)} class="rounded-l-lg text-2xl h-full w-4 {track[1]} bg-opacity-90 flex place-items-center justify-center">
                                     <Fa icon={faCaretLeft}/>
                                 </div>
 
                                 <button on:click={() => deleteMark(track, mark)} class="text-sm w-5 h-5 {track[1]} bg-opacity-55 justify-self-center self-end place-items-center"><Fa icon={faTrash}/></button>
                                 
-                                <div on:touchstart={(e) => drag("right", track, mark, e)} on:mousedown={(e) => drag("right", track, mark, e)} class="rounded-r-lg text-2xl h-full w-4 {track[1]} bg-opacity-85 flex place-items-center justify-center ml-auto">
+                                <div on:touchstart={(e) => drag("right", track, mark, e)} on:mousedown={(e) => drag("right", track, mark, e)} class="rounded-r-lg text-2xl h-full w-4 {track[1]} bg-opacity-90 flex place-items-center justify-center ml-auto">
                                     <Fa icon={faCaretRight}/>
                                 </div>
                             </div>
@@ -330,13 +330,13 @@
                 <!-- Flags -->
                 {#each track[3] as flag}
                     <div style="min-width: {trackLength}px; height: calc(7rem - 2px); margin-top: 1px" class="h-28 flex pointer-events-none absolute">
-                        <div style="transform: translateX({flag[0] * marginRightValue}px)" class="w-4 rounded-lg text-white pointer-events-auto select-none">
+                        <div style="transform: translateX({flag[0] * marginRightValue}px)" class="w-4 rounded-lg text-white pointer-events-auto select-none z-20">
                             {#if flag[1].length > 0}
-                                <div on:touchstart={(e) => drag2(track, flag, e)} on:mousedown={(e) => drag2(track, flag, e)} class="flag {track[1]} w-full h-full rounded-tl-lg absolute">
+                                <div on:touchstart={(e) => drag2(track, flag, e)} on:mousedown={(e) => drag2(track, flag, e)} class="flag {track[1]} w-full h-full rounded-tl-lg absolute bg-opacity-90">
                                     <button on:click={() => deleteFlag(track, flag)} class="mt-6 text-sm place-items-center w-4 h-6 border-y-2 border-black border-opacity-30"><Fa icon={faTrash}/></button>
                                 </div>
                             {:else}
-                                <div on:touchstart={(e) => drag2(track, flag, e)} on:mousedown={(e) => drag2(track, flag, e)} class="flag {track[1]} w-full h-full rounded-t-sm absolute">
+                                <div on:touchstart={(e) => drag2(track, flag, e)} on:mousedown={(e) => drag2(track, flag, e)} class="flag {track[1]} w-full h-full rounded-t-sm absolute bg-opacity-90">
                                     <button on:click={() => deleteFlag(track, flag)} class="mt-6 text-sm place-items-center w-4 h-6 border-y-2 border-black border-opacity-30"><Fa icon={faTrash}/></button>
                                 </div>
                             {/if}
@@ -349,7 +349,7 @@
                 <!-- Intro Text -->
                 {#if track[2].length < 1 && track[3].length < 1}
                     <div class="h-full flex pointer-events-none place-items-center">
-                        <span class="ml-4 bg-white z-10 select-none">Click anywhere in this {track[0]} track to create a mark.</span>
+                        <span class="ml-4 bg-white z-20 select-none">Click anywhere in this {track[0]} track to create a mark.</span>
                     </div>
                 {/if}
             </div>
