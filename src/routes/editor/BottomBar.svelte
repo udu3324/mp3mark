@@ -196,7 +196,7 @@
 
 <style lang="postcss">
     .controls-small {
-        @apply w-5 h-5 text-sm place-content-center place-items-center text-center;
+        @apply w-5 h-5 text-sm grid place-content-center place-items-center text-center;
     }
 
     .controls {
