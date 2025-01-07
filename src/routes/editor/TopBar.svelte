@@ -341,7 +341,7 @@
 
 <ProjectInfo bind:data={editorData} bind:hidden={dataDiv}/>
 
-<div class="{configDiv} fixed grid h-screen w-screen place-content-center z-50 bg-black bg-opacity-50">
+<div class="{configDiv} fixed grid grid-rows- h-screen w-screen place-content-center z-50 bg-black bg-opacity-50">
    <div class="bg-gray-700 p-5 text-white">
       <span>{configLabel}</span>
       <br>
