@@ -24,6 +24,8 @@
     let title
     let volume
     let volumeSet = false
+
+    let centerPlayhead
     
     //for loader
     let dataTable
@@ -148,8 +150,8 @@
     </div>
 
     <TopBar bind:title={title} editorData={editorData} bind:projectID={projectID} />
-    <Tracks bind:this={tracksObj} id="track-div" bind:loading={loading} bind:tracks={tracks} bind:bpm={bpm} bind:length={durration} bind:timeSigBeat={timeSignatureBeat}/>
-    <BottomBar bind:playing={playing} bind:volume={volume}/>
+    <Tracks bind:this={tracksObj} id="track-div" bind:loading={loading} bind:tracks={tracks} bind:bpm={bpm} bind:length={durration} bind:timeSigBeat={timeSignatureBeat} bind:centerPlayhead={centerPlayhead}/>
+    <BottomBar bind:playing={playing} bind:volume={volume} bind:centerPlayhead={centerPlayhead}/>
     <Playhead />
 </div>
 

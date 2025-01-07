@@ -1,14 +1,18 @@
 <script>
-    import { currentTime } from "$lib/editor"
-	import { faPlay, faSquare, faVolumeHigh, faVolumeLow, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
+    import { currentTime, resolution } from "$lib/editor"
+	import { faArrowRightToBracket, faDownLeftAndUpRightToCenter, faPlay, faSquare, faVolumeHigh, faVolumeLow, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
     import { wavesurfer } from "$lib/editor.js"
 	import Fa from "svelte-fa";
+	import { onMount } from "svelte";
+    import { db } from "$lib/db.js"
     
+    export let centerPlayhead = true
     export let playing = false
     export let volume
 
     let playColor = "bg-white"
     let pauseColor = "bg-white"
+    let centerHeadColor = "bg-white"
 
     let scrollX = 0
     let scrollY = 0
@@ -95,18 +99,87 @@
             }
         }
     }
+
+    currentTime.subscribe((value) => {
+        if (typeof getComputedStyle !== "function") {
+            return
+        }
+
+        if (!wavesurfer) {
+            return
+        }
+
+        if (!wavesurfer.isPlaying()) {
+            return
+        }
+
+        if (!centerPlayhead) {
+            return
+        }
+
+        const rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize)
+        const threshold = (innerWidth / 2) - (rootFontSize * 7)
+
+        const middle = (value * resolution) - threshold
+
+        //scroll fast if too far (rootFontSize * 7)
+        if (Math.abs(middle - scrollX) > (threshold)) {
+            scrollX = middle
+            return
+        }
+
+        //smooth scroll if its close enough and over the threshold
+        if ((value * resolution) > threshold) {
+            window.scrollTo({
+                left: middle,
+                behavior: "smooth"
+            })
+        }
+    })
+
+    $: {
+        if (centerPlayhead) {
+            centerHeadColor = "bg-yellow-600"
+        } else {
+            centerHeadColor = "bg-white"
+        }
+    }
+
+    function toggleCenterPlayhead() {
+        centerPlayhead = !centerPlayhead
+
+        db.preference.update(1, { playSnap: centerPlayhead }).then(() => {
+            console.log("sucessfully wrote to preferences db")
+        })
+    }
+
+    onMount(() => {
+        db.preference.get(1).then(pref => {
+            centerPlayhead = pref.playSnap
+        }).catch(() => {
+            console.log("error loading preferences!")
+        })
+    })
 </script>
 
 <svelte:window on:keydown={onKeyDown} bind:scrollX={scrollX} bind:scrollY={scrollY}/>
 
-<div bind:clientWidth={innerWidth} class="fixed flex bottom-0 w-screen h-16 z-40 bg-yellow-500">
+<div bind:clientWidth={innerWidth} class="fixed flex bottom-0 w-screen h-16 z-40 p-2 bg-yellow-500">
+    <div class="flex flex-col">
+        <button class="controls-small rotate-180 bg-white opacity-0" title="Playback Restart">
+            <Fa icon={faArrowRightToBracket}/>
+        </button>
+        <button on:click={toggleCenterPlayhead} class="controls-small mt-2 {centerHeadColor}" title="Center Playhead">
+            <Fa icon={faDownLeftAndUpRightToCenter}/>
+        </button>
+    </div>
     <button on:click={play} class="controls dynamic-play mx-2 button-icon outline-none {playColor}">
         <Fa icon={faPlay}/>
     </button>
     <button on:dblclick={pauseReturn} on:click={pause} class="controls dynamic-pause bg-white button-icon outline-none {pauseColor}">
         <Fa icon={faSquare}/>
     </button>
-    <div class="flex place-items-end ml-2 pb-2 pr-2 w-full max-w-96">
+    <div class="flex place-items-end ml-2 pr-2 w-full max-w-96">
         <div class="flex bg-white w-full">
             <button on:click={mute} class="w-6 px-4 py-1 button-icon">
                 {#if volume > 0}
@@ -122,8 +195,12 @@
 </div>
 
 <style lang="postcss">
+    .controls-small {
+        @apply w-5 h-5 text-sm place-content-center place-items-center text-center;
+    }
+
     .controls {
-        @apply min-w-12 min-h-12 my-2 place-content-center place-items-center text-center text-3xl;
+        @apply min-w-12 min-h-12 place-content-center place-items-center text-center text-3xl;
     }
 
     .dynamic-play:active {

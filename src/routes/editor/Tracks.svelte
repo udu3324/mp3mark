@@ -4,6 +4,7 @@
 	
     import { onMount } from "svelte"
     import { resolution, tracksHeight } from "$lib/editor.js"
+    import { db } from "$lib/db.js"
 	
 	import TrackContextMenu from "./TrackContextMenu.svelte"
 	import TrackVisualizer from "./TrackVisualizer.svelte"
@@ -16,9 +17,12 @@
 
     export let loading = true
 
+    export let centerPlayhead
+
     // biome-ignore lint/style/useConst: it isnt actually constant
     let note = ""
     let trackContextMenu
+    let trackMenuHidden = "hidden"
 
     let pollingTrack
     let trackLength = 0
@@ -40,11 +44,29 @@
     }
 
     //close the track creation menu if user scrolled away
+    let scrollXStore = 0
+    let scrollYStore = 0
     $: {
-        if (scrollX) {
-            trackContextMenu.closeContext()
+        if ((scrollX !== scrollXStore || scrollY !== scrollYStore) && trackMenuHidden === "") {
+            //check for if the user has playhead snapping on before closing
+            checkForSnap()
         }
-        if (scrollY) {
+
+        scrollXStore = scrollX
+        scrollYStore = scrollY
+    }
+
+    async function checkForSnap() {
+        const pref = await db.preference.get(1)
+
+        if (pref.playSnap) {
+            //toggle it off
+            db.preference.update(1, { playSnap: false }).then(() => {
+                console.log("unsnapped playhead sucessfully")
+            })
+            
+            centerPlayhead = false
+        } else {
             trackContextMenu.closeContext()
         }
     }
@@ -281,7 +303,7 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div bind:clientHeight={clientHeight} on:mousemove={handleMousemove} id="track-d" class="pt-12 pb-16" style="min-width: {trackLength}px">
-    <TrackContextMenu bind:this={trackContextMenu} bind:note={note} mouseX={mouseX} mouseY={mouseY} bind:tracks={tracks}/>
+    <TrackContextMenu bind:this={trackContextMenu} bind:trackMenuHidden={trackMenuHidden} bind:note={note} mouseX={mouseX} mouseY={mouseY} bind:tracks={tracks}/>
     
     <TrackVisualizer bind:pollingTrack={pollingTrack} trackLength={trackLength} ticks={ticks} timeSigBeat={timeSigBeat} marginRightValue={marginRightValue}/>
 

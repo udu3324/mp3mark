@@ -11,7 +11,7 @@
     // biome-ignore lint/style/useConst: ~
     export let mouseY = 0
 
-    let trackMenuHidden = "hidden"
+    export let trackMenuHidden = "hidden"
 
     let menuLeftPX = 0
     let menuTopPX = 0
