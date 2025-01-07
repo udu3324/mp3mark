@@ -2,8 +2,9 @@
     import { goto } from '$app/navigation'
     import { db } from "$lib/db.js"
 	import { initialize, wavesurfer, setMediaSession } from "$lib/editor.js"
-	import BottomBar from "./BottomBar.svelte";
+	import BottomBar from './BottomBar.svelte';
 	import Loader from "./Loader.svelte";
+	import Playhead from './Playhead.svelte';
 	import TopBar from "./TopBar.svelte";
 	import Tracks from "./Tracks.svelte";
 	import { onMount } from "svelte";
@@ -16,7 +17,6 @@
     let playing = false
     let tracks = []
     let tracksObj
-    let bottomBar
 
     let bpm
     let durration
@@ -50,8 +50,6 @@
                 db.editor.update(projectID, { timelineData: tracks });
 
                 console.log("updated db sucessfully with new timeline data")
-
-                bottomBar.updateHeight(tracks.length)
             }
         } catch (error) {
             console.log("couldn't save timeline data to db automatically!!!")
@@ -122,7 +120,6 @@
                 wavesurfer.loadBlob(editor.audio).then(() => {
                     console.log("sucessfully loaded!")
                     tracksObj.loaded()
-                    bottomBar.updateHeight(tracks.length)
                 })
             })
         })
@@ -152,7 +149,8 @@
 
     <TopBar bind:title={title} editorData={editorData} bind:projectID={projectID} />
     <Tracks bind:this={tracksObj} id="track-div" bind:loading={loading} bind:tracks={tracks} bind:bpm={bpm} bind:length={durration} bind:timeSigBeat={timeSignatureBeat}/>
-    <BottomBar bind:this={bottomBar} bind:playing={playing} bind:volume={volume}/>
+    <BottomBar bind:playing={playing} bind:volume={volume}/>
+    <Playhead />
 </div>
 
 <style lang="postcss">

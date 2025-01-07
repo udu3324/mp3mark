@@ -1,9 +1,8 @@
 <script>
-    import { currentTime, resolution } from "$lib/editor"
+    import { currentTime } from "$lib/editor"
 	import { faPlay, faSquare, faVolumeHigh, faVolumeLow, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
     import { wavesurfer } from "$lib/editor.js"
 	import Fa from "svelte-fa";
-    import { onMount } from "svelte";
     
     export let playing = false
     export let volume
@@ -14,12 +13,6 @@
     let scrollX = 0
     let scrollY = 0
     let innerWidth = 0
-    let innerHeight = 0
-
-    let playHeight = 0
-    let playLeftPX = 0
-
-    let isScrollable = false
 
     $: {
         if (playing) {
@@ -102,51 +95,9 @@
             }
         }
     }
-
-    currentTime.subscribe((value) => {
-        playLeftPX = (value * resolution)
-    })
-
-    //calculate height of the playhead line
-    export function updateHeight(numOfTracks) {
-        //if (typeof document === 'undefined') return
-
-        //const track = document.getElementById('track-d')
-        //if (!track) return
-        playHeight = (numOfTracks + 3) * 7
-        console.log("playHeight", playHeight)
-
-        //check if the document can scroll to switch between sticky/nonsticky bottom playhead
-
-        const rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize)
-
-        //total tracks px + padding
-        const test = (playHeight * rootFontSize) + (7 * rootFontSize)
-
-        if (test > innerHeight) {
-            isScrollable = true
-        } else {
-            isScrollable = false
-        }
-        console.log("isScrollable", isScrollable)
-    }
 </script>
 
-<svelte:window on:keydown={onKeyDown} bind:scrollX={scrollX} bind:scrollY={scrollY} bind:innerHeight={innerHeight}/>
-
-<div>
-    <!-- Playhead Line -->
-    <div style="left: calc({playLeftPX}px + 7rem); top: 0; height: calc({playHeight}rem - 4rem)" class="absolute w-[2px] z-10 top-0 bg-slate-800 pointer-events-none"></div>
-
-    <!-- Playhead Top Head -->
-    <div style="left: calc({playLeftPX}px + 7rem - 6px); top: calc({scrollY}px + 3rem)" class="triangle-t absolute z-20 pointer-events-none"></div>
-
-    <!-- Playhead Middle Head -->
-    <div style="left: calc({playLeftPX}px + 7rem - 6px); top: calc(7rem + 3rem - 7px)" class="triangle-b absolute z-20 pointer-events-none"></div>
-
-    <!-- Playhead Bottom Head -->
-    <div style="left: calc({playLeftPX}px + 7rem - 6px); {isScrollable ? `bottom: calc(4rem - ${scrollY}px);` : `top: calc(${playHeight}rem - 4rem - 7px);`}" class="triangle-b absolute z-20 pointer-events-none"></div>
-</div>
+<svelte:window on:keydown={onKeyDown} bind:scrollX={scrollX} bind:scrollY={scrollY}/>
 
 <div bind:clientWidth={innerWidth} class="fixed flex bottom-0 w-screen h-16 z-40 bg-yellow-500">
     <button on:click={play} class="controls dynamic-play mx-2 button-icon outline-none {playColor}">
@@ -185,13 +136,5 @@
 
     .button-icon {
         @apply grid place-items-center place-content-center;
-    }
-
-    .triangle-t {
-        @apply w-0 h-0 border-t-[7px] border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-slate-800;
-    }
-
-    .triangle-b {
-        @apply w-0 h-0 border-b-[7px] border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-slate-800;
     }
 </style>

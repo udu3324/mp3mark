@@ -81,6 +81,13 @@
 
         closeContext()
     }
+
+    function onKeyDown(e) {
+        if (e.keyCode === 13) {
+            //todo preferences
+            createFlag()
+        }
+    }
 </script>
 
 <div style="--menu-left: {menuLeftPX}px; --menu-top: {menuTopPX}px;" class="track-menu {trackMenuHidden}">
@@ -90,7 +97,7 @@
         <button on:click={createMark} class="button-icon text-2xl mr-1"><Fa icon={faMarker}/></button>
     </div>
 
-    <input bind:this={noteInput} bind:value={note} type="text" maxlength="20" placeholder="set note" class="bg-white bg-opacity-90 outline-none p-3 rounded-b-lg rounded-tr-lg">
+    <input bind:this={noteInput} bind:value={note} on:keydown={onKeyDown} type="text" maxlength="20" placeholder="set note" class="bg-white bg-opacity-90 outline-none p-3 rounded-b-lg rounded-tr-lg">
 </div>
 
 <style lang="postcss">

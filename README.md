@@ -69,7 +69,7 @@ npm run preview
  - [ ] dark mode
  - [ ] localization (i18n)
  - [ ] lighthouse/seo checks
- - [ ] firefox css fixes
+ - [X] firefox css fixes
  - [ ] snap playhead to scroll
  - [ ] playback snapping to beat
 

@@ -58,7 +58,7 @@
     </div>
     
     <div class="sticky left-0 z-30 h-28 min-w-28 basis-28 shadow-2xl bg-[#323A45] text-6xl">
-        <button on:click={trackCreationMenu} class="w-full h-full text-white place-items-center place-content-center outline-none">
+        <button on:click={trackCreationMenu} class="w-full h-full text-white grid place-items-center place-content-center outline-none">
             <Fa icon={faPlusCircle}/>
         </button>
     </div>

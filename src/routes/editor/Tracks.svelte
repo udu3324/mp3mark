@@ -3,7 +3,7 @@
 	import { faCaretLeft, faCaretRight, faDrum, faGuitar, faMicrophone, faObjectUngroup, faTrash, faWaveSquare } from "@fortawesome/free-solid-svg-icons"
 	
     import { onMount } from "svelte"
-    import { resolution } from "$lib/editor.js"
+    import { resolution, tracksHeight } from "$lib/editor.js"
 	
 	import TrackContextMenu from "./TrackContextMenu.svelte"
 	import TrackVisualizer from "./TrackVisualizer.svelte"
@@ -26,6 +26,28 @@
     let ticks = 0
     let tickOffset = 0
     let marginRightValue = 0
+
+    // biome-ignore lint/style/useConst: <explanation>
+    let scrollX = 0
+    // biome-ignore lint/style/useConst: <explanation>
+    let scrollY = 0
+
+    let clientHeight = 0
+    $: {
+        if (clientHeight) {
+            tracksHeight.set(clientHeight)
+        }
+    }
+
+    //close the track creation menu if user scrolled away
+    $: {
+        if (scrollX) {
+            trackContextMenu.closeContext()
+        }
+        if (scrollY) {
+            trackContextMenu.closeContext()
+        }
+    }
 
     //this gets the visualizer's length to calculate a bunch of stuff
     function updateLength() {
@@ -245,6 +267,8 @@
     })
 </script>
 
+<svelte:window bind:scrollX={scrollX} bind:scrollY={scrollY}/>
+
 <div class="{deleteTrackDiv} fixed grid h-screen w-screen place-content-center z-50 bg-black bg-opacity-50">
     <div class="bg-gray-700 p-5 text-white">
         <span>Are you sure you want to delete this {trackName} track?<br> This action is <b>irreversible</b>.</span>
@@ -256,7 +280,7 @@
 </div>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div on:mousemove={handleMousemove} id="track-d" class="pt-12 pb-16" style="min-width: {trackLength}px">
+<div bind:clientHeight={clientHeight} on:mousemove={handleMousemove} id="track-d" class="pt-12 pb-16" style="min-width: {trackLength}px">
     <TrackContextMenu bind:this={trackContextMenu} bind:note={note} mouseX={mouseX} mouseY={mouseY} bind:tracks={tracks}/>
     
     <TrackVisualizer bind:pollingTrack={pollingTrack} trackLength={trackLength} ticks={ticks} timeSigBeat={timeSigBeat} marginRightValue={marginRightValue}/>

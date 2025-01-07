@@ -4,6 +4,7 @@ import { writable } from 'svelte/store'
 let wavesurfer
 
 const currentTime = writable(0)
+const tracksHeight = writable(0)
 
 const resolution = 30
 
@@ -51,4 +52,4 @@ function setMediaSession(title) {
     projectName = title
 }
 
-export { initialize, wavesurfer, currentTime, resolution, setMediaSession }
+export { initialize, wavesurfer, currentTime, resolution, setMediaSession, tracksHeight }
