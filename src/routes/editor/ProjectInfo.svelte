@@ -64,17 +64,23 @@
     }
 </script>
 
-<div class="{hidden} w-screen bg-[#a1a5ae]">
+<div class="{hidden} w-screen bg-[#a1a5ae] dark:text-white">
     <div class="fixed grid h-screen w-screen place-content-center z-50 backdrop-blur-sm">
-       <div class="bg-white p-4 shadow-lg w-96">
-          <div class="border-x border-t w-full bg-gray-200">Project Info.txt</div>
+       <div class="bg-white dark:bg-slate-600 p-4 shadow-lg w-96">
+          <div class="border-x border-t dark:border-slate-900  w-full bg-gray-200 dark:bg-slate-800">Project Info.txt</div>
  
-          <div class="flex flex-col w-full h-56 overflow-y-auto border">
+          <div class="dark:bg-slate-700 flex flex-col w-full h-56 overflow-y-auto border dark:border-slate-900">
              <span>{@html formatted}</span>
           </div>
           
-          <button on:click={copy} class="w-full bg-white hover:bg-gray-400 border-x border-b">copy to clipboard</button>
-          <button on:click={() => {hidden = "hidden"}} class="w-full bg-white hover:bg-gray-400 border-x border-b">close</button>
+          <button on:click={copy} class="btn">copy to clipboard</button>
+          <button on:click={() => {hidden = "hidden"}} class="btn">close</button>
        </div>
     </div>
 </div>
+
+<style lang="postcss">
+    .btn {
+        @apply w-full bg-white dark:bg-slate-800 hover:bg-gray-400 dark:hover:bg-slate-900 border-x border-b dark:border-slate-900;
+    }
+</style>

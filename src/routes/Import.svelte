@@ -239,7 +239,7 @@
         <Fa class="animate-spin delay-1000 text-2xl text-orange-900" icon={faCog}/>
         <span class="pl-3 text-orange-900 select-none">Importing "{fileName}"..</span>
     </div>
-    <div class="p-3">
+    <div class="p-3 text-orange-950">
         <div class="flex border-b-2 border-orange-300">
             <p class="bg-orange-300 p-1 select-none">Project Name - </p>
             <input bind:value={projectName} class="p-1 h-8 w-44" type="text" maxlength="22" placeholder="name">

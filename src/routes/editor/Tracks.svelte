@@ -302,7 +302,7 @@
 </div>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div bind:clientHeight={clientHeight} on:mousemove={handleMousemove} id="track-d" class="pt-12 pb-16" style="min-width: {trackLength}px">
+<div bind:clientHeight={clientHeight} on:mousemove={handleMousemove} id="track-d" class="pt-12 pb-16 dark:bg-slate-500" style="min-width: {trackLength}px">
     <TrackContextMenu bind:this={trackContextMenu} bind:trackMenuHidden={trackMenuHidden} bind:note={note} mouseX={mouseX} mouseY={mouseY} bind:tracks={tracks}/>
     
     <TrackVisualizer bind:pollingTrack={pollingTrack} trackLength={trackLength} ticks={ticks} timeSigBeat={timeSigBeat} marginRightValue={marginRightValue}/>
@@ -339,12 +339,12 @@
                 <div class="time-divider h-28 flex absolute">
                     {#each {length: ticks} as _, i}
                         {#if i % timeSigBeat === 0}
-                            <div on:click={(e) => trackContextMenu.showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick bg-gray-400 h-28"></div>
+                            <div on:click={(e) => trackContextMenu.showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick tick-shadow bg-gray-400 dark:bg-slate-600 h-28"></div>
                         {:else}
                             {#if i % 2 === 0}
-                                <div on:click={(e) => trackContextMenu.showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick bg-gray-300 h-28"></div>
+                                <div on:click={(e) => trackContextMenu.showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick tick-shadow bg-gray-300 dark:bg-slate-500 h-28"></div>
                             {:else}
-                                <div on:click={(e) => trackContextMenu.showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick bg-gray-200 h-28"></div>
+                                <div on:click={(e) => trackContextMenu.showContext(tracks.indexOf(track), i)} style="--padding-right: {marginRightValue}px;" class="tick tick-shadow bg-gray-200 dark:bg-slate-400 h-28"></div>
                             {/if}
                         {/if}
                     {/each}
@@ -395,7 +395,7 @@
                 <!-- Intro Text -->
                 {#if track[2].length < 1 && track[3].length < 1}
                     <div class="h-full flex pointer-events-none place-items-center">
-                        <span class="ml-4 bg-white z-20 select-none">Click anywhere in this {track[0]} track to create a mark.</span>
+                        <span class="ml-4 bg-white dark:bg-slate-700 dark:text-white z-20 select-none">Click anywhere in this {track[0]} track to create a mark.</span>
                     </div>
                 {/if}
             </div>
@@ -414,8 +414,10 @@
         padding-right: var(--padding-right);
         height: 100%;
         width: 1px;
+    }
 
-        box-shadow: 0 -1px 0 #4b5563 inset, 0 1px 0 #4b5563 inset;
+    .tick-shadow {
+        @apply shadow-[0_-1px_0_#4b5563_inset,0_1px_0_#4b5563_inset] dark:shadow-[0_-1px_0_#1e293b_inset,0_1px_0_#1e293b_inset];
     }
 
     .flag {

@@ -47,7 +47,7 @@
 
 <div>
     <!-- Line -->
-    <div style="left: calc({playLeftPX}px + 7rem); top: 0; height: calc({playHeight}px - 4rem)" class="absolute w-[2px] z-10 top-0 bg-slate-800 pointer-events-none"></div>
+    <div style="left: calc({playLeftPX}px + 7rem); top: 0; height: calc({playHeight}px - 4rem)" class="absolute w-[2px] z-10 top-0 bg-slate-800 dark:bg-white pointer-events-none"></div>
 
     <!-- Top Head -->
     <div style="left: calc({playLeftPX}px + 7rem - 6px); top: calc({scrollY}px + 3rem)" class="triangle-t absolute z-20 pointer-events-none"></div>
@@ -62,9 +62,11 @@
 <style lang="postcss">
     .triangle-t {
         @apply w-0 h-0 border-t-[7px] border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-slate-800;
+        @apply dark:border-white dark:border-l-transparent dark:border-r-transparent;
     }
 
     .triangle-b {
         @apply w-0 h-0 border-b-[7px] border-l-[7px] border-l-transparent border-r-[7px] border-r-transparent border-slate-800;
+        @apply dark:border-white dark:border-l-transparent dark:border-r-transparent;
     }
 </style>

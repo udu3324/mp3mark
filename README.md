@@ -73,6 +73,7 @@ npm run preview
  - [X] snap playhead to scroll
  - [ ] playback snapping to beat
  - [ ] code comments/reformat/check
+ - [ ] time marks
 
 ## Credits
 The audio used for the demo project is "Fastfall - Cider Time" by Lifeformed. Check their album out [here](https://lifeformed.bandcamp.com/album/fastfall)! It is under *CC BY-NC-SA 3.0* and to be used without profit.

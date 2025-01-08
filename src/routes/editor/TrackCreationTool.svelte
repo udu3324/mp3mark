@@ -63,8 +63,8 @@
         </button>
     </div>
 
-    <div class="bg-[#656a70] place-content-center track-outline w-full" style="min-width: {trackLength}px">
-        <div class="relative ml-4 z-20 select-none bg-[#50555a] w-fit text-white">
+    <div class="bg-[#656a70] dark:bg-slate-500 place-content-center track-outline w-full" style="min-width: {trackLength}px">
+        <div class="relative ml-4 z-20 select-none bg-[#50555a] dark:bg-slate-200 w-fit text-white dark:text-black">
             <span>Click the (+) to add a new analysis track.</span>
         </div>
     </div>

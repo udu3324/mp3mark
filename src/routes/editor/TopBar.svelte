@@ -353,41 +353,44 @@
    </div>
 </div>
 
-<div bind:clientWidth={innerWidth} class="fixed grid grid-flow-row inset-x-0 top-0 z-40 w-screen h-12 bg-slate-400">
+<div bind:clientWidth={innerWidth} class="fixed grid grid-flow-row inset-x-0 top-0 z-40 w-screen h-12 bg-slate-400 dark:bg-slate-800">
    
-   <div class="{placeTime} bg-gray-100 w-32 text-3xl h-full p-1 grid place-items-center">
+   <div class="{placeTime} bg-gray-100 dark:bg-slate-900 dark:text-white w-32 text-3xl h-full p-1 grid place-items-center">
       <p>{time}</p>
    </div>
 
-   <div class="absolute pr-auto place-items-start select-none text-gray-800">
+   <div class="absolute pr-auto place-items-start select-none text-slate-200">
       <span class="ml-1">{branding}{title}</span>
  
       <div id="whitelisted" class="flex absolute">
          <div>
-            <button on:click={toggleFileMenu} class="button-menu hover:bg-slate-300"><u>F</u>ile</button>
-            <div class="{fileMenu} fixed bg-white text-gray-800 w-48 divide-y py-1 rounded-b-lg rounded-tr-lg border shadow-lg">
+            <button on:click={toggleFileMenu} class="button-menu hover:bg-slate-300 dark:hover:bg-slate-900"><u>F</u>ile</button>
+
+            <div class="{fileMenu} menu bg-white text-gray-800 dark:text-slate-200 dark:bg-slate-800 dark:divide-slate-700 dark:border-slate-700">
                <div>
                   <!-- <button class="button-in-menu"><Fa class="w-5 mr-2" icon={faFileImport}/> Import Project...</button> -->
-                  <button on:click={info} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faFilePen}/> Project Info</button>
-                  <button on:click={exportProject} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faDownload}/> Export File</button>
+                  <button on:click={info} class="button-in-menu hover:bg-gray-300 dark:hover:bg-slate-600"><Fa class="w-5 mr-2" icon={faFilePen}/> Project Info</button>
+                  <button on:click={exportProject} class="button-in-menu hover:bg-gray-300 dark:hover:bg-slate-600"><Fa class="w-5 mr-2" icon={faDownload}/> Export File</button>
                </div>
-               <button on:click={back} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faDoorOpen}/> Exit</button>
+               <button on:click={back} class="button-in-menu hover:bg-gray-300 dark:hover:bg-slate-600"><Fa class="w-5 mr-2" icon={faDoorOpen}/> Exit</button>
             </div>
          </div>
          <div>
-            <button on:click={toggleConfigMenu} class="button-menu hover:bg-slate-300"><u>C</u>onfigure</button>
-            <div class="{configMenu} fixed bg-white text-gray-800 w-48 divide-y py-1 rounded-b-lg rounded-tr-lg border shadow-lg">
+            <button on:click={toggleConfigMenu} class="button-menu hover:bg-slate-300 dark:hover:bg-slate-900"><u>C</u>onfigure</button>
+            
+            <div class="{configMenu} menu bg-white text-gray-800 dark:text-slate-200 dark:bg-slate-800 dark:divide-slate-700 dark:border-slate-700">
                <div>
-                  <button on:click={configName} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faQuoteLeft}/> Project Name</button>
-                  <button on:click={configBPM} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faHashtag}/> BPM</button>
-                  <button on:click={configTimeSignatureBeat} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faClock}/> Time Signature Beat</button>
-                  <button on:click={configTimeSignatureNote} class="button-in-menu hover:bg-gray-300"><Fa class="w-5 mr-2" icon={faHourglassEnd}/> Time Signature Note</button>
+                  <button on:click={configName} class="button-in-menu hover:bg-gray-300 dark:hover:bg-slate-600"><Fa class="w-5 mr-2" icon={faQuoteLeft}/> Project Name</button>
+                  <button on:click={configBPM} class="button-in-menu hover:bg-gray-300 dark:hover:bg-slate-600"><Fa class="w-5 mr-2" icon={faHashtag}/> BPM</button>
+                  <button on:click={configTimeSignatureBeat} class="button-in-menu hover:bg-gray-300 dark:hover:bg-slate-600"><Fa class="w-5 mr-2" icon={faClock}/> Time Signature Beat</button>
+                  <button on:click={configTimeSignatureNote} class="button-in-menu hover:bg-gray-300 dark:hover:bg-slate-600"><Fa class="w-5 mr-2" icon={faHourglassEnd}/> Time Signature Note</button>
                </div>
             </div>
          </div>
          <div>
-            <button on:click={toggleHelpMenu} class="button-menu hover:bg-sky-300"><u>H</u>elp</button>
-            <div class="{helpMenu} fixed bg-sky-400 w-48 divide-y py-1 divide-sky-500 pb-1 rounded-b-lg rounded-tr-lg text-white border border-sky-500 shadow-lg">
+            <button on:click={toggleHelpMenu} class="button-menu hover:bg-sky-300 dark:hover:bg-sky-700"><u>H</u>elp</button>
+            
+            <div class="{helpMenu} menu bg-sky-400 divide-sky-500 text-white border-sky-500">
                <div>
                   <button on:click={() => docs("layout")} class="button-in-menu hover:bg-sky-500"><Fa class="w-5 mr-2" icon={faPenToSquare}/> Editor</button>
                   <button on:click={() => docs("tracks")} class="button-in-menu hover:bg-sky-500"><Fa class="w-5 mr-2" icon={faChartGantt}/> Tracks</button>
@@ -398,8 +401,9 @@
             </div>
          </div>
          <div>
-            <button on:click={toggleGithubMenu} class="button-menu hover:bg-amber-300"><u>G</u>ithub</button>
-            <div class="{githubMenu} fixed bg-amber-500 w-48 divide-y divide-amber-600 pb-1 rounded-b-lg rounded-tr-lg text-amber-950 border border-amber-600 shadow-lg">
+            <button on:click={toggleGithubMenu} class="button-menu hover:bg-amber-300 dark:hover:bg-amber-700"><u>G</u>ithub</button>
+            
+            <div class="{githubMenu} menu bg-amber-500 divide-amber-600 text-amber-950 border-amber-600">
                <div class="p-1">
                   <span>mp3mark is a open source project. please star it!</span>
                </div>
@@ -422,5 +426,9 @@
 
    .button-in-menu {
       @apply text-left p-1 pl-2 w-full flex items-center;
+   }
+
+   .menu {
+      @apply fixed w-48 divide-y py-1 rounded-b-lg rounded-tr-lg border shadow-lg;
    }
 </style>

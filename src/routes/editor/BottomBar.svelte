@@ -20,7 +20,7 @@
 
     $: {
         if (playing) {
-            playColor = "bg-green-400"
+            playColor = "bg-green-400 dark:bg-green-600 dark:text-green-500"
         } else {
             playColor = "bg-white"
         }
@@ -101,6 +101,7 @@
     }
 
     currentTime.subscribe((value) => {
+
         if (typeof getComputedStyle !== "function") {
             return
         }
@@ -131,17 +132,16 @@
         //smooth scroll if its close enough and over the threshold
         if ((value * resolution) > threshold) {
             window.scrollTo({
-                left: middle,
-                behavior: "smooth"
+                left: middle
             })
         }
     })
 
     $: {
         if (centerPlayhead) {
-            centerHeadColor = "bg-yellow-600"
+            centerHeadColor = "bg-yellow-600 dark:bg-slate-800"
         } else {
-            centerHeadColor = "bg-white"
+            centerHeadColor = "bg-white dark:bg-slate-700"
         }
     }
 
@@ -164,23 +164,23 @@
 
 <svelte:window on:keydown={onKeyDown} bind:scrollX={scrollX} bind:scrollY={scrollY}/>
 
-<div bind:clientWidth={innerWidth} class="fixed flex bottom-0 w-screen h-16 z-40 p-2 bg-yellow-500">
+<div bind:clientWidth={innerWidth} class="fixed flex bottom-0 w-screen h-16 z-40 p-2 bg-yellow-500 dark:bg-slate-600 dark:text-slate-500">
     <div class="flex flex-col">
-        <button class="controls-small rotate-180 bg-white opacity-0" title="Playback Restart">
+        <button class="controls-small rotate-180 bg-white dark:bg-slate-700 opacity-0" title="Playback Restart">
             <Fa icon={faArrowRightToBracket}/>
         </button>
-        <button on:click={toggleCenterPlayhead} class="controls-small mt-2 {centerHeadColor}" title="Center Playhead">
+        <button on:click={toggleCenterPlayhead} class="controls-small mt-2 {centerHeadColor} text-white" title="Center Playhead">
             <Fa icon={faDownLeftAndUpRightToCenter}/>
         </button>
     </div>
-    <button on:click={play} class="controls dynamic-play mx-2 button-icon outline-none {playColor}">
+    <button on:click={play} class="controls dynamic-play mx-2 button-icon outline-none dark:bg-slate-700 {playColor}">
         <Fa icon={faPlay}/>
     </button>
-    <button on:dblclick={pauseReturn} on:click={pause} class="controls dynamic-pause bg-white button-icon outline-none {pauseColor}">
+    <button on:dblclick={pauseReturn} on:click={pause} class="controls dynamic-pause bg-white dark:bg-slate-700 button-icon outline-none {pauseColor}">
         <Fa icon={faSquare}/>
     </button>
     <div class="flex place-items-end ml-2 pr-2 w-full max-w-96">
-        <div class="flex bg-white w-full">
+        <div class="flex place-items-center bg-white dark:bg-slate-700 w-full">
             <button on:click={mute} class="w-6 px-4 py-1 button-icon">
                 {#if volume > 0}
                     <Fa icon={faVolumeLow}/>
@@ -188,7 +188,7 @@
                     <Fa icon={faVolumeMute}/>
                 {/if}
             </button>
-            <input id="dont-focus" class="w-full outline-none" type="range" min="0" max="1" step="0.01" bind:value={volume}>
+            <input id="dont-focus" class="w-full outline-none h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-600" type="range" min="0" max="1" step="0.01" bind:value={volume}>
             <button on:click={highVolume} class="w-6 px-4 py-1 button-icon"><Fa icon={faVolumeHigh}/></button>
         </div>
     </div>
@@ -204,11 +204,11 @@
     }
 
     .dynamic-play:active {
-        @apply bg-green-200;
+        @apply bg-green-200 dark:bg-green-500 dark:text-green-400;
     }
 
     .dynamic-pause:active {
-        @apply bg-red-400;
+        @apply bg-red-400 dark:bg-red-700 text-red-600;
     }
 
     .button-icon {
