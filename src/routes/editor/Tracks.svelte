@@ -302,7 +302,7 @@
 </div>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div bind:clientHeight={clientHeight} on:mousemove={handleMousemove} id="track-d" class="pt-12 pb-16 dark:bg-slate-500" style="min-width: {trackLength}px">
+<div bind:clientHeight={clientHeight} on:mousemove={handleMousemove} id="track-d" class="pt-12 pb-16 dark:bg-slate-800" style="min-width: {trackLength}px">
     <TrackContextMenu bind:this={trackContextMenu} bind:trackMenuHidden={trackMenuHidden} bind:note={note} mouseX={mouseX} mouseY={mouseY} bind:tracks={tracks}/>
     
     <TrackVisualizer bind:pollingTrack={pollingTrack} trackLength={trackLength} ticks={ticks} timeSigBeat={timeSigBeat} marginRightValue={marginRightValue}/>

@@ -1,11 +1,12 @@
 <script>
     import { currentTime, resolution } from "$lib/editor"
-	import { faArrowRightToBracket, faDownLeftAndUpRightToCenter, faPlay, faSquare, faVolumeHigh, faVolumeLow, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
+    import { setDarkMode } from "$lib/db"
+	import { faDownLeftAndUpRightToCenter, faMoon, faPlay, faSquare, faVolumeHigh, faVolumeLow, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
     import { wavesurfer } from "$lib/editor.js"
 	import Fa from "svelte-fa";
 	import { onMount } from "svelte";
     import { db } from "$lib/db.js"
-    
+
     export let centerPlayhead = true
     export let playing = false
     export let volume
@@ -153,12 +154,28 @@
         })
     }
 
+    let toggledDark = false
+    function darkMode() {
+        console.log("clicked with ", toggledDark)
+        toggledDark = !toggledDark
+
+        setDarkMode(toggledDark)
+    }
+
     onMount(() => {
         db.preference.get(1).then(pref => {
             centerPlayhead = pref.playSnap
+
+            toggledDark = pref.darkMode
+            if (toggledDark) {
+                const html = document.documentElement
+                html.classList.add('dark')
+            }
         }).catch(() => {
             console.log("error loading preferences!")
         })
+
+
     })
 </script>
 
@@ -166,10 +183,10 @@
 
 <div bind:clientWidth={innerWidth} class="fixed flex bottom-0 w-screen h-16 z-40 p-2 bg-yellow-500 dark:bg-slate-600 dark:text-slate-500">
     <div class="flex flex-col">
-        <button class="controls-small rotate-180 bg-white dark:bg-slate-700 opacity-0" title="Playback Restart">
-            <Fa icon={faArrowRightToBracket}/>
+        <button on:click={darkMode} class="controls-small bg-white dark:bg-slate-700" title="Playback Restart">
+            <Fa icon={faMoon}/>
         </button>
-        <button on:click={toggleCenterPlayhead} class="controls-small mt-2 {centerHeadColor} text-white" title="Center Playhead">
+        <button on:click={toggleCenterPlayhead} class="controls-small mt-2 {centerHeadColor}" title="Center Playhead">
             <Fa icon={faDownLeftAndUpRightToCenter}/>
         </button>
     </div>

@@ -359,7 +359,7 @@
       <p>{time}</p>
    </div>
 
-   <div class="absolute pr-auto place-items-start select-none text-slate-200">
+   <div class="absolute pr-auto place-items-start select-none dark:text-slate-200">
       <span class="ml-1">{branding}{title}</span>
  
       <div id="whitelisted" class="flex absolute">
