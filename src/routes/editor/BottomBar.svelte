@@ -172,10 +172,21 @@
                 html.classList.add('dark')
             }
         }).catch(() => {
-            console.log("error loading preferences!")
+            console.log("error loading preferences! might be missing. trying to create it...")
+
+            db.preference.add({
+                darkMode: false, 
+	    	    playSnap: true, 
+	    	    analysisEnterAction: "flag"
+            }).then(() => {
+                console.log("sucessfully created preference db")
+                
+                centerPlayhead = true
+                toggledDark = false
+            }).catch(() => {
+                console.log("could not create preference db!!!! SECOND FAIL")
+            })
         })
-
-
     })
 </script>
 

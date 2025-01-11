@@ -10,7 +10,7 @@ db.version(1).stores({
 
 db.on('populate', () => {
     db.preference.add({
-        darkMode: true, 
+        darkMode: false, 
 		playSnap: true, 
 		analysisEnterAction: "flag"
     })
