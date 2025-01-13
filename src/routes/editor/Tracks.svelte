@@ -14,6 +14,7 @@
     export let bpm
     export let length
     export let timeSigBeat
+    export let enterAction
 
     export let loading = true
 
@@ -303,7 +304,7 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div bind:clientHeight={clientHeight} on:mousemove={handleMousemove} id="track-d" class="pt-12 pb-16 dark:bg-slate-800" style="min-width: {trackLength}px">
-    <TrackContextMenu bind:this={trackContextMenu} bind:trackMenuHidden={trackMenuHidden} bind:note={note} mouseX={mouseX} mouseY={mouseY} bind:tracks={tracks}/>
+    <TrackContextMenu bind:enterAction={enterAction} bind:this={trackContextMenu} bind:trackMenuHidden={trackMenuHidden} bind:note={note} mouseX={mouseX} mouseY={mouseY} bind:tracks={tracks}/>
     
     <TrackVisualizer bind:pollingTrack={pollingTrack} trackLength={trackLength} ticks={ticks} timeSigBeat={timeSigBeat} marginRightValue={marginRightValue}/>
 
@@ -353,6 +354,7 @@
                 {#each track[2] as mark}
                     <div style="min-width: {trackLength}px; height: calc(7rem - 2px); margin-top: 1px" class="flex pointer-events-none absolute">
                         <div style="transform: translateX({mark[0] * marginRightValue}px); width: {mark[1] * marginRightValue}px" class="{track[1]} rounded-lg bg-opacity-45 text-white pointer-events-auto z-20">
+                            <!-- Mark Area -->
                             <div class="grid grid-cols-3 h-full">
                                 <div on:touchstart={(e) => drag("left", track, mark, e)} on:mousedown={(e) => drag("left", track, mark, e)} class="rounded-l-lg text-2xl h-full w-4 {track[1]} bg-opacity-90 flex place-items-center justify-center">
                                     <Fa icon={faCaretLeft}/>
@@ -365,9 +367,10 @@
                                 </div>
                             </div>
 
+                            <!-- Text -->
                             <div style="transform: translateY(calc(-7rem + 1px))" class="pointer-events-none">
                                 {#if mark[2].length > 0}
-                                    <span class="{track[1]} rounded-tl-lg bg-opacity-95 border-black border-r-2 border-b-2 border-opacity-30 select-none">{mark[2]}</span>
+                                    <span class="{track[1]} rounded-tl-lg bg-opacity-95 border-black border-r-2 border-b-2 border-opacity-30 select-none whitespace-nowrap">{mark[2]}</span>
                                 {/if}
                             </div>
                         </div>
@@ -377,6 +380,7 @@
                 {#each track[3] as flag}
                     <div style="min-width: {trackLength}px; height: calc(7rem - 2px); margin-top: 1px" class="h-28 flex pointer-events-none absolute">
                         <div style="transform: translateX({flag[0] * marginRightValue}px)" class="w-4 rounded-lg text-white pointer-events-auto select-none z-20">
+                            <!-- Flag Area -->
                             {#if flag[1].length > 0}
                                 <div on:touchstart={(e) => drag2(track, flag, e)} on:mousedown={(e) => drag2(track, flag, e)} class="flag {track[1]} w-full h-full rounded-tl-lg absolute bg-opacity-90">
                                     <button on:click={() => deleteFlag(track, flag)} class="mt-6 text-sm place-items-center w-4 h-6 border-y-2 border-black border-opacity-30"><Fa icon={faTrash}/></button>
@@ -386,8 +390,10 @@
                                     <button on:click={() => deleteFlag(track, flag)} class="mt-6 text-sm place-items-center w-4 h-6 border-y-2 border-black border-opacity-30"><Fa icon={faTrash}/></button>
                                 </div>
                             {/if}
+
+                            <!-- Text -->
                             {#if flag[1].length > 0}
-                                <span class="{track[1]} rounded-tl-lg absolute bg-opacity-95 border-black border-r-2 border-b-2 border-opacity-30 pointer-events-none select-none">{flag[1]}</span>
+                                <span class="{track[1]} rounded-tl-lg absolute bg-opacity-95 border-black border-r-2 border-b-2 border-opacity-30 pointer-events-none select-none whitespace-nowrap">{flag[1]}</span>
                             {/if}
                         </div>
                     </div>

@@ -70,8 +70,16 @@
     }
 
     function pauseReturn() {
+        console.log("returned to start of audio")
+
         currentTime.set(0)
         wavesurfer.setTime(0)
+
+        window.scrollTo({
+            left: 0,
+            behavior: "smooth"
+        })
+
         if (wavesurfer.isPlaying()) {
             wavesurfer.play()
         }
@@ -98,6 +106,8 @@
             } else {
                 play()
             }
+        } else if (e.key === "s") {
+            toggleCenterPlayhead()
         }
     }
 
@@ -140,7 +150,7 @@
 
     $: {
         if (centerPlayhead) {
-            centerHeadColor = "bg-yellow-600 dark:bg-slate-800"
+            centerHeadColor = "bg-yellow-600 dark:bg-slate-900"
         } else {
             centerHeadColor = "bg-white dark:bg-slate-700"
         }
@@ -156,7 +166,7 @@
 
     let toggledDark = false
     function darkMode() {
-        console.log("clicked with ", toggledDark)
+        //console.log("clicked with ", toggledDark)
         toggledDark = !toggledDark
 
         setDarkMode(toggledDark)
@@ -167,25 +177,6 @@
             centerPlayhead = pref.playSnap
 
             toggledDark = pref.darkMode
-            if (toggledDark) {
-                const html = document.documentElement
-                html.classList.add('dark')
-            }
-        }).catch(() => {
-            console.log("error loading preferences! might be missing. trying to create it...")
-
-            db.preference.add({
-                darkMode: false, 
-	    	    playSnap: true, 
-	    	    analysisEnterAction: "flag"
-            }).then(() => {
-                console.log("sucessfully created preference db")
-                
-                centerPlayhead = true
-                toggledDark = false
-            }).catch(() => {
-                console.log("could not create preference db!!!! SECOND FAIL")
-            })
         })
     })
 </script>
@@ -194,10 +185,10 @@
 
 <div bind:clientWidth={innerWidth} class="fixed flex bottom-0 w-screen h-16 z-40 p-2 bg-yellow-500 dark:bg-slate-600 dark:text-slate-500">
     <div class="flex flex-col">
-        <button on:click={darkMode} class="controls-small bg-white dark:bg-slate-700" title="Playback Restart">
+        <button on:click={darkMode} class="controls-small bg-white dark:bg-slate-700" title="Toggle Dark Mode">
             <Fa icon={faMoon}/>
         </button>
-        <button on:click={toggleCenterPlayhead} class="controls-small mt-2 {centerHeadColor}" title="Center Playhead">
+        <button on:click={toggleCenterPlayhead} class="controls-small mt-2 {centerHeadColor}" title="(s) Center Playhead">
             <Fa icon={faDownLeftAndUpRightToCenter}/>
         </button>
     </div>

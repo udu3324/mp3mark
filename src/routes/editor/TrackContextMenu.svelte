@@ -3,7 +3,8 @@
 	import Fa from "svelte-fa";
 
     export let tracks
-    
+    export let enterAction
+
     export let note = ""
     
     // biome-ignore lint/style/useConst: its assigned multiple times
@@ -57,7 +58,7 @@
         }
 
         note = note.trim()
-        note = note.replaceAll(" ", "_")
+        //note = note.replaceAll(" ", "_")
 
         //start, note
         const flag = [selectedBeatIndex, note]
@@ -84,8 +85,12 @@
 
     function onKeyDown(e) {
         if (e.keyCode === 13) {
-            //todo preferences
-            createFlag()
+            //console.log("enterAction", enterAction)
+            if (enterAction === "flag") {
+                createFlag()
+            } else {
+                createMark()
+            }
         }
     }
 </script>

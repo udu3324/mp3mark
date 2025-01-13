@@ -1,15 +1,18 @@
 <script>
    import { db } from "$lib/db.js"
+   import { onMount } from "svelte"
    import { currentTime } from "$lib/editor"
    import { goto } from '$app/navigation'
 	import Fa from "svelte-fa";
-	import { faBook, faBug, faChartGantt, faClock, faCodePullRequest, faDoorOpen, faDownload, faFilePen, faHammer, faHashtag, faHourglass, faHourglassEnd, faPenToSquare, faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
-	import { faGithub, faSlack } from "@fortawesome/free-brands-svg-icons";
+	import { faBook, faBug, faChartGantt, faClock, faCodePullRequest, faCog, faDoorOpen, faDownload, faFilePen, faHammer, faHashtag, faHourglass, faHourglassEnd, faPenToSquare, faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
+	import { faGithub } from "@fortawesome/free-brands-svg-icons";
 	import ProjectInfo from "./ProjectInfo.svelte";
 
    export let title
    export let editorData
    export let projectID
+
+   export let enterAction
 
    // biome-ignore lint/style/useConst: <explanation>
    let innerWidth = 0
@@ -34,6 +37,7 @@
    let configInput
    let configDiv = "hidden"
    let configLabel = ""
+   let configDescription = ""
    let configValue = ""
 
    let time = "0:00.00"
@@ -117,11 +121,6 @@
       window.open("https://github.com/udu3324/mp3mark/compare", "_blank")
    }
 
-   function slack() {
-      closeAll()
-      window.open("https://hackclub.slack.com/app_redirect?channel=U07L463K2R3", "_blank")
-   }
-
    function showConfig() {
       configDiv = ""
 
@@ -135,6 +134,7 @@
       showConfig()
 
       configLabel = "Project Name"
+      configDescription = "Set a project name between 1-22 characters."
       configValue = editorData.projectName
    }
 
@@ -142,6 +142,7 @@
       showConfig()
 
       configLabel = "BPM (beats per minute)"
+      configDescription = "Set a bpm between 1-900."
       configValue = editorData.bpm
    }
 
@@ -149,6 +150,7 @@
       showConfig()
 
       configLabel = "Time Signature Beat"
+      configDescription = "Set a beat between 1-24."
       configValue = editorData.timeSignatureBeat
    }
 
@@ -156,7 +158,16 @@
       showConfig()
 
       configLabel = "Time Signature Note"
+      configDescription = "Set a note between 1-24."
       configValue = editorData.timeSignatureNote
+   }
+
+   function prefEnterAction() {
+      showConfig()
+
+      configLabel = "Default Enter Action"
+      configDescription = "Set this between \"flag\" or \"mark\". This changes the action of pressing enter when creating an analysis object."
+      configValue = enterAction
    }
 
    function cancelConfig() {
@@ -214,6 +225,27 @@
             location.reload()
 
             break
+         case 'Default Enter Action':
+            if (configValue.length < 1) {
+               alert("Set a valid action! (flag, mark)")
+               return
+            }
+
+            configValue = configValue.toLowerCase()
+
+            if (!(configValue === "flag" || configValue === "mark")) {
+               alert("Set a valid action! (flag, mark)")
+               return
+            }
+
+            enterAction = configValue
+
+            await db.preference.update(1, { analysisEnterAction: enterAction })
+
+            //alert("Sucessfully set default enter action!")
+            cancelConfig()
+
+            break
       }
    }
 
@@ -221,7 +253,7 @@
       switch (configLabel) {
          case 'Project Name':
             if (configValue.length > 22) {
-               configValue = configValue.substring(0, 20)
+               configValue = configValue.substring(0, 22)
             }
             break
          case 'BPM (beats per minute)':
@@ -243,6 +275,11 @@
 
             if (configValue.length > 2) {
                configValue = configValue.substring(0, 2)
+            }
+            break
+         case 'Default Enter Action':
+            if (configValue.length > 4) {
+               configValue = configValue.substring(0, 4)
             }
             break
       }
@@ -311,6 +348,12 @@
       }
    }
 
+   function onKeyDownConfig(e) {
+      if (e.keyCode === 13) {
+         saveConfig()
+      }
+   }
+
    //close menus if user clicked out of them
    function onMouseDown(e) {
       //ty https://stackoverflow.com/a/8729274
@@ -335,6 +378,12 @@
          closeAll()
       }
    }
+
+   onMount(() => {
+      db.preference.get(1).then(pref => {
+         enterAction = pref.analysisEnterAction
+      })
+   })
 </script>
 
 <svelte:window on:keydown={onKeyDown} on:mousedown={onMouseDown}/>
@@ -342,10 +391,12 @@
 <ProjectInfo bind:data={editorData} bind:hidden={dataDiv}/>
 
 <div class="{configDiv} fixed grid h-screen w-screen place-content-center z-50 bg-black bg-opacity-50">
-   <div class="bg-gray-700 p-5 text-white">
-      <span>{configLabel}</span>
+   <div class="bg-gray-700 p-5 text-white max-w-96">
+      <span class="font-bold">{configLabel}</span>
       <br>
-      <input bind:this={configInput} bind:value={configValue} class="text-black p-2 my-1 outline-none" type="text">
+      <span class="">{configDescription}</span>
+      <br>
+      <input bind:this={configInput} on:keydown={onKeyDownConfig} bind:value={configValue} class="text-black p-2 my-1 outline-none w-full" type="text">
       <div>
          <button on:click={saveConfig} class="p-2 bg-slate-800">save</button>
          <button on:click={cancelConfig} class="p-2 bg-slate-800">cancel</button>
@@ -385,6 +436,7 @@
                   <button on:click={configTimeSignatureBeat} class="button-in-menu hover:bg-gray-300 dark:hover:bg-slate-600"><Fa class="w-5 mr-2" icon={faClock}/> Time Signature Beat</button>
                   <button on:click={configTimeSignatureNote} class="button-in-menu hover:bg-gray-300 dark:hover:bg-slate-600"><Fa class="w-5 mr-2" icon={faHourglassEnd}/> Time Signature Note</button>
                </div>
+               <button on:click={prefEnterAction} class="button-in-menu hover:bg-gray-300 dark:hover:bg-slate-600"><Fa class="w-5 mr-2" icon={faCog}/> Default Enter Action</button>
             </div>
          </div>
          <div>
@@ -397,15 +449,14 @@
                   <button on:click={() => docs("tools")} class="button-in-menu hover:bg-sky-500"><Fa class="w-5 mr-2" icon={faHammer}/> Tools</button>
                </div>
                <button on:click={() => docs("docs")} class="button-in-menu hover:bg-sky-500"><Fa class="w-5 mr-2" icon={faBook}/> Documentation</button>
-               <button on:click={slack} class="button-in-menu hover:bg-sky-500"><Fa class="w-5 mr-2" icon={faSlack}/>Slack Message</button>
             </div>
          </div>
          <div>
             <button on:click={toggleGithubMenu} class="button-menu hover:bg-amber-300 dark:hover:bg-amber-700"><u>G</u>ithub</button>
             
             <div class="{githubMenu} menu bg-amber-500 divide-amber-600 text-amber-950 border-amber-600">
-               <div class="p-1">
-                  <span>mp3mark is a open source project. please star it!</span>
+               <div class="px-2 py-1">
+                  <span>mp3mark is a open source project. star it!</span>
                </div>
  
                <button on:click={github} class="button-in-menu hover:bg-amber-400"><Fa class="w-5 mr-2" icon={faGithub}/> Source Code</button>

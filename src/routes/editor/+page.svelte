@@ -24,6 +24,7 @@
     let title
     let volume
     let volumeSet = false
+    let enterAction
 
     let centerPlayhead
     
@@ -149,8 +150,8 @@
         </div>
     </div>
 
-    <TopBar bind:title={title} editorData={editorData} bind:projectID={projectID} />
-    <Tracks bind:this={tracksObj} id="track-div" bind:loading={loading} bind:tracks={tracks} bind:bpm={bpm} bind:length={durration} bind:timeSigBeat={timeSignatureBeat} bind:centerPlayhead={centerPlayhead}/>
+    <TopBar bind:title={title} editorData={editorData} bind:projectID={projectID} bind:enterAction={enterAction} />
+    <Tracks bind:this={tracksObj} id="track-div" bind:loading={loading} bind:tracks={tracks} bind:bpm={bpm} bind:length={durration} bind:timeSigBeat={timeSignatureBeat} bind:centerPlayhead={centerPlayhead} bind:enterAction={enterAction}/>
     <BottomBar bind:playing={playing} bind:volume={volume} bind:centerPlayhead={centerPlayhead}/>
     <Playhead />
 </div>
