@@ -15,6 +15,10 @@
 
     <div class="doc-heading-2">Bottom Tool-Bar</div>
     <img class="doc-img" src={bottomBar} alt="screenshot of the editor top bottom">
+    <div class="doc-heading-3">Dark Mode</div>
+    <p>Press this button to toggle the appearance of mp3mark.</p>
+    <div class="doc-heading-3">Playhead Snapping</div>
+    <p>Press this button (or press s) to snap the playhead to the center of the screen. Creating a mark or flag will unsnap the playhead. </p>
     <div class="doc-heading-3">Play Button</div>
     <p>Press the space bar to pause or play audio.</p>
     <div class="doc-heading-3">Pause Button</div>

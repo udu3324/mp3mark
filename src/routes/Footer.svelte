@@ -1,6 +1,7 @@
 <script>
 	import { faMoon } from "@fortawesome/free-solid-svg-icons";
 	import { onMount } from "svelte";
+    import { db } from "$lib/db.js"
     import { setDarkMode } from "$lib/db"
 	import Fa from "svelte-fa";
 
