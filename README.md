@@ -66,7 +66,7 @@ npm run preview
  - [ ] ffmpeg trimming
  - [X] exporting/importing
  - [ ] fix mouse/touch slamming
- - [ ] dark mode
+ - [X] dark mode
  - [ ] localization (i18n)
  - [ ] lighthouse/seo checks
  - [X] firefox css fixes
