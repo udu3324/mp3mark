@@ -1,27 +1,15 @@
 <script>
 	import { faMoon } from "@fortawesome/free-solid-svg-icons";
-	import { onMount } from "svelte";
-    import { db } from "$lib/db.js"
-    import { setDarkMode } from "$lib/db"
+    import { darkMode } from "$lib/db"
 	import Fa from "svelte-fa";
-
-    let darkMode = false
 
     function open() {
         window.open("https://github.com/udu3324/mp3mark", "_blank")
     }
 
     function toggleDarkMode() {        
-        darkMode = !darkMode
-
-        setDarkMode(darkMode)
+        darkMode.set(!$darkMode)
     }
-
-    onMount(() => {
-        db.preference.get(1).then(pref => {
-            darkMode = pref.darkMode
-        })
-    })
 </script>
 
 <div class="fixed bottom-0 w-screen h-6 z-20 bg-slate-900 text-white text-center select-none">

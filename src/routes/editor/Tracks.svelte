@@ -4,7 +4,7 @@
 	
     import { onMount } from "svelte"
     import { resolution, tracksHeight } from "$lib/editor.js"
-    import { db } from "$lib/db.js"
+    import { playSnap } from "$lib/db.js"
 	
 	import TrackContextMenu from "./TrackContextMenu.svelte"
 	import TrackVisualizer from "./TrackVisualizer.svelte"
@@ -18,11 +18,10 @@
 
     export let loading = true
 
-    export let centerPlayhead
-
     // biome-ignore lint/style/useConst: it isnt actually constant
     let note = ""
     let trackContextMenu
+    // biome-ignore lint/style/useConst: <explanation>
     let trackMenuHidden = "hidden"
 
     let pollingTrack
@@ -58,15 +57,9 @@
     }
 
     async function checkForSnap() {
-        const pref = await db.preference.get(1)
-
-        if (pref.playSnap) {
+        if ($playSnap) {
             //toggle it off
-            db.preference.update(1, { playSnap: false }).then(() => {
-                console.log("unsnapped playhead sucessfully")
-            })
-            
-            centerPlayhead = false
+            playSnap.set(false)
         } else {
             trackContextMenu.closeContext()
         }
@@ -86,15 +79,6 @@
 
         console.log("secondsPerBeat", secondsPerBeat, "total ticks", ticks, "tickOffset", tickOffset)
     }
-    
-    //track mouse position for track context menu
-    let mouseX
-    let mouseY
-	function handleMousemove(event) {
-		mouseX = event.clientX;
-		mouseY = event.clientY;
-        //console.log("m", mouseX, mouseY)
-	}
 
     function deleteFlag(track, flag) {
         console.log("removing flag", flag)
@@ -303,8 +287,8 @@
 </div>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div bind:clientHeight={clientHeight} on:mousemove={handleMousemove} id="track-d" class="pt-12 pb-16 dark:bg-slate-800" style="min-width: {trackLength}px">
-    <TrackContextMenu bind:enterAction={enterAction} bind:this={trackContextMenu} bind:trackMenuHidden={trackMenuHidden} bind:note={note} mouseX={mouseX} mouseY={mouseY} bind:tracks={tracks}/>
+<div bind:clientHeight={clientHeight} id="track-d" class="pt-12 pb-16 dark:bg-slate-800" style="min-width: {trackLength}px">
+    <TrackContextMenu bind:enterAction={enterAction} bind:this={trackContextMenu} bind:trackMenuHidden={trackMenuHidden} bind:note={note} bind:tracks={tracks}/>
     
     <TrackVisualizer bind:pollingTrack={pollingTrack} trackLength={trackLength} ticks={ticks} timeSigBeat={timeSigBeat} marginRightValue={marginRightValue}/>
 

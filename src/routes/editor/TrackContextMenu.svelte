@@ -1,23 +1,26 @@
 <script>
+    import { analysisEnterAction } from "$lib/db.js"
 	import { faFlag, faMarker, faXmark } from "@fortawesome/free-solid-svg-icons";
 	import Fa from "svelte-fa";
 
     export let tracks
-    export let enterAction
-
     export let note = ""
-    
-    // biome-ignore lint/style/useConst: its assigned multiple times
-    export let mouseX = 0
-    // biome-ignore lint/style/useConst: ~
-    export let mouseY = 0
-
     export let trackMenuHidden = "hidden"
 
     let menuLeftPX = 0
     let menuTopPX = 0
 
     let noteInput
+
+    //track mouse position 
+    let mouseX
+    let mouseY
+
+	function handleMousemove(event) {
+		mouseX = event.clientX;
+		mouseY = event.clientY;
+        //console.log("m", mouseX, mouseY)
+	}
 
     export function showContext(trackIndex, i) {
         //console.log("showing mark menu for track", trackIndex, i)
@@ -85,8 +88,7 @@
 
     function onKeyDown(e) {
         if (e.keyCode === 13) {
-            //console.log("enterAction", enterAction)
-            if (enterAction === "flag") {
+            if ($analysisEnterAction === "flag") {
                 createFlag()
             } else {
                 createMark()
@@ -94,6 +96,8 @@
         }
     }
 </script>
+
+<svelte:window on:mousemove={handleMousemove}/>
 
 <div style="--menu-left: {menuLeftPX}px; --menu-top: {menuTopPX}px;" class="track-menu {trackMenuHidden}">
     <div class="flex flex-row mb-1">

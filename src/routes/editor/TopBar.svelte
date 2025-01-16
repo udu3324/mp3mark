@@ -1,6 +1,5 @@
 <script>
-   import { db } from "$lib/db.js"
-   import { onMount } from "svelte"
+   import { db, analysisEnterAction } from "$lib/db.js"
    import { currentTime } from "$lib/editor"
    import { goto } from '$app/navigation'
 	import Fa from "svelte-fa";
@@ -11,8 +10,6 @@
    export let title
    export let editorData
    export let projectID
-
-   export let enterAction
 
    // biome-ignore lint/style/useConst: <explanation>
    let innerWidth = 0
@@ -167,7 +164,7 @@
 
       configLabel = "Default Enter Action"
       configDescription = "Set this between \"flag\" or \"mark\". This changes the action of pressing enter when creating an analysis object."
-      configValue = enterAction
+      configValue = $analysisEnterAction
    }
 
    function cancelConfig() {
@@ -238,9 +235,7 @@
                return
             }
 
-            enterAction = configValue
-
-            await db.preference.update(1, { analysisEnterAction: enterAction })
+            analysisEnterAction.set(configValue)
 
             //alert("Sucessfully set default enter action!")
             cancelConfig()
@@ -378,12 +373,6 @@
          closeAll()
       }
    }
-
-   onMount(() => {
-      db.preference.get(1).then(pref => {
-         enterAction = pref.analysisEnterAction
-      })
-   })
 </script>
 
 <svelte:window on:keydown={onKeyDown} on:mousedown={onMouseDown}/>

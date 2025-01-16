@@ -1,13 +1,10 @@
 <script>
     import { currentTime, resolution } from "$lib/editor"
-    import { setDarkMode } from "$lib/db"
+    import { darkMode, playSnap } from "$lib/db"
 	import { faDownLeftAndUpRightToCenter, faMoon, faPlay, faSquare, faVolumeHigh, faVolumeLow, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
     import { wavesurfer } from "$lib/editor.js"
-	import Fa from "svelte-fa";
-	import { onMount } from "svelte";
-    import { db } from "$lib/db.js"
+	import Fa from "svelte-fa"
 
-    export let centerPlayhead = true
     export let playing = false
     export let volume
 
@@ -16,7 +13,7 @@
     let centerHeadColor = "bg-white"
 
     let scrollX = 0
-    let scrollY = 0
+    // biome-ignore lint/style/useConst: <explanation>
     let innerWidth = 0
 
     $: {
@@ -125,7 +122,7 @@
             return
         }
 
-        if (!centerPlayhead) {
+        if (!$playSnap) {
             return
         }
 
@@ -147,45 +144,29 @@
             })
         }
     })
-
-    $: {
-        if (centerPlayhead) {
+    
+    playSnap.subscribe((bool) => {
+        if (bool) {
             centerHeadColor = "bg-yellow-600 dark:bg-slate-900"
         } else {
             centerHeadColor = "bg-white dark:bg-slate-700"
         }
-    }
+    })
 
     function toggleCenterPlayhead() {
-        centerPlayhead = !centerPlayhead
-
-        db.preference.update(1, { playSnap: centerPlayhead }).then(() => {
-            console.log("sucessfully wrote to preferences db")
-        })
+        playSnap.set(!$playSnap)
     }
 
-    let toggledDark = false
-    function darkMode() {
-        //console.log("clicked with ", toggledDark)
-        toggledDark = !toggledDark
-
-        setDarkMode(toggledDark)
+    function toggleDark() {
+        darkMode.set(!$darkMode)
     }
-
-    onMount(() => {
-        db.preference.get(1).then(pref => {
-            centerPlayhead = pref.playSnap
-
-            toggledDark = pref.darkMode
-        })
-    })
 </script>
 
-<svelte:window on:keydown={onKeyDown} bind:scrollX={scrollX} bind:scrollY={scrollY}/>
+<svelte:window on:keydown={onKeyDown} bind:scrollX={scrollX}/>
 
 <div bind:clientWidth={innerWidth} class="fixed flex bottom-0 w-screen h-16 z-40 p-2 bg-yellow-500 dark:bg-slate-600 dark:text-slate-500">
     <div class="flex flex-col">
-        <button on:click={darkMode} class="controls-small bg-white dark:bg-slate-700" title="Toggle Dark Mode">
+        <button on:click={toggleDark} class="controls-small bg-white dark:bg-slate-700" title="Toggle Dark Mode">
             <Fa icon={faMoon}/>
         </button>
         <button on:click={toggleCenterPlayhead} class="controls-small mt-2 {centerHeadColor}" title="(s) Center Playhead">
@@ -227,7 +208,7 @@
     }
 
     .dynamic-pause:active {
-        @apply bg-red-400 dark:bg-red-700 text-red-600;
+        @apply bg-red-400 dark:bg-red-700 dark:text-red-600;
     }
 
     .button-icon {
