@@ -55,7 +55,7 @@
     <div style="left: calc({playLeftPX}px + 7rem - 6px); top: calc({scrollY}px + 3rem)" class="triangle-t absolute z-20 pointer-events-none"></div>
 
     <!-- Middle Head -->
-    <div style="left: calc({playLeftPX}px + 7rem - 6px); top: calc(7rem + 3rem - 7px)" class="triangle-b absolute z-20 pointer-events-none"></div>
+    <div style="left: calc({playLeftPX}px + 7rem - 6px); top: calc(7rem + 3rem - 7px - 1px)" class="triangle-b absolute z-20 pointer-events-none"></div>
 
     <!-- Bottom Head -->
     <div style="left: calc({playLeftPX}px + 7rem - 6px); {isScrollable ? `bottom: calc(4rem - ${scrollY}px);` : `top: calc(${playHeight}px - 4rem - 7px);`}" class="triangle-b absolute z-20 pointer-events-none"></div>
