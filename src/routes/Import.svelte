@@ -242,11 +242,11 @@
     <div class="p-3 text-orange-950">
         <div class="flex border-b-2 border-orange-300">
             <p class="bg-orange-300 p-1 select-none">Project Name - </p>
-            <input bind:value={projectName} class="p-1 h-8 w-44" type="text" maxlength="22" placeholder="name">
+            <input bind:value={projectName} class="p-1 h-8 w-44" type="text" maxlength="22" placeholder="name" name="name of the project">
         </div>
         <div class="flex border-b-2 border-orange-300">
             <p  class="bg-orange-300 p-1 select-none">BPM - </p>
-            <input bind:value={bpm} class="p-1 h-8 w-10" type="text" maxlength="3" placeholder="180">
+            <input bind:value={bpm} class="p-1 h-8 w-10" type="text" maxlength="3" placeholder="180" name="bpm of the audio">
         </div>
         <div class="flex">
             <p class="bg-orange-300 p-1 select-none">Time Signature - </p>

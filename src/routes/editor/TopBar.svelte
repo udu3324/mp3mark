@@ -15,7 +15,21 @@
    let innerWidth = 0
    let branding = "mp3mark - "
    let placeTime
+   let time = "0:00.00"
    
+   let configInput
+   let configDiv = "hidden"
+   let configLabel = ""
+   let configDescription = ""
+   let configValue = ""
+
+   let fileMenu = "hidden"
+   let configMenu = "hidden"
+   let helpMenu = "hidden"
+   let githubMenu = "hidden"
+
+   let dataDiv = "hidden"
+
    //responsive navbar to remove/change certain elements
    $: {
       if (innerWidth < 650) {
@@ -30,15 +44,8 @@
          branding = "mp3mark - "
       }
    }
-   
-   let configInput
-   let configDiv = "hidden"
-   let configLabel = ""
-   let configDescription = ""
-   let configValue = ""
 
-   let time = "0:00.00"
-
+   //react to current time to update text, but also parse wavesurfer's floating values
    currentTime.subscribe((value) => {
       const minute = Math.floor(value / 60)
       const seconds = Math.round((value - minute * 60) * 100) / 100
@@ -63,7 +70,51 @@
       time = `${minute}:${sString}`
    })
 
-   let dataDiv = "hidden"
+   //filter config input by reacting to changes
+   $: {
+      //different filters based on config being config'd
+      switch (configLabel) {
+         case 'Project Name':
+            if (configValue.length > 22) {
+               configValue = configValue.substring(0, 22)
+            }
+            break
+         case 'BPM (beats per minute)':
+            configValue = configValue.replace(/[^0-9]/g, "")
+
+            if (configValue.length > 3) {
+               configValue = configValue.substring(0, 3)
+            }
+            break
+         case 'Time Signature Beat':
+            configValue = configValue.replace(/[^0-9]/g, "")
+
+            if (configValue.length > 2) {
+               configValue = configValue.substring(0, 2)
+            }
+            break
+         case 'Time Signature Note':
+            configValue = configValue.replace(/[^0-9]/g, "")
+
+            if (configValue.length > 2) {
+               configValue = configValue.substring(0, 2)
+            }
+            break
+         case 'Default Enter Action':
+            if (configValue.length > 4) {
+               configValue = configValue.substring(0, 4)
+            }
+            break
+      }
+   }
+
+   // file menu ----------------------------------------------------------------------------------
+   function toggleFileMenu() {
+      fileMenu = fileMenu === "hidden" ? "" : "hidden";
+      configMenu = "hidden"
+      helpMenu = "hidden"
+      githubMenu = "hidden"
+   }
 
    function info() {
       closeAll()
@@ -94,37 +145,12 @@
       goto("/")
    }
 
-   function docs(pg) {
-      closeAll()
-      if (pg === "docs") {
-         window.open("/docs", "_blank")
-      } else {
-         window.open(`/docs?pg=${pg}`, "_blank")
-      }
-   }
-
-   function github() {
-      closeAll()
-      window.open("https://github.com/udu3324/mp3mark", "_blank")
-   }
-
-   function issues() {
-      closeAll()
-      window.open("https://github.com/udu3324/mp3mark/issues", "_blank")
-   }
-
-   function pull() {
-      closeAll()
-      window.open("https://github.com/udu3324/mp3mark/compare", "_blank")
-   }
-
-   function showConfig() {
-      configDiv = ""
-
-      setTimeout(() => {
-         configInput.focus()
-         configInput.select()
-      }, 15)
+   // config menu ----------------------------------------------------------------------------------
+   function toggleConfigMenu() {
+      fileMenu = "hidden"
+      configMenu = configMenu === "hidden" ? "" : "hidden";
+      helpMenu = "hidden"
+      githubMenu = "hidden"
    }
 
    function configName() {
@@ -167,17 +193,23 @@
       configValue = $analysisEnterAction
    }
 
-   function cancelConfig() {
-      configDiv = "hidden"
-      configValue = ""
+   function showConfig() {
+      closeAll()
+
+      configDiv = ""
+
+      setTimeout(() => {
+         configInput.focus()
+         configInput.select()
+      }, 15)
    }
 
    async function saveConfig() {
+      //save config value to db but based on certain config setting to (shared div n stuff)
       switch (configLabel) {
          case 'Project Name':
             if (configValue.length < 1) {
-               alert("Set a project name!")
-               return
+               return alert("Set a project name!")
             }
             
             await db.editor.update(projectID, { projectName: configValue })
@@ -188,8 +220,7 @@
             break
          case 'BPM (beats per minute)':
             if (configValue.length < 1) {
-               alert("Set a bpm!")
-               return
+               return alert("Set a bpm!")
             }
 
             await db.editor.update(projectID, { bpm: Number.parseInt(configValue) })
@@ -200,8 +231,7 @@
             break
          case 'Time Signature Beat':
             if (configValue.length < 1) {
-               alert("Set a time signature!")
-               return
+               return alert("Set a time signature!")
             }
 
             await db.editor.update(projectID, { timeSignatureBeat: configValue })
@@ -212,8 +242,7 @@
             break
          case 'Time Signature Note':
             if (configValue.length < 1) {
-               alert("Set a time signature!")
-               return
+               return alert("Set a time signature!")
             }
             
             await db.editor.update(projectID, { timeSignatureNote: configValue })
@@ -224,15 +253,13 @@
             break
          case 'Default Enter Action':
             if (configValue.length < 1) {
-               alert("Set a valid action! (flag, mark)")
-               return
+               return alert("Set a valid action! (flag, mark)")
             }
 
             configValue = configValue.toLowerCase()
 
             if (!(configValue === "flag" || configValue === "mark")) {
-               alert("Set a valid action! (flag, mark)")
-               return
+               return alert("Set a valid action! (flag, mark)")
             }
 
             analysisEnterAction.set(configValue)
@@ -244,61 +271,12 @@
       }
    }
 
-   $: {
-      switch (configLabel) {
-         case 'Project Name':
-            if (configValue.length > 22) {
-               configValue = configValue.substring(0, 22)
-            }
-            break
-         case 'BPM (beats per minute)':
-            configValue = configValue.replace(/[^0-9]/g, "")
-
-            if (configValue.length > 3) {
-               configValue = configValue.substring(0, 3)
-            }
-            break
-         case 'Time Signature Beat':
-            configValue = configValue.replace(/[^0-9]/g, "")
-
-            if (configValue.length > 2) {
-               configValue = configValue.substring(0, 2)
-            }
-            break
-         case 'Time Signature Note':
-            configValue = configValue.replace(/[^0-9]/g, "")
-
-            if (configValue.length > 2) {
-               configValue = configValue.substring(0, 2)
-            }
-            break
-         case 'Default Enter Action':
-            if (configValue.length > 4) {
-               configValue = configValue.substring(0, 4)
-            }
-            break
-      }
+   function cancelConfig() {
+      configDiv = "hidden"
+      configValue = ""
    }
 
-   let fileMenu = "hidden"
-   let configMenu = "hidden"
-   let helpMenu = "hidden"
-   let githubMenu = "hidden"
-
-   function toggleFileMenu() {
-      fileMenu = fileMenu === "hidden" ? "" : "hidden";
-      configMenu = "hidden"
-      helpMenu = "hidden"
-      githubMenu = "hidden"
-   }
-
-   function toggleConfigMenu() {
-      fileMenu = "hidden"
-      configMenu = configMenu === "hidden" ? "" : "hidden";
-      helpMenu = "hidden"
-      githubMenu = "hidden"
-   }
-
+   // help menu ----------------------------------------------------------------------------------
    function toggleHelpMenu() {
       fileMenu = "hidden"
       configMenu = "hidden"
@@ -306,12 +284,39 @@
       githubMenu = "hidden"
    }
 
+   function docs(pg) {
+      closeAll()
+      if (pg === "docs") {
+         window.open("/docs", "_blank")
+      } else {
+         window.open(`/docs?pg=${pg}`, "_blank")
+      }
+   }
+
+   // github menu ----------------------------------------------------------------------------------
    function toggleGithubMenu() {
       fileMenu = "hidden"
       configMenu = "hidden"
       helpMenu = "hidden"
       githubMenu = githubMenu === "" ? "hidden" : "";
    }
+
+   function github() {
+      closeAll()
+      window.open("https://github.com/udu3324/mp3mark", "_blank")
+   }
+
+   function issues() {
+      closeAll()
+      window.open("https://github.com/udu3324/mp3mark/issues", "_blank")
+   }
+
+   function pull() {
+      closeAll()
+      window.open("https://github.com/udu3324/mp3mark/compare", "_blank")
+   }
+
+   // end -----------------------------------------------------------------------------------------------
 
    function closeAll() {
       fileMenu = "hidden"
@@ -320,7 +325,7 @@
       githubMenu = "hidden"
    }
 
-   //keybind menus
+   //keybind the menus
    function onKeyDown(e) {
       if (document.activeElement.tagName === "INPUT") {
          return
@@ -343,6 +348,7 @@
       }
    }
 
+   //add enter functionality to config menu's input
    function onKeyDownConfig(e) {
       if (e.keyCode === 13) {
          saveConfig()
@@ -385,7 +391,7 @@
       <br>
       <span class="">{configDescription}</span>
       <br>
-      <input bind:this={configInput} on:keydown={onKeyDownConfig} bind:value={configValue} class="text-black p-2 my-1 outline-none w-full" type="text">
+      <input bind:this={configInput} on:keydown={onKeyDownConfig} bind:value={configValue} class="text-black p-2 my-1 outline-none w-full" type="text" name="input for setting config value">
       <div>
          <button on:click={saveConfig} class="p-2 bg-slate-800">save</button>
          <button on:click={cancelConfig} class="p-2 bg-slate-800">cancel</button>

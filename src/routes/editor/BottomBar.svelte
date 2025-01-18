@@ -15,7 +15,9 @@
     let scrollX = 0
     // biome-ignore lint/style/useConst: <explanation>
     let innerWidth = 0
-
+    let storedVolume = 0
+    
+    //change play button style when audio is playing
     $: {
         if (playing) {
             playColor = "bg-green-400 dark:bg-green-600 dark:text-green-500"
@@ -24,11 +26,29 @@
         }
     }
 
+    //change playhead snap button color if its on or off
+    playSnap.subscribe((bool) => {
+        if (bool) {
+            centerHeadColor = "bg-yellow-600 dark:bg-slate-900"
+        } else {
+            centerHeadColor = "bg-white dark:bg-slate-700"
+        }
+    })
+
+    //react to volume being changed
     $: {
         if (wavesurfer && volume) {
             //console.log("set volume to", volume)
             wavesurfer.setVolume(volume)
         }
+    }
+
+    function toggleCenterPlayhead() {
+        playSnap.set(!$playSnap)
+    }
+
+    function toggleDark() {
+        darkMode.set(!$darkMode)
     }
 
     function play() {
@@ -43,7 +63,22 @@
         wavesurfer.pause()
     }
 
-    let storedVolume = 0
+    function pauseReturn() {
+        console.log("returned to start of audio")
+
+        currentTime.set(0)
+        wavesurfer.setTime(0)
+
+        window.scrollTo({
+            left: 0,
+            behavior: "smooth"
+        })
+
+        if (wavesurfer.isPlaying()) {
+            wavesurfer.play()
+        }
+    }
+
     function mute() {
         if (volume !== 0) {
             storedVolume = volume
@@ -65,29 +100,15 @@
             wavesurfer.setVolume(storedVolume)
         }
     }
-
-    function pauseReturn() {
-        console.log("returned to start of audio")
-
-        currentTime.set(0)
-        wavesurfer.setTime(0)
-
-        window.scrollTo({
-            left: 0,
-            behavior: "smooth"
-        })
-
-        if (wavesurfer.isPlaying()) {
-            wavesurfer.play()
-        }
-    }
     
+    //key events to detect pausing and toggling snap of playhead
     function onKeyDown(e) {
+        //cancel if on another input
         if (document.activeElement.tagName === "INPUT" && document.activeElement.id !== "dont-focus") {
             return
         }
 
-        if (e.key === " ") {
+        if (e.key === " ") { //pause/play
             e.preventDefault()
 
             if (playing) {
@@ -103,13 +124,13 @@
             } else {
                 play()
             }
-        } else if (e.key === "s") {
+        } else if (e.key === "s") { //toggling playhead snap
             toggleCenterPlayhead()
         }
     }
 
+    //react to time change to scroll if playhead is snapped
     currentTime.subscribe((value) => {
-
         if (typeof getComputedStyle !== "function") {
             return
         }
@@ -144,22 +165,6 @@
             })
         }
     })
-    
-    playSnap.subscribe((bool) => {
-        if (bool) {
-            centerHeadColor = "bg-yellow-600 dark:bg-slate-900"
-        } else {
-            centerHeadColor = "bg-white dark:bg-slate-700"
-        }
-    })
-
-    function toggleCenterPlayhead() {
-        playSnap.set(!$playSnap)
-    }
-
-    function toggleDark() {
-        darkMode.set(!$darkMode)
-    }
 </script>
 
 <svelte:window on:keydown={onKeyDown} bind:scrollX={scrollX}/>

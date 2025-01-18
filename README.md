@@ -72,7 +72,7 @@ npm run preview
  - [X] firefox css fixes
  - [X] snap playhead to scroll
  - [ ] playback snapping to beat
- - [ ] code comments/reformat/check
+ - [X] code comments/reformat/check
  - [ ] time marks
 
 ## Credits

@@ -18,7 +18,7 @@
 
     export let loading = true
 
-    // biome-ignore lint/style/useConst: it isnt actually constant
+    // biome-ignore lint/style/useConst: <explanation>
     let note = ""
     let trackContextMenu
     // biome-ignore lint/style/useConst: <explanation>
@@ -26,17 +26,33 @@
 
     let pollingTrack
     let trackLength = 0
-
     let ticks = 0
     let tickOffset = 0
     let marginRightValue = 0
-
+    
     // biome-ignore lint/style/useConst: <explanation>
     let scrollX = 0
     // biome-ignore lint/style/useConst: <explanation>
     let scrollY = 0
-
+    let scrollXStore = 0
+    let scrollYStore = 0
+    
+    // biome-ignore lint/style/useConst: <explanation>
     let clientHeight = 0
+
+    //for deleting tracks
+    let deleteTrackDiv = "hidden"
+    let deletingTrack
+    let trackName
+
+    //for resizing marks/flags
+    let dragDirection = ""
+    let dragTrack = ""
+    let dragMark = ""
+    let dragFlag = ""
+    let dragElement = ""
+
+    //poll track height to save and update for playhead height
     $: {
         if (clientHeight) {
             tracksHeight.set(clientHeight)
@@ -44,25 +60,20 @@
     }
 
     //close the track creation menu if user scrolled away
-    let scrollXStore = 0
-    let scrollYStore = 0
     $: {
         if ((scrollX !== scrollXStore || scrollY !== scrollYStore) && trackMenuHidden === "") {
             //check for if the user has playhead snapping on before closing
-            checkForSnap()
+            if ($playSnap) {
+                //toggle it off
+                playSnap.set(false)
+            } else {
+                //user scrolled normally while having menu open, close it
+                trackContextMenu.closeContext()
+            }
         }
 
         scrollXStore = scrollX
         scrollYStore = scrollY
-    }
-
-    async function checkForSnap() {
-        if ($playSnap) {
-            //toggle it off
-            playSnap.set(false)
-        } else {
-            trackContextMenu.closeContext()
-        }
     }
 
     //this gets the visualizer's length to calculate a bunch of stuff
@@ -102,11 +113,6 @@
         tracks = tracks
     }
 
-    let deleteTrackDiv = "hidden"
-    let deletingTrack
-
-    let trackName
-
     function deleteTrack(track) {
         deletingTrack = tracks.indexOf(track)
         deleteTrackDiv = ""
@@ -128,13 +134,7 @@
         deleteTrackDiv = "hidden"
     }
 
-    //stored temporarily for resizing marks/flags
-    let dragDirection = ""
-    let dragTrack = ""
-    let dragMark = ""
-    let dragFlag = ""
-    let dragElement = ""
-
+    //this gets called first to store dragging data for later
     function drag(direction, track, mark, e) {
         dragDirection = direction
         dragTrack = tracks.indexOf(track)
@@ -142,6 +142,7 @@
         dragElement = e.currentTarget
     }
 
+    //window events handle the holding part and use this function
     function holding(e) {
         const touch = e.touches ? e.touches[0] : e
 
@@ -230,6 +231,7 @@
         }
     }
 
+    //load function called by +page to calculate length properly 
     export function loaded() {
         console.log("wavesurfer.js fully loaded and rendered")
 
@@ -247,6 +249,7 @@
             holding(e)
         });
 
+        //for touch devices/mobile
         window.addEventListener('touchmove', (e) => {
             if (dragElement.length !== 0) {
                 e.preventDefault()
@@ -264,6 +267,7 @@
             dragElement = ""
         })
 
+        //for touch devices/mobile
         window.addEventListener('touchend', () => {
             dragDirection = ""
             dragTrack = ""

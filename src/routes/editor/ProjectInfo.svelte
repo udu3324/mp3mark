@@ -5,7 +5,8 @@
 
     let unformatted = ""
     let formatted = ""
-
+    
+    //format the data if its updated
     $: {
         //console.log("showing info div", hidden)
         unformatted = ""

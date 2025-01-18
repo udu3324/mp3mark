@@ -16,6 +16,7 @@
     onMount(() => {
         loading = true
         console.log("loading")
+
         db.load.orderBy("projectID").first(project => {
             id = project.projectID
 
@@ -27,6 +28,7 @@
             })
         }).catch((error) => {
             loading = false
+            console.log("had error loading projects!", error)
         })
     })
 </script>

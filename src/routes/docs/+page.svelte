@@ -15,6 +15,7 @@
     let innerWidth
     let pageDiv
 
+    //react to query in url being changed
     $: pg = $page.url.searchParams.get("pg")
 
     $: {
@@ -34,12 +35,12 @@
             pageMarginL = "ml-40"
         }
     }
-
 </script>
 
 <div bind:clientWidth={innerWidth} class="w-screen min-h-screen bg-white dark:bg-slate-700 dark:text-white">
     <PageNavBar bind:innerWidth={innerWidth}/>
     <div bind:this={pageDiv} class="{pageMarginL} md:ml-56 px-10 pt-3 pb-10 h-screen overflow-y-auto">
+        <!-- each page is its own svelte component with buttons at the bottom & a unique query id -->
         {#if pg === "intro"}
             <Intro/>
             <PageButtons back="docs" next="import"/>

@@ -50,6 +50,7 @@
     let loading = false
     let hiddenClass = "hidden"
 
+    //hide the loader if its empty
     $: {
         if (!hideLoader) {
             console.log("showing loader")
@@ -57,6 +58,7 @@
         }
     }
 
+    //react to the project id being changed by the loader component
     $: {
         if (projectID !== -1) {
             console.log("the project id loaded is", projectID)

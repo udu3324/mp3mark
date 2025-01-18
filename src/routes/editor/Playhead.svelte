@@ -11,11 +11,13 @@
 
     let isScrollable = false
     let heightPXStored = 0
-
+    
+    //react to time to change playhead position
     currentTime.subscribe((value) => {
         playLeftPX = (value * resolution)
     })
 
+    //get tracks height from the component for playhead length
     tracksHeight.subscribe((value) => {
         updateHeight(value)
     })
