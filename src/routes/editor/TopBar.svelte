@@ -467,7 +467,7 @@
 
 <style lang="postcss">
    .button-menu {
-      @apply px-1;
+      @apply px-1 outline-none;
    }
 
    .button-in-menu {
