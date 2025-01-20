@@ -1,6 +1,6 @@
 <script>
 	import { injectAnalytics } from '@vercel/analytics/sveltekit'
-	//import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 
 	import '../app.css';
 
@@ -8,7 +8,7 @@
 	let { children } = $props();
 	
 	injectAnalytics()
-	//injectSpeedInsights()
+	injectSpeedInsights()
 </script>
 
 {@render children()}
